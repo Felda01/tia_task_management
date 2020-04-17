@@ -1,0 +1,31 @@
+import VueRouterMultiguard from 'vue-router-multiguard';
+import store from '../store/index';
+
+
+const auth = (to, from ,next) => {
+    if (!store.state.token) next({ name: 'login', query: { redirect: to.fullPath } });
+    else next();
+};
+
+const guest = (to, from, next) => {
+    if (store.state.token) next({ name: 'dashboard' });
+    else next();
+};
+
+
+function page (path) {
+    return () => import('../pages/' + path).then(m => m.default || m);
+}
+
+export default [
+    { path: '/', name: 'login', component: page('auth/Login.vue'), beforeEnter: VueRouterMultiguard([guest]) },
+    { path: '/dashboard', name: 'dashboard', component: page('Dashboard.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+
+    { path: '/password/reset', name: 'password.request', component: page('auth/password/Email.vue'), beforeEnter: VueRouterMultiguard([guest]) },
+    { path: '/password/reset/:token/:email', name: 'password.reset', component: page('auth/password/Reset.vue'), beforeEnter: VueRouterMultiguard([guest]) },
+
+    { path: '/clients', name: 'clients', component: page('client/ClientList.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+    { path: '/clients/:id', name: 'clients.show', component: page('client/ClientDetail.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+
+    { path: '*', component: page('errors/404.vue') }
+]

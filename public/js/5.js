@@ -554,7 +554,7 @@ var render = function() {
                         "div",
                         { staticClass: "form-group" },
                         [
-                          _c("label", [_vm._v(_vm._s(_vm.$t("client..type")))]),
+                          _c("label", [_vm._v(_vm._s(_vm.$t("client.type")))]),
                           _vm._v(" "),
                           _c("b-form-select", {
                             staticClass: "form-control",

@@ -74,7 +74,7 @@
 
                         <!-- Type -->
                         <div class="form-group">
-                            <label>{{ $t('client..type') }}</label>
+                            <label>{{ $t('client.type') }}</label>
                             <b-form-select v-model="formClient.type" :options="clientTypeOptions" :class="{ 'is-invalid': formClient.errors.has('type') }" class="form-control" />
                             <has-error :form="formClient" field="type" />
                         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ClientUpdateRequest extends FormRequest
 {
@@ -23,8 +24,14 @@ class ClientUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        $client = $this->route('client');
+
         return [
-            'name' => 'sometimes|unique:clients|max:255',
+            'name' => [
+                'sometimes',
+                Rule::unique('clients')->ignore($client),
+                'max:255',
+            ],
             'type' => 'sometimes'
         ];
     }

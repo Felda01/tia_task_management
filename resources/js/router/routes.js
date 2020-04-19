@@ -27,5 +27,10 @@ export default [
     { path: '/clients', name: 'clients', component: page('client/ClientList.vue'), beforeEnter: VueRouterMultiguard([auth]) },
     { path: '/clients/:id', name: 'clients.show', component: page('client/ClientDetail.vue'), beforeEnter: VueRouterMultiguard([auth]) },
 
+    { path: '/projects/:slug', name: 'projects.show', component: page('project/ProjectDetail.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+
+    { path: '/users', name: 'users', component: page('user/UserList.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+    { path: '/users/:id', name: 'users.show', component: page('user/UserDetail.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+
     { path: '*', component: page('errors/404.vue') }
 ]

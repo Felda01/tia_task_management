@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -87,5 +88,14 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+
+    /**
+     * @return UserResource
+     */
+    public function current()
+    {
+        return new UserResource(auth()->guard('api')->user());
     }
 }

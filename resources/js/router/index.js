@@ -34,6 +34,10 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to, from) => {
+    if (!store.state.user) {
+        store.dispatch('getUser');
+    }
+
     let payload = {
         loading: false
     };

@@ -1,49 +1,80 @@
 <template>
     <div class="client-list">
-        <div class="row mb-4">
-            <div class="col">
-                <h1>Clients</h1>
-
+        <template v-if="loading">
+            <div class="row mb-4">
+                <div class="col">
+                    <content-placeholders class="mb-4">
+                        <content-placeholders-heading />
+                    </content-placeholders>
+                </div>
             </div>
-            <div class="col text-right">
-                <button class="btn btn-primary text-right" @click="addClientModal">Add client</button>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <template v-if="loading">
+            <div class="row mb-4">
                 <div class="col-lg-4 col-md-6 col-12" v-for="n in 12" >
                     <content-placeholders class="mb-4">
                         <content-placeholders-heading />
                         <content-placeholders-text :lines="3" />
                     </content-placeholders>
                 </div>
-            </template>
-            <template v-else-if="clients && clients.length > 0">
-                <div class="col-lg-4 col-md-6 col-12" v-for="client in clients" >
-                    <router-link :to="{ name: 'clients.show', params: { id: client.id } }" class="text-decoration-none">
-                        <div class="card mb-4 ">
-                            <div class="card-header">
-                                <h5 class="mb-0"><span :class="'badge badge-' + badgeType(client.type) + ' text-uppercase mr-2'">{{ client.type }}</span>{{ client.name }}</h5>
-                            </div>
-                            <div class="card-body">
-                                <p class="font-weight-bold text-decoration-none text-black-50">Projects:</p>
-                            </div>
+            </div>
+        </template>
+        <template v-else-if="clients && clients.length > 0">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="mb-0">Clients</h1>
                         </div>
-                    </router-link>
+                        <div class="col d-flex align-items-center justify-content-end">
+                            <button class="btn btn-outline-primary btn-sm text-right" @click="addClientModal">{{ $t('client_list.add.client.btn') }}</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 text-center" v-if="showLoadButton">
-                    <button :disabled="loadingLoadMore" class="btn btn-primary" @click="loadMoreData">
-                        <span v-if="loadingLoadMore" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-                        {{ $t('load_more_btn')}}
-                    </button>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-12" v-for="client in clients" >
+                            <router-link :to="{ name: 'clients.show', params: { id: client.id } }" class="text-decoration-none">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0"><span :class="'badge badge-' + badgeType(client.type) + ' text-uppercase mr-2'">{{ client.type }}</span>{{ client.name }}</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="font-weight-bold text-decoration-none text-black-50 mb-1">Projects:</p>
+                                        <template v-if="client.active_projects && client.active_projects.length > 0">
+                                            <template v-for="project in client.active_projects">
+                                                <router-link class="text-decoration-none d-block" :to="{ name: 'projects.show', params: {slug: project.slug} }">{{ project.slug }}: {{ project.title }}</router-link>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </div>
+                            </router-link>
+                        </div>
+                        <div class="col-12 text-center" v-if="showLoadButton">
+                            <button :disabled="loadingLoadMore" class="btn btn-primary" @click="loadMoreData">
+                                <span v-if="loadingLoadMore" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+                                {{ $t('load_more_btn')}}
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </template>
-            <template v-else>
-                <div class="col">
+            </div>
+        </template>
+        <template v-else>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <h1>Clients</h1>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-primary text-right" @click="addClientModal">{{ $t('client_list.add.client.btn') }}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
                     <p>{{ $t('client.no_clients') }}</p>
                 </div>
-            </template>
-        </div>
+            </div>
+        </template>
         <b-modal ref="addClient" :title="$t('client.add.title')"
                  @show="resetAddClientModal"
                  @hidden="resetAddClientModal"
@@ -54,7 +85,7 @@
 
                 <!-- Email -->
                 <div class="form-group">
-                    <label>{{ $t('client.name') }}</label>
+                    <label>{{ $t('client.name') }} *</label>
                     <div>
                         <input v-model="form.name" :class="{ 'is-invalid': form.errors.has('name') }" class="form-control" type="text" name="name">
                         <has-error :form="form" field="name" />
@@ -63,14 +94,14 @@
 
                 <!-- Type -->
                 <div class="form-group">
-                    <label>{{ $t('client.type') }}</label>
+                    <label>{{ $t('client.type') }} *</label>
                     <b-form-select v-model="form.type" :options="clientTypeOptions" :class="{ 'is-invalid': form.errors.has('type') }" class="form-control" />
                     <has-error :form="form" field="type" />
                 </div>
 
                 <!-- Client - Email -->
                 <div class="form-group">
-                    <label>{{ $t('client.user.email') }}</label>
+                    <label>{{ $t('client.user.email') }} *</label>
                     <div>
                         <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }" class="form-control" type="email" name="email">
                         <has-error :form="form" field="email" />
@@ -79,7 +110,7 @@
 
                 <!-- Client - First name -->
                 <div class="form-group">
-                    <label>{{ $t('client.user.first_name') }}</label>
+                    <label>{{ $t('client.user.first_name') }} *</label>
                     <div>
                         <input v-model="form.first_name" :class="{ 'is-invalid': form.errors.has('first_name') }" class="form-control" type="text" name="first_name">
                         <has-error :form="form" field="first_name" />
@@ -88,7 +119,7 @@
 
                 <!-- Client - Last name -->
                 <div class="form-group">
-                    <label>{{ $t('client.user.last_name') }}</label>
+                    <label>{{ $t('client.user.last_name') }} *</label>
                     <div>
                         <input v-model="form.last_name" :class="{ 'is-invalid': form.errors.has('last_name') }" class="form-control" type="text" name="last_name">
                         <has-error :form="form" field="last_name" />
@@ -98,7 +129,7 @@
             <template v-slot:modal-footer="{ ok, cancel }">
                 <button :disabled="form.busy" class="btn btn-primary" @click="ok()">
                     <span v-if="form.busy" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-                    {{ $t('client.add.ok')}}
+                    {{ $t('modal.add.btn')}}
                 </button>
                 <button class="btn btn-danger" @click="cancel()">{{ $t('cancel')}}</button>
             </template>
@@ -164,10 +195,8 @@
                 bvModalEvt.preventDefault();
 
                 this.form.post('/api/clients').then(response => {
-                    this.clients.push(response.data.data);
-                    this.$nextTick(() => {
-                        this.$refs['addClient'].hide();
-                    })
+                    let newClient = response.data.data;
+                    this.$router.push({ name: 'clients.show', params: {id: newClient.id} });
                 });
             },
             addClientModal() {

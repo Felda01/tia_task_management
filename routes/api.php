@@ -23,7 +23,12 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', 'AuthController@logout')->name('logout');
 
-    Route::apiResource('clients', 'API\ClientController');
+    Route::get('user', 'API\UserController@current')->name('user');
+
+    Route::apiResource('clients', 'API\ClientController', ['except' => ['destroy']]);
+    Route::apiResource('projects', 'API\ProjectController', ['except' => ['destroy', 'index']]);
+    Route::apiResource('versions', 'API\VersionController', ['except' => ['destroy', 'index', 'show']]);
+    //Route::apiResource('tasks', 'API\TaskController', ['except' => ['destroy', 'index', 'show']]);
 });
 
 

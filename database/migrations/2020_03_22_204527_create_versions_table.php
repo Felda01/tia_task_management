@@ -19,6 +19,7 @@ class CreateVersionsTable extends Migration
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
             $table->date('end_date');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

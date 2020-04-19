@@ -1,0 +1,23 @@
+#app, .app {
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 100vh;
+}
+#content {
+  flex: 1 1 auto;
+  min-height: 1px;
+  margin-top: 50px;
+}
+
+.avatar {
+  border-radius: 50%;
+  &-sm {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+  &-md {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+}

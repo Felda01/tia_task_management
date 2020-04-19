@@ -15,16 +15,16 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\User::class, 1)->create()->each(function ($user) {
-            Client::create([
-                "user_id" => $user->id,
-                "secret" => Str::random(40),
-                "name" => "Password Grant",
-                "revoked" => 0,
-                "password_client" => 1,
-                "personal_access_client" => 0,
-                "redirect" => "https://task-management.ddev.site",
-            ]);
-        });
+        factory(\App\User::class, 1)->create();
+
+        Client::create([
+            "user_id" => 0,
+            "secret" => "UT5E7yC2ScSyZoHLs6nwtCbgzX5tr5W3tX4oJaDK",
+            "name" => "Password Grant",
+            "revoked" => 0,
+            "password_client" => 1,
+            "personal_access_client" => 0,
+            "redirect" => "https://task-management.ddev.site",
+        ]);
     }
 }

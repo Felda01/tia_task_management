@@ -28,6 +28,14 @@ class Client extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    public function activeProjects()
+    {
+        return $this->projects()->where('status', Project::STATUS_ACTIVE);
+    }
+
+    /**
      * @return BelongsTo
      */
     public function user()

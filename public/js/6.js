@@ -119,6 +119,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ClientList",
@@ -185,10 +216,13 @@ __webpack_require__.r(__webpack_exports__);
 
       bvModalEvt.preventDefault();
       this.form.post('/api/clients').then(function (response) {
-        _this2.clients.push(response.data.data);
+        var newClient = response.data.data;
 
-        _this2.$nextTick(function () {
-          _this2.$refs['addClient'].hide();
+        _this2.$router.push({
+          name: 'clients.show',
+          params: {
+            id: newClient.id
+          }
         });
       });
     },
@@ -233,27 +267,28 @@ var render = function() {
     "div",
     { staticClass: "client-list" },
     [
-      _c("div", { staticClass: "row mb-4" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "col text-right" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary text-right",
-              on: { click: _vm.addClientModal }
-            },
-            [_vm._v("Add client")]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row mb-4" },
-        [
-          _vm.loading
-            ? _vm._l(12, function(n) {
+      _vm.loading
+        ? [
+            _c("div", { staticClass: "row mb-4" }, [
+              _c(
+                "div",
+                { staticClass: "col" },
+                [
+                  _c(
+                    "content-placeholders",
+                    { staticClass: "mb-4" },
+                    [_c("content-placeholders-heading")],
+                    1
+                  )
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "row mb-4" },
+              _vm._l(12, function(n) {
                 return _c(
                   "div",
                   { staticClass: "col-lg-4 col-md-6 col-12" },
@@ -271,96 +306,194 @@ var render = function() {
                   ],
                   1
                 )
-              })
-            : _vm.clients && _vm.clients.length > 0
-            ? [
-                _vm._l(_vm.clients, function(client) {
-                  return _c(
+              }),
+              0
+            )
+          ]
+        : _vm.clients && _vm.clients.length > 0
+        ? [
+            _c("div", { staticClass: "card mb-4" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
                     "div",
-                    { staticClass: "col-lg-4 col-md-6 col-12" },
+                    {
+                      staticClass:
+                        "col d-flex align-items-center justify-content-end"
+                    },
                     [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "text-decoration-none",
-                          attrs: {
-                            to: {
-                              name: "clients.show",
-                              params: { id: client.id }
-                            }
-                          }
-                        },
-                        [
-                          _c("div", { staticClass: "card mb-4 " }, [
-                            _c("div", { staticClass: "card-header" }, [
-                              _c("h5", { staticClass: "mb-0" }, [
-                                _c(
-                                  "span",
-                                  {
-                                    class:
-                                      "badge badge-" +
-                                      _vm.badgeType(client.type) +
-                                      " text-uppercase mr-2"
-                                  },
-                                  [_vm._v(_vm._s(client.type))]
-                                ),
-                                _vm._v(_vm._s(client.name))
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "card-body" }, [
-                              _c(
-                                "p",
-                                {
-                                  staticClass:
-                                    "font-weight-bold text-decoration-none text-black-50"
-                                },
-                                [_vm._v("Projects:")]
-                              )
-                            ])
-                          ])
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                }),
-                _vm._v(" "),
-                _vm.showLoadButton
-                  ? _c("div", { staticClass: "col-12 text-center" }, [
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-primary",
-                          attrs: { disabled: _vm.loadingLoadMore },
-                          on: { click: _vm.loadMoreData }
+                          staticClass:
+                            "btn btn-outline-primary btn-sm text-right",
+                          on: { click: _vm.addClientModal }
                         },
-                        [
-                          _vm.loadingLoadMore
-                            ? _c("span", {
-                                staticClass:
-                                  "spinner-border spinner-border-sm mr-2",
-                                attrs: { role: "status", "aria-hidden": "true" }
-                              })
-                            : _vm._e(),
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.$t("load_more_btn")) +
-                              "\n                "
-                          )
-                        ]
+                        [_vm._v(_vm._s(_vm.$t("client_list.add.client.btn")))]
                       )
-                    ])
-                  : _vm._e()
-              ]
-            : [
-                _c("div", { staticClass: "col" }, [
-                  _c("p", [_vm._v(_vm._s(_vm.$t("client.no_clients")))])
+                    ]
+                  )
                 ])
-              ]
-        ],
-        2
-      ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c(
+                  "div",
+                  { staticClass: "row" },
+                  [
+                    _vm._l(_vm.clients, function(client) {
+                      return _c(
+                        "div",
+                        { staticClass: "col-lg-4 col-md-6 col-12" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "text-decoration-none",
+                              attrs: {
+                                to: {
+                                  name: "clients.show",
+                                  params: { id: client.id }
+                                }
+                              }
+                            },
+                            [
+                              _c("div", { staticClass: "card mb-4" }, [
+                                _c("div", { staticClass: "card-header" }, [
+                                  _c("h5", { staticClass: "mb-0" }, [
+                                    _c(
+                                      "span",
+                                      {
+                                        class:
+                                          "badge badge-" +
+                                          _vm.badgeType(client.type) +
+                                          " text-uppercase mr-2"
+                                      },
+                                      [_vm._v(_vm._s(client.type))]
+                                    ),
+                                    _vm._v(_vm._s(client.name))
+                                  ])
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "card-body" },
+                                  [
+                                    _c(
+                                      "p",
+                                      {
+                                        staticClass:
+                                          "font-weight-bold text-decoration-none text-black-50 mb-1"
+                                      },
+                                      [_vm._v("Projects:")]
+                                    ),
+                                    _vm._v(" "),
+                                    client.active_projects &&
+                                    client.active_projects.length > 0
+                                      ? [
+                                          _vm._l(
+                                            client.active_projects,
+                                            function(project) {
+                                              return [
+                                                _c(
+                                                  "router-link",
+                                                  {
+                                                    staticClass:
+                                                      "text-decoration-none d-block",
+                                                    attrs: {
+                                                      to: {
+                                                        name: "projects.show",
+                                                        params: {
+                                                          slug: project.slug
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(project.slug) +
+                                                        ": " +
+                                                        _vm._s(project.title)
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            }
+                                          )
+                                        ]
+                                      : _vm._e()
+                                  ],
+                                  2
+                                )
+                              ])
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    }),
+                    _vm._v(" "),
+                    _vm.showLoadButton
+                      ? _c("div", { staticClass: "col-12 text-center" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { disabled: _vm.loadingLoadMore },
+                              on: { click: _vm.loadMoreData }
+                            },
+                            [
+                              _vm.loadingLoadMore
+                                ? _c("span", {
+                                    staticClass:
+                                      "spinner-border spinner-border-sm mr-2",
+                                    attrs: {
+                                      role: "status",
+                                      "aria-hidden": "true"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.$t("load_more_btn")) +
+                                  "\n                        "
+                              )
+                            ]
+                          )
+                        ])
+                      : _vm._e()
+                  ],
+                  2
+                )
+              ])
+            ])
+          ]
+        : [
+            _c("div", { staticClass: "card mb-4" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col text-right" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary text-right",
+                        on: { click: _vm.addClientModal }
+                      },
+                      [_vm._v(_vm._s(_vm.$t("client_list.add.client.btn")))]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("p", [_vm._v(_vm._s(_vm.$t("client.no_clients")))])
+              ])
+            ])
+          ],
       _vm._v(" "),
       _c(
         "b-modal",
@@ -400,7 +533,7 @@ var render = function() {
                         : _vm._e(),
                       _vm._v(
                         "\n                " +
-                          _vm._s(_vm.$t("client.add.ok")) +
+                          _vm._s(_vm.$t("modal.add.btn")) +
                           "\n            "
                       )
                     ]
@@ -438,7 +571,7 @@ var render = function() {
               _c("alert-error", { attrs: { form: _vm.form } }),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v(_vm._s(_vm.$t("client.name")))]),
+                _c("label", [_vm._v(_vm._s(_vm.$t("client.name")) + " *")]),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -478,7 +611,7 @@ var render = function() {
                 "div",
                 { staticClass: "form-group" },
                 [
-                  _c("label", [_vm._v(_vm._s(_vm.$t("client.type")))]),
+                  _c("label", [_vm._v(_vm._s(_vm.$t("client.type")) + " *")]),
                   _vm._v(" "),
                   _c("b-form-select", {
                     staticClass: "form-control",
@@ -499,7 +632,9 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v(_vm._s(_vm.$t("client.user.email")))]),
+                _c("label", [
+                  _vm._v(_vm._s(_vm.$t("client.user.email")) + " *")
+                ]),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -536,7 +671,9 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v(_vm._s(_vm.$t("client.user.first_name")))]),
+                _c("label", [
+                  _vm._v(_vm._s(_vm.$t("client.user.first_name")) + " *")
+                ]),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -575,7 +712,9 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v(_vm._s(_vm.$t("client.user.last_name")))]),
+                _c("label", [
+                  _vm._v(_vm._s(_vm.$t("client.user.last_name")) + " *")
+                ]),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -616,10 +755,18 @@ var render = function() {
         ]
       )
     ],
-    1
+    2
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col" }, [
+      _c("h1", { staticClass: "mb-0" }, [_vm._v("Clients")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

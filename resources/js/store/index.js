@@ -7,11 +7,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         token: null,
-        loading: false
+        loading: false,
+        user: null,
     },
     getters: {
         loggedIn: state => state.token !== null,
-        loading: state => state.loading
+        loading: state => state.loading,
+        userId: state => state.user ? state.user.id : null,
+        user: state => state.user,
     },
     mutations: {
         SET_TOKEN(state, token) {
@@ -24,6 +27,10 @@ export default new Vuex.Store({
 
         SET_LOADING(state, loading) {
             state.loading = loading;
+        },
+
+        SET_USER(state, user) {
+            state.user = user;
         }
     },
     actions: {
@@ -50,10 +57,17 @@ export default new Vuex.Store({
             delete Vue.axios.defaults.headers.common['Authorization'];
             Cookies.remove('x-access-token');
             commit('REMOVE_TOKEN');
+            commit('SET_USER', null);
         },
 
         setLoading({commit}, {loading}) {
             commit('SET_LOADING', loading);
+        },
+
+        getUser({commit}) {
+            Vue.axios.get('/api/user').then(response => {
+                commit('SET_USER', response.data.data);
+            });
         }
     }
 })

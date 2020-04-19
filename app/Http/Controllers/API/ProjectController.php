@@ -3,62 +3,54 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProjectStoreRequest;
+use App\Http\Requests\ProjectUpdateRequest;
+use App\Http\Resources\ProjectResource;
+use App\Project;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ProjectStoreRequest $request
+     * @return ProjectResource
      */
-    public function store(Request $request)
+    public function store(ProjectStoreRequest $request)
     {
-        //
+        $project = Project::create($request->only(['title', 'slug', 'start_date', 'end_date', 'client_id']));
+
+        $project->users()->save($request->user());
+
+        $project->save();
+
+        return new ProjectResource($project);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Project $project
+     * @return ProjectResource
      */
-    public function show($id)
+    public function show(Project $project)
     {
-        //
+        return new ProjectResource($project->load(['client', 'versions.tasks', 'tasksWithNoVersion', 'users']));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ProjectUpdateRequest $request
+     * @param Project $project
+     * @return ProjectResource
      */
-    public function update(Request $request, $id)
+    public function update(ProjectUpdateRequest $request, Project $project)
     {
-        //
-    }
+        $project->update($request->only(['title', 'slug', 'start_date', 'end_date', 'status']));
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return new ProjectResource($project);
     }
 }

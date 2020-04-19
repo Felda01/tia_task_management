@@ -28,11 +28,11 @@ class ClientUpdateRequest extends FormRequest
 
         return [
             'name' => [
-                'sometimes',
+                'required',
                 Rule::unique('clients')->ignore($client),
                 'max:255',
             ],
-            'type' => 'sometimes'
+            'type' => 'required'
         ];
     }
 }

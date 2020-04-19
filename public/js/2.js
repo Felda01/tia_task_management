@@ -96,9 +96,7 @@ __webpack_require__.r(__webpack_exports__);
             name: 'dashboard'
           });
         });
-      })["catch"](function (e) {
-        console.log(e);
-      });
+      })["catch"](function (e) {});
     }
   }
 });

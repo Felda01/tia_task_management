@@ -150,6 +150,72 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ClientDetail",
@@ -168,7 +234,14 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: 'C',
         value: 'c'
-      }]
+      }],
+      formProject: new vform__WEBPACK_IMPORTED_MODULE_0___default.a({
+        'start_date': '',
+        'end_date': null,
+        'slug': '',
+        'title': '',
+        'client_id': ''
+      })
     };
   },
   created: function created() {
@@ -256,6 +329,31 @@ __webpack_require__.r(__webpack_exports__);
       if (this.formClientUser) {
         this.formClientUser.reset();
       }
+    },
+    addProject: function addProject(bvModalEvt) {
+      var _this4 = this;
+
+      bvModalEvt.preventDefault();
+      this.formProject.client_id = this.client.id;
+      this.formProject.post('/api/projects').then(function (response) {
+        var newProject = response.data.data;
+        console.log(response);
+
+        _this4.$router.push({
+          name: 'projects.show',
+          params: {
+            slug: newProject.slug
+          }
+        });
+      });
+    },
+    addProjectModal: function addProjectModal() {
+      this.$refs['addProject'].show();
+    },
+    resetAddProjectModal: function resetAddProjectModal() {
+      if (this.formProject) {
+        this.formProject.reset();
+      }
     }
   }
 });
@@ -286,7 +384,7 @@ var render = function() {
           ? [
               _c(
                 "div",
-                { staticClass: "col-sm-4 col-12" },
+                { staticClass: "col-md-4 col-12" },
                 [
                   _c(
                     "content-placeholders",
@@ -296,7 +394,7 @@ var render = function() {
                         attrs: { img: true }
                       }),
                       _vm._v(" "),
-                      _c("content-placeholders-text", { attrs: { lines: 3 } })
+                      _c("content-placeholders-text", { attrs: { lines: 4 } })
                     ],
                     1
                   )
@@ -306,7 +404,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "col-sm-8 col-12" },
+                { staticClass: "col-md-8 col-12" },
                 [
                   _c(
                     "content-placeholders",
@@ -314,7 +412,7 @@ var render = function() {
                     [
                       _c("content-placeholders-heading"),
                       _vm._v(" "),
-                      _c("content-placeholders-text", { attrs: { lines: 6 } })
+                      _c("content-placeholders-text", { attrs: { lines: 8 } })
                     ],
                     1
                   )
@@ -324,10 +422,10 @@ var render = function() {
             ]
           : _vm.client
           ? [
-              _c("div", { staticClass: "col-sm-4 col-12" }, [
+              _c("div", { staticClass: "col-md-4 col-12 mb-4" }, [
                 _c("div", { staticClass: "card" }, [
                   _c("div", { staticClass: "card-header" }, [
-                    _c("h5", { staticClass: "mb-0" }, [
+                    _c("h3", { staticClass: "mb-0" }, [
                       _c(
                         "span",
                         {
@@ -352,11 +450,11 @@ var render = function() {
                               _vm._v(_vm._s(_vm.$t("client.show.contact")))
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "row no-gutters mb-4" }, [
+                            _c("div", { staticClass: "d-flex mb-4" }, [
                               _vm.client.user.photo
-                                ? _c("div", { staticClass: "col-3 pr-2" }, [
+                                ? _c("div", { staticClass: "pr-2" }, [
                                     _c("img", {
-                                      staticClass: "img-fluid rounded",
+                                      staticClass: "avatar avatar-md",
                                       attrs: {
                                         src: _vm.client.user.photo,
                                         alt: _vm.client.user.fullName
@@ -365,7 +463,7 @@ var render = function() {
                                   ])
                                 : _vm._e(),
                               _vm._v(" "),
-                              _c("div", { staticClass: "col" }, [
+                              _c("div", [
                                 _c("p", { staticClass: "mb-1" }, [
                                   _vm._v(_vm._s(_vm.client.user.fullName))
                                 ]),
@@ -389,7 +487,7 @@ var render = function() {
                           _c(
                             "button",
                             {
-                              staticClass: "btn btn-primary",
+                              staticClass: "btn btn-outline-primary btn-sm",
                               on: { click: _vm.editClientModal }
                             },
                             [_vm._v(_vm._s(_vm.$t("client.edit.btn")))]
@@ -399,7 +497,7 @@ var render = function() {
                             ? _c(
                                 "button",
                                 {
-                                  staticClass: "btn btn-primary",
+                                  staticClass: "btn btn-outline-primary btn-sm",
                                   on: { click: _vm.editClientUserModal }
                                 },
                                 [_vm._v(_vm._s(_vm.$t("client.edit.user.btn")))]
@@ -413,19 +511,73 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-sm-8 col-12" }, [
+              _c("div", { staticClass: "col-md-8 col-12 mb-4" }, [
                 _c("div", { staticClass: "card" }, [
                   _c("div", { staticClass: "card-header" }, [
-                    _c("h5", { staticClass: "mb-0" }, [
-                      _vm._v(_vm._s(_vm.$t("client.show.projects")))
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "col d-flex align-items-center" },
+                        [
+                          _c("h5", { staticClass: "mb-0" }, [
+                            _vm._v(_vm._s(_vm.$t("client.show.projects")))
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col text-right" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-outline-primary btn-sm",
+                            on: { click: _vm.addProjectModal }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("client.project.add.btn")))]
+                        )
+                      ])
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "card-body" }, [
-                    _vm._v(
-                      "\n                        test\n                    "
-                    )
-                  ])
+                  _c(
+                    "div",
+                    { staticClass: "card-body" },
+                    [
+                      _vm.client.projects && _vm.client.projects.length > 0
+                        ? _vm._l(_vm.client.projects, function(project, index) {
+                            return _c(
+                              "router-link",
+                              {
+                                key: project.id,
+                                staticClass: "text-decoration-none d-block",
+                                class: {
+                                  "mb-2": index < _vm.client.projects.length - 1
+                                },
+                                attrs: {
+                                  to: {
+                                    name: "projects.show",
+                                    params: { slug: project.slug }
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(project.slug) +
+                                    ": " +
+                                    _vm._s(project.title)
+                                )
+                              ]
+                            )
+                          })
+                        : [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(_vm.$t("client.project.no_projects")) +
+                                "\n                        "
+                            )
+                          ]
+                    ],
+                    2
+                  )
                 ])
               ]),
               _vm._v(" "),
@@ -470,7 +622,7 @@ var render = function() {
                                 : _vm._e(),
                               _vm._v(
                                 "\n                        " +
-                                  _vm._s(_vm.$t("client.edit.ok")) +
+                                  _vm._s(_vm.$t("modal.edit.btn")) +
                                   "\n                    "
                               )
                             ]
@@ -508,7 +660,9 @@ var render = function() {
                       _c("alert-error", { attrs: { form: _vm.formClient } }),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v(_vm._s(_vm.$t("client.name")))]),
+                        _c("label", [
+                          _vm._v(_vm._s(_vm.$t("client.name")) + " *")
+                        ]),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -554,7 +708,9 @@ var render = function() {
                         "div",
                         { staticClass: "form-group" },
                         [
-                          _c("label", [_vm._v(_vm._s(_vm.$t("client.type")))]),
+                          _c("label", [
+                            _vm._v(_vm._s(_vm.$t("client.type")) + " *")
+                          ]),
                           _vm._v(" "),
                           _c("b-form-select", {
                             staticClass: "form-control",
@@ -624,7 +780,7 @@ var render = function() {
                                 : _vm._e(),
                               _vm._v(
                                 "\n                        " +
-                                  _vm._s(_vm.$t("client.edit.ok")) +
+                                  _vm._s(_vm.$t("modal.edit.btn")) +
                                   "\n                    "
                               )
                             ]
@@ -665,7 +821,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", [
-                          _vm._v(_vm._s(_vm.$t("client.user.email")))
+                          _vm._v(_vm._s(_vm.$t("client.user.email")) + " *")
                         ]),
                         _vm._v(" "),
                         _c(
@@ -715,7 +871,9 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", [
-                          _vm._v(_vm._s(_vm.$t("client.user.first_name")))
+                          _vm._v(
+                            _vm._s(_vm.$t("client.user.first_name")) + " *"
+                          )
                         ]),
                         _vm._v(" "),
                         _c(
@@ -767,7 +925,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", [
-                          _vm._v(_vm._s(_vm.$t("client.user.last_name")))
+                          _vm._v(_vm._s(_vm.$t("client.user.last_name")) + " *")
                         ]),
                         _vm._v(" "),
                         _c(
@@ -808,6 +966,251 @@ var render = function() {
                               attrs: {
                                 form: _vm.formClientUser,
                                 field: "last_name"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ])
+                    ],
+                    1
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-modal",
+                {
+                  ref: "addProject",
+                  attrs: { title: _vm.$t("client.project.add.title.modal") },
+                  on: {
+                    show: _vm.resetAddProjectModal,
+                    hidden: _vm.resetAddProjectModal,
+                    ok: _vm.addProject
+                  },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "modal-footer",
+                      fn: function(ref) {
+                        var ok = ref.ok
+                        var cancel = ref.cancel
+                        return [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { disabled: _vm.formProject.busy },
+                              on: {
+                                click: function($event) {
+                                  return ok()
+                                }
+                              }
+                            },
+                            [
+                              _vm.formProject.busy
+                                ? _c("span", {
+                                    staticClass:
+                                      "spinner-border spinner-border-sm mr-2",
+                                    attrs: {
+                                      role: "status",
+                                      "aria-hidden": "true"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(_vm.$t("modal.add.btn")) +
+                                  "\n                    "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger",
+                              on: {
+                                click: function($event) {
+                                  return cancel()
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(_vm.$t("cancel")))]
+                          )
+                        ]
+                      }
+                    }
+                  ])
+                },
+                [
+                  _c(
+                    "form",
+                    {
+                      attrs: { enctype: "multipart/form-data" },
+                      on: {
+                        keydown: function($event) {
+                          return _vm.formProject.onKeydown($event)
+                        }
+                      }
+                    },
+                    [
+                      _c("alert-error", { attrs: { form: _vm.formProject } }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [
+                          _vm._v(_vm._s(_vm.$t("project.title")) + " *")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formProject.title,
+                                  expression: "formProject.title"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.formProject.errors.has(
+                                  "title"
+                                )
+                              },
+                              attrs: { type: "text", name: "title" },
+                              domProps: { value: _vm.formProject.title },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.formProject,
+                                    "title",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: { form: _vm.formProject, field: "title" }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [
+                          _vm._v(_vm._s(_vm.$t("project.slug")) + " *")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formProject.slug,
+                                  expression: "formProject.slug"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.formProject.errors.has("slug")
+                              },
+                              attrs: { type: "text", name: "slug" },
+                              domProps: { value: _vm.formProject.slug },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.formProject,
+                                    "slug",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: { form: _vm.formProject, field: "slug" }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [
+                          _vm._v(_vm._s(_vm.$t("project.start_date")) + " *")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          [
+                            _c("b-form-datepicker", {
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.formProject.errors.has(
+                                  "start_date"
+                                )
+                              },
+                              model: {
+                                value: _vm.formProject.start_date,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.formProject, "start_date", $$v)
+                                },
+                                expression: "formProject.start_date"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: {
+                                form: _vm.formProject,
+                                field: "start_date"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [
+                          _vm._v(_vm._s(_vm.$t("project.end_date")))
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          [
+                            _c("b-form-datepicker", {
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.formProject.errors.has(
+                                  "end_date"
+                                )
+                              },
+                              model: {
+                                value: _vm.formProject.end_date,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.formProject, "end_date", $$v)
+                                },
+                                expression: "formProject.end_date"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: {
+                                form: _vm.formProject,
+                                field: "end_date"
                               }
                             })
                           ],

@@ -24,7 +24,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return new ClientCollection(Client::with(['user'])->simplePaginate(12));
+        return new ClientCollection(Client::with(['user', 'activeProjects'])->simplePaginate(12));
     }
 
     /**
@@ -87,7 +87,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        return new ClientResource($client->load(['user']));
+        return new ClientResource($client->load(['user', 'activeProjects']));
     }
 
     /**

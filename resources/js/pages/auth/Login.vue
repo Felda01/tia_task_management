@@ -35,9 +35,9 @@
                                 </label>
                             </div>
 
-                            <router-link :to="{ name: 'password.request' }" class="small ml-auto my-auto">
-                                {{ $t('forgot_password') }}
-                            </router-link>
+<!--                            <router-link :to="{ name: 'password.request' }" class="small ml-auto my-auto">-->
+<!--                                {{ $t('forgot_password') }}-->
+<!--                            </router-link>-->
                         </div>
                     </div>
 

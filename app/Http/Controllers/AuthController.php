@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\User;
 use App\Utilities\ProxyRequest;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -21,18 +22,18 @@ class AuthController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param LoginRequest $request
      * @return \Illuminate\Http\JsonResponse|ValidationException
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $user = User::where($this->username(), $request->input($this->username()))->first();
 
         if (!$user || !Hash::check($request->input('password'), $user->password)) {
 
             $this->incrementLoginAttempts($request);
-
-            return ValidationException::withMessages([
+            
+            throw ValidationException::withMessages([
                 $this->username() => [trans('auth.failed')],
             ]);
         }

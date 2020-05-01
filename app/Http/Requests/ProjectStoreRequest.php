@@ -1,9 +1,13 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class ProjectStoreRequest
+ * @package App\Http\Requests
+ *
+ */
 class ProjectStoreRequest extends FormRequest
 {
     /**
@@ -27,7 +31,7 @@ class ProjectStoreRequest extends FormRequest
             'title' => 'required|string|max:255',
             'slug' => 'required|min:6|max:50|string|unique:projects',
             'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'nullable|date|after:start_date',
+            'end_date' => 'required|date|after:start_date',
             'client_id' => 'required|integer|exists:clients,id'
         ];
     }

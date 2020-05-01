@@ -1,9 +1,12 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
+/**
+ * Class TaskCollection
+ * @package App\Http\Resources
+ */
 class TaskCollection extends ResourceCollection
 {
     /**
@@ -14,6 +17,8 @@ class TaskCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'data' => $this->collection
+        ];
     }
 }

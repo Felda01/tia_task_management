@@ -1,9 +1,12 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
+/**
+ * Class ProjectCollection
+ * @package App\Http\Resources
+ */
 class ProjectCollection extends ResourceCollection
 {
     /**

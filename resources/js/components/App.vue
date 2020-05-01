@@ -8,8 +8,7 @@
                 <b-collapse id="nav-collapse" is-nav v-if="loggedIn">
                     <b-navbar-nav>
                         <b-nav-item :to="{ name: 'clients'}" >{{ $t('navigation.clients') }}</b-nav-item>
-                        <b-nav-item :to="{ name: 'clients'}" >{{ $t('navigation.tasks') }}</b-nav-item>
-                        <b-nav-item :to="{ name: 'clients'}" >{{ $t('navigation.timeTracking') }}</b-nav-item>
+                        <b-nav-item :to="{ name: 'tasks'}" >{{ $t('navigation.tasks') }}</b-nav-item>
                     </b-navbar-nav>
 
                     <b-navbar-nav class="ml-auto">

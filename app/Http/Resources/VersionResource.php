@@ -1,9 +1,12 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class VersionResource
+ * @package App\Http\Resources
+ */
 class VersionResource extends JsonResource
 {
     /**

@@ -1,13 +1,35 @@
 <?php
-
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Class Task
+ * @package App
+ */
 class Task extends Model
 {
+    const STATUS_TODO = 'todo';
+    const STATUS_IN_PROGRESS = 'in progress';
+    const STATUS_COMPLETED = 'completed';
+
+    const PRIORITY_NONE = 'none';
+    const PRIORITY_LOW = 'low';
+    const PRIORITY_NORMAL = 'normal';
+    const PRIORITY_HIGH = 'high';
+    const PRIORITY_IMMEDIATE = 'immediate';
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['created_at', 'updated_at', 'start_date', 'end_date'];
+
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -69,5 +91,18 @@ class Task extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function commentsForClient()
+    {
+        return $this->comments()->where('type', Comment::TYPE_ALL);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function dependencies()
+    {
+        return $this->belongsToMany(Task::class, 'task_dependencies', 'task_id', 'task_dependency_id')->withPivot('type');
     }
 }

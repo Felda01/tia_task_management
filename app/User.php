@@ -1,16 +1,20 @@
 <?php
-
 namespace App;
 
 use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * Class User
+ * @package App
+ */
 class User extends Authenticatable
 {
     use SoftDeletes, Notifiable, HasApiTokens;
@@ -77,6 +81,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(TimeTracking::class);
     }
+
+    /**
+     * @return HasMany
+     */
+    public function assigneeTasks()
+    {
+        return $this->hasMany(Task::class, 'assignee_id');
+    }
+
+
+    /**
+     * @return HasMany
+     */
+    public function openAssigneeTasks()
+    {
+        return $this->assigneeTasks()->whereIn('status', [Task::STATUS_TODO, Task::STATUS_IN_PROGRESS]);
+    }
+
 
     /**
      * Send the password reset notification.

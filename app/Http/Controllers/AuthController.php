@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
@@ -10,6 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * Class AuthController
+ * @package App\Http\Controllers
+ */
 class AuthController extends Controller
 {
     use ThrottlesLogins;
@@ -24,6 +27,7 @@ class AuthController extends Controller
     /**
      * @param LoginRequest $request
      * @return \Illuminate\Http\JsonResponse|ValidationException
+     * @throws ValidationException
      */
     public function login(LoginRequest $request)
     {
@@ -32,7 +36,7 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->input('password'), $user->password)) {
 
             $this->incrementLoginAttempts($request);
-            
+
             throw ValidationException::withMessages([
                 $this->username() => [trans('auth.failed')],
             ]);

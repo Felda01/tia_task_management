@@ -16,13 +16,21 @@
                             <input v-model="form[field.name]" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name" class="form-control" :type="field.type" :name="field.name">
                         </template>
                         <template v-else-if="field.input === 'date'">
-                            <b-form-datepicker v-model="form[field.name]" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name" class="form-control"></b-form-datepicker>
+                            <b-form-datepicker v-model="form[field.name]" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name" class="form-control"
+                                               :min="field.config.min ? field.config.min : null" :max="field.config.max ? field.config.max : null"></b-form-datepicker>
                         </template>
                         <template v-else-if="field.input === 'select'">
-                            <b-form-select v-model="form[field.name]" :options="field.config.options" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name" />
+                            <b-form-select v-model="form[field.name]" :options="field.config.options" class="form-control" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name">
+                                <template v-slot:first v-if="field.config.disabledOption">
+                                    <b-form-select-option value="" disabled>{{ $t('modal.select.first.option') }}</b-form-select-option>
+                                </template>
+                            </b-form-select>
                         </template>
                         <template v-else-if="field.input === 'file'">
                             <input type="file" class="custom-file-input" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name" @change="uploadFile(field.name)">
+                        </template>
+                        <template v-else-if="field.input === 'textarea'">
+                            <textarea v-model="form[field.name]" class="form-control" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name"></textarea>
                         </template>
 
                         <has-error :form="form" :field="field.name" />
@@ -55,8 +63,6 @@
             return {
                 form: null
             }
-        },
-        mounted() {
         },
         methods: {
             resetModal() {

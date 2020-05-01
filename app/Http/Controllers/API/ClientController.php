@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\API;
 
 use App\Client;
@@ -15,6 +14,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
+/**
+ * Class ClientController
+ * @package App\Http\Controllers\API
+ */
 class ClientController extends Controller
 {
     /**
@@ -24,7 +27,13 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return new ClientCollection(Client::with(['user', 'activeProjects'])->simplePaginate(12));
+        return (new ClientCollection(Client::with(['user', 'activeProjects'])->simplePaginate(12)))->additional(['meta' => [
+            'clientTypeOptions' => [
+                ['text' => Client::TYPE_A, 'value' => Client::TYPE_A ],
+                ['text' => Client::TYPE_B, 'value' => Client::TYPE_B ],
+                ['text' => Client::TYPE_C, 'value' => Client::TYPE_C ],
+            ]
+        ]]);
     }
 
     /**
@@ -87,7 +96,13 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        return new ClientResource($client->load(['user', 'activeProjects']));
+        return (new ClientResource($client->load(['user', 'activeProjects'])))->additional(['meta' => [
+            'clientTypeOptions' => [
+                ['text' => Client::TYPE_A, 'value' => Client::TYPE_A ],
+                ['text' => Client::TYPE_B, 'value' => Client::TYPE_B ],
+                ['text' => Client::TYPE_C, 'value' => Client::TYPE_C ],
+            ]
+        ]]);
     }
 
     /**

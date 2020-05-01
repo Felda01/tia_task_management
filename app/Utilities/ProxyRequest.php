@@ -60,7 +60,8 @@ class ProxyRequest
         $response = app()->handle($proxy);
 
         if (!$response->isSuccessful()) {
-            abort(403, 'Invalid credentials');
+            abort($response);
+
         }
         $data = json_decode($response->getContent());
 

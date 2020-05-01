@@ -1,10 +1,13 @@
 <?php
-
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class ProjectResource
+ * @package App\Http\Resources
+ */
 class ProjectResource extends JsonResource
 {
     /**
@@ -19,7 +22,7 @@ class ProjectResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'start_date' => $this->start_date->format('Y-m-d'),
-            'end_date' => $this->end_date ? $this->end_date->format('Y-m-d') : '',
+            'end_date' => $this->end_date->format('Y-m-d'),
             'slug' => $this->slug,
             'status' => $this->status,
             'client' => new ClientResource($this->whenLoaded('client')),

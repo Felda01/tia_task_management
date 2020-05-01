@@ -18,14 +18,14 @@ router.beforeEach((to, from, next) => {
     store.dispatch('setLoading', payload).then(() => {
         const token = Cookies.get('x-access-token');
 
-        if (!token || (token && !store.state.token)) {
+        if (to.name !== 'login' && (!token || (token && !store.state.token))) {
             store.dispatch('refreshToken')
                 .then(() => {
                     next();
                 })
                 .catch(errors => {
                     store.dispatch('logout');
-                    next();
+                    router.push( { name: 'login', query: { redirect: to.fullPath } });
                 });
         } else {
             next();
@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to, from) => {
-    if (!store.state.user) {
+    if (to.name !== 'login' && !store.state.user) {
         store.dispatch('getUser');
     }
 

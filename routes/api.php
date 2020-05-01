@@ -26,9 +26,16 @@ Route::middleware('auth:api')->group(function () {
     Route::get('user', 'API\UserController@current')->name('user');
 
     Route::apiResource('clients', 'API\ClientController', ['except' => ['destroy']]);
+
     Route::apiResource('projects', 'API\ProjectController', ['except' => ['destroy', 'index']]);
+    Route::get('projects/{project}/roadmap', 'API\ProjectController@roadmap')->name('projects.show.roadmap');
+    Route::get('projects/{project}/board', 'API\ProjectController@board')->name('projects.show.board');
+    Route::get('projects/{project}/gantt', 'API\ProjectController@gantt')->name('projects.show.gantt');
+
     Route::apiResource('versions', 'API\VersionController', ['except' => ['destroy', 'index', 'show']]);
-    //Route::apiResource('tasks', 'API\TaskController', ['except' => ['destroy', 'index', 'show']]);
+    Route::apiResource('tasks', 'API\TaskController', ['except' => ['destroy']]);
+    Route::apiResource('comments', 'API\CommentController', ['only' => ['store']]);
+    Route::apiResource('time-tracking', 'API\TimeTrackingController', ['except' => ['update', 'index', 'show']]);
 });
 
 

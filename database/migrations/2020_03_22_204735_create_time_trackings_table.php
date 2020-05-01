@@ -19,7 +19,8 @@ class CreateTimeTrackingsTable extends Migration
             $table->foreign('task_id')->references('id')->on('tasks');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->time('time');
+            $table->float('time');
+            $table->date('date');
             $table->softDeletes();
             $table->timestamps();
         });

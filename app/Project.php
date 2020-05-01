@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -17,6 +16,12 @@ class Project extends Model
     const STATUS_ACTIVE = 'active';
     const STATUS_FINISHED = 'finished';
     const STATUS_CLOSED = 'closed';
+
+    const PRIORITY_NONE = 'none';
+    const PRIORITY_LOW = 'low';
+    const PRIORITY_NORMAL = 'normal';
+    const PRIORITY_HIGH = 'high';
+    const PRIORITY_IMMEDIATE = 'immediate';
 
     /**
      * The attributes that should be mutated to dates.
@@ -70,6 +75,14 @@ class Project extends Model
     public function users()
     {
         return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * @param $user_id
+     * @return bool
+     */
+    public function hasUser($user_id) {
+        return $this->users()->where('user_id', $user_id)->exists();
     }
 
     /**

@@ -28,9 +28,19 @@ export default [
     { path: '/clients/:id', name: 'clients.show', component: page('client/ClientDetail.vue'), beforeEnter: VueRouterMultiguard([auth]) },
 
     { path: '/projects/:slug', name: 'projects.show', component: page('project/ProjectDetail.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+    { path: '/projects/:slug/roadmap', name: 'projects.show.roadmap', component: page('project/RoadMap.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+    { path: '/projects/:slug/board', name: 'projects.show.board', component: page('project/Board.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+    { path: '/projects/:slug/gantt', name: 'projects.show.gantt', component: page('project/Gantt.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+
+    { path: '/tasks', name: 'tasks', component: page('task/TaskList.vue'), beforeEnter: VueRouterMultiguard([auth]) },
+    { path: '/tasks/:id', name: 'tasks.show', component: page('task/TaskDetail.vue'), beforeEnter: VueRouterMultiguard([auth]) },
 
     { path: '/users', name: 'users', component: page('user/UserList.vue'), beforeEnter: VueRouterMultiguard([auth]) },
     { path: '/users/:id', name: 'users.show', component: page('user/UserDetail.vue'), beforeEnter: VueRouterMultiguard([auth]) },
 
-    { path: '*', component: page('errors/404.vue') }
-]
+    { path: '/404', name: '404', component: page('errors/404.vue') },
+
+    { path: '/403', name: '403', component: page('errors/403.vue') },
+
+    { path: '*', name: '404', component: page('errors/404.vue') }
+];

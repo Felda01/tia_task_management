@@ -22,6 +22,22 @@ import router from './router/index.js';
 import i18n from './lang/index.js';
 
 
+Vue.axios.interceptors.response.use(function (response) {
+    return response
+}, function (error) {
+    if (error.response.status === 401) {
+        store.dispatch('logout');
+        console.log(router);
+        router.push( { name: 'login'});
+    } else if (error.response.status === 404) {
+        router.replace({ name: '404' });
+    } else if (error.response.status === 403) {
+        router.replace({ name: '403' });
+    }
+    return Promise.reject(error)
+});
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -33,7 +49,7 @@ import i18n from './lang/index.js';
 Vue.component('app', require('./components/App.vue').default);
 Vue.component('custom-modal', require('./components/CustomModal.vue').default);
 
-import { BNavbar, BNavbarNav, BNavbarToggle, BNavbarBrand, BNavItem, BCollapse, BModal, BFormSelect, BOverlay, BFormDatepicker, ModalPlugin } from 'bootstrap-vue';
+import { BNavbar, BNavbarNav, BNavbarToggle, BNavbarBrand, BNavItem, BCollapse, BModal, BFormSelect, BFormSelectOption, BOverlay, BFormDatepicker, ModalPlugin } from 'bootstrap-vue';
 
 Vue.component('b-navbar', BNavbar);
 Vue.component('b-nav-item', BNavItem);
@@ -43,6 +59,7 @@ Vue.component('b-navbar-toggle', BNavbarToggle);
 Vue.component('b-navbar-brand', BNavbarBrand);
 Vue.component('b-modal', BModal);
 Vue.component('b-form-select', BFormSelect);
+Vue.component('b-form-select-option', BFormSelectOption);
 Vue.component('b-overlay', BOverlay);
 Vue.component('b-form-datepicker', BFormDatepicker);
 
@@ -64,6 +81,19 @@ Vue.filter("date", dateFilter);
 
 Vue.config.productionTip = false;
 
+Vue.filter('capitalize', function (value) {
+    if (!value) return '';
+    value = value.toString();
+    return value.charAt(0).toUpperCase() + value.slice(1);
+});
+
+Vue.filter('upper', function (value) {
+    if (!value) return '';
+    value = value.toString();
+    return value.toUpperCase();
+});
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -74,5 +104,5 @@ const app = new Vue({
     i18n,
     store,
     router,
-    el: '#app'
+    el: '#app',
 });

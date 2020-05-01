@@ -1,10 +1,13 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Class ClientUpdateRequest
+ * @package App\Http\Requests
+ */
 class ClientUpdateRequest extends FormRequest
 {
     /**
@@ -27,11 +30,7 @@ class ClientUpdateRequest extends FormRequest
         $client = $this->route('client');
 
         return [
-            'name' => [
-                'required',
-                Rule::unique('clients')->ignore($client),
-                'max:255',
-            ],
+            'name' => ['required', Rule::unique('clients')->ignore($client), 'max:255'],
             'type' => 'required'
         ];
     }

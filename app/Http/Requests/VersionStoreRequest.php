@@ -1,9 +1,12 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class VersionStoreRequest
+ * @package App\Http\Requests
+ */
 class VersionStoreRequest extends FormRequest
 {
     /**

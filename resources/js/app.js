@@ -27,12 +27,9 @@ Vue.axios.interceptors.response.use(function (response) {
 }, function (error) {
     if (error.response.status === 401) {
         store.dispatch('logout');
-        console.log(router);
-        router.push( { name: 'login'});
+        router.push({ name: 'login', query: { redirect: router.currentRoute.fullPath } });
     } else if (error.response.status === 404) {
         router.replace({ name: '404' });
-    } else if (error.response.status === 403) {
-        router.replace({ name: '403' });
     }
     return Promise.reject(error)
 });

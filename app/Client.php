@@ -35,7 +35,11 @@ class Client extends Model
      */
     public function activeProjects()
     {
-        return $this->projects()->where('status', Project::STATUS_ACTIVE);
+        $user = request()->user('api');
+
+        return $this->projects()->where('status', Project::STATUS_ACTIVE)->whereHas('users', function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        });
     }
 
     /**

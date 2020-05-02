@@ -20,7 +20,8 @@ class ProjectUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $user = request()->user('api');
+        return $user->isSenior();
     }
 
     /**
@@ -30,12 +31,13 @@ class ProjectUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        /** @var Project $project */
         $project = $this->route('project');
 
         return [
             'title' => 'required|string|max:255',
-            'start_date' => ['required', 'date', new OldDateOrAfterEqualRule($project->start_date, Carbon::today(), 'today')],
-            'end_date' => ['required', 'date', new OldDateOrAfterEqualRule($project->end_date, $project->start_date, 'start date')],
+            'start_date' => ['required', 'date', 'before_or_equal:'.$project->minStartDate()],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date', 'after_or_equal:'.$project->maxEndDate()],
             'status' => ['required', 'string', Rule::in([Project::STATUS_ACTIVE, Project::STATUS_FINISHED, Project::STATUS_CLOSED])],
         ];
     }

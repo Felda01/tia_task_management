@@ -17,7 +17,7 @@
             <template v-else-if="clients">
                 <div class="col-12 mb-4 d-flex justify-content-between">
                     <h1>{{ $t('client_list.clients') }}</h1>
-                    <button class="btn btn-outline-primary" @click="addClientModal">{{ $t('client_list.add.client.btn') }}</button>
+                    <button v-if="isSenior" class="btn btn-outline-primary" @click="addClientModal">{{ $t('client_list.add.client.btn') }}</button>
                 </div>
                 <template v-if="clients.length > 0">
                     <div class="col-lg-4 col-md-6 col-12 mb-4" v-for="client in clients" >
@@ -28,8 +28,8 @@
                                 </div>
                                 <div class="card-body">
                                     <p class="font-weight-bold text-decoration-none text-black-50 mb-1">Projects:</p>
-                                    <template v-if="client.active_projects && client.active_projects.length > 0">
-                                        <template v-for="project in client.active_projects">
+                                    <template v-if="client.projects && client.projects.length > 0">
+                                        <template v-for="project in client.projects">
                                             <router-link class="text-decoration-none d-block" :to="{ name: 'projects.show', params: {slug: project.slug} }">{{ project.slug }}: {{ project.title }}</router-link>
                                         </template>
                                     </template>
@@ -51,8 +51,15 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     export default {
         name: "ClientList",
+        computed: {
+            ...mapGetters([
+                'isSenior'
+            ]),
+        },
         data() {
             return {
                 loading: false,
@@ -123,7 +130,7 @@
                         }
                     },
                     {
-                        label: this.$t('client.user.email'),
+                        label: this.$t('user.email'),
                         required: true,
                         name: 'email',
                         input: 'text',
@@ -132,7 +139,7 @@
                         config: {}
                     },
                     {
-                        label: this.$t('client.user.first_name'),
+                        label: this.$t('user.first_name'),
                         required: true,
                         name: 'first_name',
                         input: 'text',
@@ -141,7 +148,7 @@
                         config: {}
                     },
                     {
-                        label: this.$t('client.user.last_name'),
+                        label: this.$t('user.last_name'),
                         required: true,
                         name: 'last_name',
                         input: 'text',

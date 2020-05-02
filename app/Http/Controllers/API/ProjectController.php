@@ -2,11 +2,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProjectAssignUserRequest;
+use App\Http\Requests\ProjectManageTeamRequest;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Http\Resources\ProjectResource;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\Project;
 use App\Task;
+use App\User;
 use Illuminate\Http\Request;
 
 /**
@@ -41,7 +46,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return (new ProjectResource($project->load(['client', 'tasks.assignee', 'users', 'versions'])))->additional(['meta' => [
+        return (new ProjectResource($project->load(['client', 'activeTasks.assignee', 'users', 'versions'])))->additional(['meta' => [
             'projectStatusOptions' => [
                 ['text' => ucfirst(Project::STATUS_ACTIVE), 'value' => Project::STATUS_ACTIVE ],
                 ['text' => ucfirst(Project::STATUS_CLOSED), 'value' =>Project::STATUS_CLOSED ],
@@ -59,6 +64,7 @@ class ProjectController extends Controller
                 ['text' => ucfirst(Task::PRIORITY_HIGH), 'value' => Task::PRIORITY_HIGH ],
                 ['text' => ucfirst(Task::PRIORITY_IMMEDIATE), 'value' => Task::PRIORITY_IMMEDIATE ],
             ],
+            'allUsers' => new UserCollection(User::employee()->get())
         ]]);
     }
 
@@ -71,7 +77,7 @@ class ProjectController extends Controller
      */
     public function update(ProjectUpdateRequest $request, Project $project)
     {
-        $project->update($request->only(['title', 'slug', 'start_date', 'end_date', 'status']));
+        $project->update($request->only(['title', 'start_date', 'end_date', 'status']));
 
         return new ProjectResource($project);
     }
@@ -101,5 +107,21 @@ class ProjectController extends Controller
     public function gantt(Project $project)
     {
         return new ProjectResource($project);
+    }
+
+    /**
+     * @param ProjectAssignUserRequest $request
+     * @param Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function assignUser(ProjectAssignUserRequest $request, Project $project)
+    {
+        $project->users()->attach($request->input(['user_id']));
+
+        $project->save();
+
+        return response()->json([
+            'users' => new UserCollection($project->users()->get())
+        ]);
     }
 }

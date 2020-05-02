@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Resources;
 
+use App\Client;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 /**
@@ -17,6 +18,10 @@ class ClientCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+        $this->collection->transform(function (Client $client) {
+            return (new ClientResource($client));
+        });
+
         return [
             'data' => $this->collection
         ];

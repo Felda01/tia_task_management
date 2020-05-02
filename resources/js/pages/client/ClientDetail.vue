@@ -23,13 +23,13 @@
             <template v-else-if="client">
                 <div class="col-12 mb-4 d-flex justify-content-between">
                     <h1><span :class="'badge badge-' + badgeType(client.type) + ' text-uppercase mr-2'">{{ client.type }}</span>{{ client.name }}</h1>
-                    <button class="btn btn-outline-primary" @click="editClientModal">{{ $t('client.edit.btn') }}</button>
+                    <button v-if="isSenior" class="btn btn-outline-primary" @click="editClientModal">{{ $t('client.edit.btn') }}</button>
                 </div>
                 <div class="col-md-4 col-12 mb-4">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">{{ $t('client.show.contact') }}</h5>
-                            <button v-if="client.user" class="btn btn-outline-primary btn-sm" @click="editClientUserModal">{{ $t('client.edit.user.btn') }}</button>
+                            <button v-if="client.user && isSenior" class="btn btn-outline-primary btn-sm" @click="editClientUserModal">{{ $t('client.edit.user.btn') }}</button>
                         </div>
                         <div class="card-body">
                             <template v-if="client.user">
@@ -54,7 +54,7 @@
                                     <h5 class="mb-0">{{ $t('client.show.projects') }}</h5>
                                 </div>
                                 <div class="col text-right">
-                                    <button class="btn btn-outline-primary btn-sm" @click="addProjectModal">{{ $t('client.project.add.btn') }}</button>
+                                    <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="addProjectModal">{{ $t('client.project.add.btn') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -83,10 +83,15 @@
 </template>
 
 <script>
-    import Form from 'vform';
+    import { mapGetters } from 'vuex';
 
     export default {
         name: "ClientDetail",
+        computed: {
+            ...mapGetters([
+                'isSenior'
+            ]),
+        },
         data() {
             return {
                 client: null,
@@ -94,7 +99,7 @@
                 clientTypeOptions: [],
                 modalSchemaEditClient: {
                     form: {
-                        url: '/api/clients/' + + this.$route.params.id,
+                        url: '/api/clients/' + this.$route.params.id,
                         method: 'put',
                         fields: [],
                         hiddenFields: [],
@@ -223,7 +228,7 @@
 
                 this.modalSchemaEditClientUser.form.fields = [
                     {
-                        label: this.$t('client.user.email'),
+                        label: this.$t('user.email'),
                         required: true,
                         name: 'email',
                         input: 'text',
@@ -232,7 +237,7 @@
                         config: {}
                     },
                     {
-                        label: this.$t('client.user.first_name'),
+                        label: this.$t('user.first_name'),
                         required: true,
                         name: 'first_name',
                         input: 'text',
@@ -241,7 +246,7 @@
                         config: {}
                     },
                     {
-                        label: this.$t('client.user.last_name'),
+                        label: this.$t('user.last_name'),
                         required: true,
                         name: 'last_name',
                         input: 'text',

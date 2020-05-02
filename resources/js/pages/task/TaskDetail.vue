@@ -51,6 +51,10 @@
                             <h5 class="mb-0">{{ $t('task.show.details') }}</h5>
                         </div>
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">{{ $t('task.show.details.project') }}:</div>
+                                <div class="col-md-8"><router-link :to="{ name: 'projects.show', params: { slug: task.project.slug } }" class="text-decoration-none">{{ task.project.slug }}</router-link></div>
+                            </div>
                             <div class="row" v-if="task.version">
                                 <div class="col-md-4">{{ $t('task.show.details.version') }}:</div>
                                 <div class="col-md-8">{{ task.version.title }}</div>
@@ -128,7 +132,7 @@
                                             <img :src="time.user.photo" class="avatar avatar-sm mr-2" :alt="time.user.fullName">
                                             <p class="mb-0">{{ time.user.fullName }} - {{ time.time }}</p>
                                         </div>
-                                        <button class="btn btn-sm btn-outline-danger" @click="removeTimeTracking(time)">X</button>
+                                        <button v-if="userId === time.user.id" class="btn btn-sm btn-outline-danger" @click="removeTimeTracking(time)">X</button>
                                     </div>
                                 </div>
                                 <div class="border-top pt-2 pb-2">
@@ -162,7 +166,7 @@
                             <button class="btn btn-sm btn-outline-primary" @click="addCommentModal">{{ $t('task.add.comment.btn') }}</button>
                         </div>
                         <div class="card-body">
-                            <template v-if="task.comments">
+                            <template v-if="task.comments && task.comments.length > 0">
                                 <div v-for="(comment, index) in sortedComments" :key="comment.id" class="p-3" :class="{'border-bottom': index < sortedComments.length - 1}">
                                     <div class="d-flex mb-2">
                                         <div class="d-flex align-items-center">
@@ -189,12 +193,14 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     export default {
         name: "TaskDetail",
         computed: {
             sortedVersions() {
-                if (this.project && this.project.versions) {
-                    return _.orderBy(this.project.versions, 'end_date', 'asc');
+                if (this.task && this.task.project.versions) {
+                    return _.orderBy(this.task.project.versions, 'end_date', 'asc');
                 }
                 return [];
             },
@@ -206,7 +212,7 @@
             },
             sumTimeTracking() {
                 if (this.task && this.task.timeTracking) {
-                    return _.sumBy(this.task.timeTracking, 'time');
+                    return _.sumBy(this.task.timeTracking, item => Number(item.time));
                 }
                 return 0;
             },
@@ -218,7 +224,12 @@
                         .value();
                 }
                 return [];
-            }
+            },
+            ...mapGetters([
+                'isSenior',
+                'isClient',
+                'userId'
+            ]),
         },
         data() {
             return {
@@ -243,17 +254,7 @@
                     form: {
                         url: '/api/comments',
                         method: 'post',
-                        fields: [
-                            {
-                                label: this.$t('comment.message'),
-                                required: true,
-                                name: 'message',
-                                input: 'textarea',
-                                type: 'textarea',
-                                value: '',
-                                config: {}
-                            },
-                        ],
+                        fields: [],
                         hiddenFields: [],
                         config: {}
                     },
@@ -293,7 +294,6 @@
                     this.taskPriorityOptions = response.data.meta.taskPriorityOptions;
                     this.commentTypeOptions = response.data.meta.commentTypeOptions;
                     this.loading = false;
-                    console.log(this.groupedTimeTrackingByDate);
                 });
             },
             editTask(response) {
@@ -413,26 +413,56 @@
                 this.$refs['editTaskModal'].openModal();
             },
             addCommentModal() {
-                this.modalSchemaAddComment.form.hiddenFields = [
-                    {name: 'task_id', value: this.task.id},
-                ];
+                let selectFields = [];
+                if (this.isClient) {
+                    this.modalSchemaAddComment.form.hiddenFields = [
+                        {name: 'task_id', value: this.task.id},
+                        {name: 'type', value: 'all'},
+                    ];
 
-                let selectFields = [
-                    {
-                        label: this.$t('comment.type'),
-                        required: true,
-                        name: 'type',
-                        input: 'select',
-                        type: 'select',
-                        value: 'all',
-                        config: {
-                            options: this.commentTypeOptions,
-                            disabledOption: false
-                        }
-                    },
-                ];
+                    selectFields = [
+                        {
+                            label: this.$t('comment.message'),
+                            required: true,
+                            name: 'message',
+                            input: 'textarea',
+                            type: 'textarea',
+                            value: '',
+                            config: {}
+                        },
+                    ];
 
-                this.modalSchemaAddComment.form.fields.push(...selectFields);
+                } else {
+                    this.modalSchemaAddComment.form.hiddenFields = [
+                        {name: 'task_id', value: this.task.id},
+                    ];
+
+                    selectFields = [
+                        {
+                            label: this.$t('comment.message'),
+                            required: true,
+                            name: 'message',
+                            input: 'textarea',
+                            type: 'textarea',
+                            value: '',
+                            config: {}
+                        },
+                        {
+                            label: this.$t('comment.type'),
+                            required: true,
+                            name: 'type',
+                            input: 'select',
+                            type: 'select',
+                            value: 'all',
+                            config: {
+                                options: this.commentTypeOptions,
+                                disabledOption: false
+                            }
+                        },
+                    ];
+                }
+
+                this.modalSchemaAddComment.form.fields = selectFields;
 
                 this.$refs['addCommentModal'].openModal();
             },
@@ -483,7 +513,7 @@
                         });
                     }
                 });
-            }
+            },
         }
     }
 </script>

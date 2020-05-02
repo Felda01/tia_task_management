@@ -99,7 +99,7 @@ var render = function() {
             _c("div", { staticClass: "row mb-4" }, [
               _c(
                 "div",
-                { staticClass: "col" },
+                { staticClass: "col-12" },
                 [
                   _c(
                     "content-placeholders",

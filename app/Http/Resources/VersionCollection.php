@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Resources;
 
+use App\Version;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 /**
@@ -17,6 +18,12 @@ class VersionCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $this->collection->transform(function (Version $version) {
+            return (new VersionResource($version));
+        });
+
+        return [
+            'data' => $this->collection
+        ];
     }
 }

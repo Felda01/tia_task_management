@@ -1,15 +1,12 @@
 <?php
+
 namespace App\Http\Requests;
 
-use App\Client;
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-/**
- * Class ClientStoreRequest
- * @package App\Http\Requests
- */
-class ClientStoreRequest extends FormRequest
+class UserStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,8 +15,7 @@ class ClientStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        $user = request()->user('api');
-        return $user->isSenior();
+        return true;
     }
 
     /**
@@ -30,11 +26,10 @@ class ClientStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:clients|max:255',
-            'type' => ['required', 'string', Rule::in(Client::TYPE_A, Client::TYPE_B, Client::TYPE_C)],
-            'email' => 'required|string|email|unique:users,email',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'email' => 'required|unique:users|email',
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'type' => ['required', 'string', Rule::in(User::TYPE_SENIOR, User::TYPE_JUNIOR)],
         ];
     }
 
@@ -46,6 +41,7 @@ class ClientStoreRequest extends FormRequest
     public function attributes()
     {
         return[
+            'type' => 'position',
             'first_name' => 'first name',
             'last_name' => 'last name',
         ];

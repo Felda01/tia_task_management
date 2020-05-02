@@ -41,7 +41,7 @@ class OldDateOrAfterEqualRule implements Rule
         if ($carbonValue->equalTo($this->oldValue)) {
             return true;
         } else {
-            return $carbonValue->gte(Carbon::today());
+            return $carbonValue->gte($this->date);
         }
     }
 

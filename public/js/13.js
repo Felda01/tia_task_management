@@ -9,6 +9,13 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -199,12 +206,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TaskDetail",
-  computed: {
+  computed: _objectSpread({
     sortedVersions: function sortedVersions() {
-      if (this.project && this.project.versions) {
-        return _.orderBy(this.project.versions, 'end_date', 'asc');
+      if (this.task && this.task.project.versions) {
+        return _.orderBy(this.task.project.versions, 'end_date', 'asc');
       }
 
       return [];
@@ -218,7 +230,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     sumTimeTracking: function sumTimeTracking() {
       if (this.task && this.task.timeTracking) {
-        return _.sumBy(this.task.timeTracking, 'time');
+        return _.sumBy(this.task.timeTracking, function (item) {
+          return Number(item.time);
+        });
       }
 
       return 0;
@@ -237,7 +251,7 @@ __webpack_require__.r(__webpack_exports__);
 
       return [];
     }
-  },
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['isSenior', 'isClient', 'userId'])),
   data: function data() {
     return {
       task: null,
@@ -261,15 +275,7 @@ __webpack_require__.r(__webpack_exports__);
         form: {
           url: '/api/comments',
           method: 'post',
-          fields: [{
-            label: this.$t('comment.message'),
-            required: true,
-            name: 'message',
-            input: 'textarea',
-            type: 'textarea',
-            value: '',
-            config: {}
-          }],
+          fields: [],
           hiddenFields: [],
           config: {}
         },
@@ -310,7 +316,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.taskPriorityOptions = response.data.meta.taskPriorityOptions;
         _this.commentTypeOptions = response.data.meta.commentTypeOptions;
         _this.loading = false;
-        console.log(_this.groupedTimeTrackingByDate);
       });
     },
     editTask: function editTask(response) {
@@ -429,27 +434,53 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs['editTaskModal'].openModal();
     },
     addCommentModal: function addCommentModal() {
-      var _this$modalSchemaAddC;
+      var selectFields = [];
 
-      this.modalSchemaAddComment.form.hiddenFields = [{
-        name: 'task_id',
-        value: this.task.id
-      }];
-      var selectFields = [{
-        label: this.$t('comment.type'),
-        required: true,
-        name: 'type',
-        input: 'select',
-        type: 'select',
-        value: 'all',
-        config: {
-          options: this.commentTypeOptions,
-          disabledOption: false
-        }
-      }];
+      if (this.isClient) {
+        this.modalSchemaAddComment.form.hiddenFields = [{
+          name: 'task_id',
+          value: this.task.id
+        }, {
+          name: 'type',
+          value: 'all'
+        }];
+        selectFields = [{
+          label: this.$t('comment.message'),
+          required: true,
+          name: 'message',
+          input: 'textarea',
+          type: 'textarea',
+          value: '',
+          config: {}
+        }];
+      } else {
+        this.modalSchemaAddComment.form.hiddenFields = [{
+          name: 'task_id',
+          value: this.task.id
+        }];
+        selectFields = [{
+          label: this.$t('comment.message'),
+          required: true,
+          name: 'message',
+          input: 'textarea',
+          type: 'textarea',
+          value: '',
+          config: {}
+        }, {
+          label: this.$t('comment.type'),
+          required: true,
+          name: 'type',
+          input: 'select',
+          type: 'select',
+          value: 'all',
+          config: {
+            options: this.commentTypeOptions,
+            disabledOption: false
+          }
+        }];
+      }
 
-      (_this$modalSchemaAddC = this.modalSchemaAddComment.form.fields).push.apply(_this$modalSchemaAddC, selectFields);
-
+      this.modalSchemaAddComment.form.fields = selectFields;
       this.$refs['addCommentModal'].openModal();
     },
     addComment: function addComment(response) {
@@ -662,6 +693,35 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-4" }, [
+                        _vm._v(
+                          _vm._s(_vm.$t("task.show.details.project")) + ":"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "col-md-8" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "text-decoration-none",
+                              attrs: {
+                                to: {
+                                  name: "projects.show",
+                                  params: { slug: _vm.task.project.slug }
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(_vm.task.project.slug))]
+                          )
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
                     _vm.task.version
                       ? _c("div", { staticClass: "row" }, [
                           _c("div", { staticClass: "col-md-4" }, [
@@ -908,21 +968,23 @@ var render = function() {
                                           ]
                                         ),
                                         _vm._v(" "),
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn btn-sm btn-outline-danger",
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.removeTimeTracking(
-                                                  time
-                                                )
-                                              }
-                                            }
-                                          },
-                                          [_vm._v("X")]
-                                        )
+                                        _vm.userId === time.user.id
+                                          ? _c(
+                                              "button",
+                                              {
+                                                staticClass:
+                                                  "btn btn-sm btn-outline-danger",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.removeTimeTracking(
+                                                      time
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v("X")]
+                                            )
+                                          : _vm._e()
                                       ]
                                     )
                                   })
@@ -1008,7 +1070,7 @@ var render = function() {
                     "div",
                     { staticClass: "card-body" },
                     [
-                      _vm.task.comments
+                      _vm.task.comments && _vm.task.comments.length > 0
                         ? _vm._l(_vm.sortedComments, function(comment, index) {
                             return _c(
                               "div",

@@ -10,6 +10,13 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var object_to_formdata__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! object-to-formdata */ "./node_modules/object-to-formdata/dist/index.mjs");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -23,24 +30,138 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserDetail",
+  computed: _objectSpread({
+    owner: function owner() {
+      return this.user && this.user.id === this.userId;
+    }
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['userId', 'role'])),
+  data: function data() {
+    return {
+      loading: false,
+      user: null,
+      modalSchemaEditUser: {
+        form: {
+          url: '/api/users/' + this.$route.params.id,
+          method: 'put',
+          fields: [],
+          hiddenFields: [],
+          config: {
+            // Transform form data to FormData
+            transformRequest: [function (data, headers) {
+              return Object(object_to_formdata__WEBPACK_IMPORTED_MODULE_0__["objectToFormData"])(data);
+            }]
+          }
+        },
+        modalRef: 'editClient',
+        modalTitle: this.$t('client.edit.title'),
+        okBtnTitle: this.$t('modal.edit.btn')
+      }
+    };
+  },
+  created: function created() {
+    this.fetchData();
+  },
   methods: {
-    update: function update() {
-      this.form.post('/api/clients', {
-        // Transform form data to FormData
-        transformRequest: [function (data, headers) {
-          return Object(object_to_formdata__WEBPACK_IMPORTED_MODULE_0__["objectToFormData"])(data);
-        }]
+    fetchData: function fetchData() {
+      var _this = this;
+
+      this.loading = true;
+      this.axios.get('/api/users/' + this.$route.params.id).then(function (response) {
+        _this.user = response.data.data;
+        _this.loading = false;
       });
     },
-    uploadFile: function uploadFile(event) {
-      var result = event.target.files;
-
-      if (result && result[0]) {
-        this.form.logo = result[0];
-      }
+    editUserModal: function editUserModal() {
+      this.modalSchemaEditUser.form.fields = [{
+        label: this.$t('user.email'),
+        required: true,
+        name: 'email',
+        input: 'text',
+        type: 'email',
+        value: '',
+        config: {}
+      }, {
+        label: this.$t('user.first_name'),
+        required: true,
+        name: 'first_name',
+        input: 'text',
+        type: 'text',
+        value: '',
+        config: {}
+      }, {
+        label: this.$t('user.last_name'),
+        required: true,
+        name: 'last_name',
+        input: 'text',
+        type: 'text',
+        value: '',
+        config: {}
+      }];
+    },
+    editUser: function editUser(response) {
+      this.user = response.data.data;
+    },
+    editUserTypeModal: function editUserTypeModal() {},
+    editUserType: function editUserType(response) {
+      this.user = response.data.data;
     }
   }
 });
@@ -78,32 +199,188 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v(_vm._s(_vm.$t("client.add.logo")))]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "custom-file" },
-        [
-          _c("input", {
-            staticClass: "custom-file-input",
-            class: { "is-invalid": _vm.form.errors.has("logo") },
-            attrs: { type: "file", id: "customFile" },
-            on: { change: _vm.uploadFile }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            { staticClass: "custom-file-label", attrs: { for: "customFile" } },
-            [_vm._v("Choose file")]
-          ),
-          _vm._v(" "),
-          _c("has-error", { attrs: { form: _vm.form, field: "logo" } })
-        ],
-        1
-      )
-    ])
+  return _c("div", { staticClass: "user-detail" }, [
+    _c(
+      "div",
+      { staticClass: "row" },
+      [
+        _vm.loading
+          ? [
+              _c(
+                "div",
+                { staticClass: "col-12" },
+                [
+                  _c(
+                    "content-placeholders",
+                    { staticClass: "mb-4" },
+                    [
+                      _c("content-placeholders-heading", {
+                        attrs: { img: true }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-4 col-12" },
+                [
+                  _c(
+                    "content-placeholders",
+                    { staticClass: "mb-4" },
+                    [
+                      _c("content-placeholders-heading"),
+                      _vm._v(" "),
+                      _c("content-placeholders-text", { attrs: { lines: 3 } })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "content-placeholders",
+                    { staticClass: "mb-4" },
+                    [
+                      _c("content-placeholders-heading"),
+                      _vm._v(" "),
+                      _c("content-placeholders-text", { attrs: { lines: 2 } })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-8 col-12" },
+                [
+                  _c(
+                    "content-placeholders",
+                    { staticClass: "mb-4" },
+                    [
+                      _c("content-placeholders-heading"),
+                      _vm._v(" "),
+                      _c("content-placeholders-text", { attrs: { lines: 8 } })
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ]
+          : _vm.user
+          ? [
+              _c(
+                "div",
+                { staticClass: "col-12 mb-4 d-flex justify-content-between" },
+                [
+                  _c("h1", { staticClass: "d-flex align-items-center" }, [
+                    _c("img", {
+                      staticClass: "avatar avatar-md mr-2",
+                      attrs: { src: _vm.user.photo, alt: _vm.user.fullName }
+                    }),
+                    _vm._v(_vm._s(_vm.user.fullName))
+                  ]),
+                  _vm._v(" "),
+                  _vm.owner
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-primary",
+                          on: { click: _vm.editUserModal }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("user.edit.btn")))]
+                      )
+                    : _vm._e()
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-4 col-12" }, [
+                _c("div", { staticClass: "card mb-4" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "card-header d-flex justify-content-between align-items-center"
+                    },
+                    [
+                      _c("h5", { staticClass: "mb-0" }, [
+                        _vm._v(_vm._s(_vm.$t("user.show.detail")))
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-lg-4 col-md-5" }, [
+                        _vm._v(_vm._s(_vm.$t("user.full_name")) + ":")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-8 col-md-7" }, [
+                        _vm._v(_vm._s(_vm.user.fullName))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-lg-4 col-md-5" }, [
+                        _vm._v(_vm._s(_vm.$t("user.email")) + ":")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-8 col-md-7" }, [
+                        _vm._v(_vm._s(_vm.user.email))
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card mb-4" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "card-header d-flex justify-content-between align-items-center"
+                    },
+                    [
+                      _c("h5", { staticClass: "mb-0" }, [
+                        _vm._v(_vm._s(_vm.$t("user.show.position")))
+                      ]),
+                      _vm._v(" "),
+                      _vm.user.type === "junior" && _vm.role === "senior"
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-outline-primary",
+                              on: { click: _vm.editUserTypeModal }
+                            },
+                            [_vm._v(_vm._s(_vm.$t("user.type.edit.btn")))]
+                          )
+                        : _vm._e()
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c(
+                      "div",
+                      { staticClass: "d-flex justify-content-between" },
+                      [
+                        _c("p", { staticClass: "mb-0" }, [
+                          _vm._v(_vm._s(_vm._f("capitalize")(_vm.user.type)))
+                        ])
+                      ]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-8 col-12" })
+            ]
+          : _vm._e()
+      ],
+      2
+    )
   ])
 }
 var staticRenderFns = []

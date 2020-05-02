@@ -1,15 +1,10 @@
 <?php
+
 namespace App\Http\Requests;
 
-use App\Client;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-/**
- * Class ClientUpdateRequest
- * @package App\Http\Requests
- */
-class ClientUpdateRequest extends FormRequest
+class ProjectAssignUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,11 +24,20 @@ class ClientUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $client = $this->route('client');
-
         return [
-            'name' => ['required', 'string', Rule::unique('clients')->ignore($client), 'max:255'],
-            'type' => ['required', 'string', Rule::in(Client::TYPE_A, Client::TYPE_B, Client::TYPE_C)],
+            'user_id' => 'required|integer|exists:users,id'
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return[
+            'user_id' => 'user',
         ];
     }
 }

@@ -30,7 +30,7 @@ class CommentStoreRequest extends FormRequest
     {
         return [
             'message' => 'required|string',
-            'type' => ['required', Rule::in(Comment::TYPE_ALL, Comment::TYPE_INTERN)],
+            'type' => ['required', 'string', Rule::in(Comment::TYPE_ALL, Comment::TYPE_INTERN)],
             'task_id' => 'required|integer|exists:tasks,id',
         ];
     }

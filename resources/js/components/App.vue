@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-        <b-navbar toggleable="md" type="dark" variant="primary">
+        <b-navbar toggleable="lg" type="dark" variant="primary">
             <div class="container">
                 <b-navbar-brand v-if="loggedIn" :to="{ name: 'dashboard'}">TMT</b-navbar-brand>
                 <b-navbar-brand v-else :to="{ name: 'login'}">TMT</b-navbar-brand>
@@ -9,6 +9,7 @@
                     <b-navbar-nav>
                         <b-nav-item :to="{ name: 'clients'}" >{{ $t('navigation.clients') }}</b-nav-item>
                         <b-nav-item :to="{ name: 'tasks'}" >{{ $t('navigation.tasks') }}</b-nav-item>
+                        <b-nav-item :to="{ name: 'users'}" >{{ $t('navigation.users') }}</b-nav-item>
                     </b-navbar-nav>
 
                     <b-navbar-nav class="ml-auto">
@@ -19,7 +20,7 @@
             </div>
         </b-navbar>
         <div id="content">
-            <div class="container mt-5">
+            <div class="container mt-lg-5">
                 <b-overlay :show="loading" no-wrap spinner-variant="primary"></b-overlay>
                 <router-view v-if="!loading"></router-view>
             </div>

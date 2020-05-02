@@ -9,8 +9,13 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.common.js");
-/* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vform__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -98,6 +103,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ClientDetail",
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['isSenior'])),
   data: function data() {
     return {
       client: null,
@@ -105,7 +111,7 @@ __webpack_require__.r(__webpack_exports__);
       clientTypeOptions: [],
       modalSchemaEditClient: {
         form: {
-          url: '/api/clients/' + +this.$route.params.id,
+          url: '/api/clients/' + this.$route.params.id,
           method: 'put',
           fields: [],
           hiddenFields: [],
@@ -227,7 +233,7 @@ __webpack_require__.r(__webpack_exports__);
     editClientUserModal: function editClientUserModal() {
       this.modalSchemaEditClientUser.form.url = '/api/users/' + this.client.user.id;
       this.modalSchemaEditClientUser.form.fields = [{
-        label: this.$t('client.user.email'),
+        label: this.$t('user.email'),
         required: true,
         name: 'email',
         input: 'text',
@@ -235,7 +241,7 @@ __webpack_require__.r(__webpack_exports__);
         value: this.client.user.email,
         config: {}
       }, {
-        label: this.$t('client.user.first_name'),
+        label: this.$t('user.first_name'),
         required: true,
         name: 'first_name',
         input: 'text',
@@ -243,7 +249,7 @@ __webpack_require__.r(__webpack_exports__);
         value: this.client.user.first_name,
         config: {}
       }, {
-        label: this.$t('client.user.last_name'),
+        label: this.$t('user.last_name'),
         required: true,
         name: 'last_name',
         input: 'text',
@@ -373,14 +379,16 @@ var render = function() {
                     _vm._v(_vm._s(_vm.client.name))
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-outline-primary",
-                      on: { click: _vm.editClientModal }
-                    },
-                    [_vm._v(_vm._s(_vm.$t("client.edit.btn")))]
-                  )
+                  _vm.isSenior
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-primary",
+                          on: { click: _vm.editClientModal }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("client.edit.btn")))]
+                      )
+                    : _vm._e()
                 ]
               ),
               _vm._v(" "),
@@ -397,7 +405,7 @@ var render = function() {
                         _vm._v(_vm._s(_vm.$t("client.show.contact")))
                       ]),
                       _vm._v(" "),
-                      _vm.client.user
+                      _vm.client.user && _vm.isSenior
                         ? _c(
                             "button",
                             {
@@ -468,14 +476,16 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "col text-right" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-outline-primary btn-sm",
-                            on: { click: _vm.addProjectModal }
-                          },
-                          [_vm._v(_vm._s(_vm.$t("client.project.add.btn")))]
-                        )
+                        _vm.isSenior
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-outline-primary btn-sm",
+                                on: { click: _vm.addProjectModal }
+                              },
+                              [_vm._v(_vm._s(_vm.$t("client.project.add.btn")))]
+                            )
+                          : _vm._e()
                       ])
                     ])
                   ]),

@@ -24,7 +24,8 @@ class UserResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'photo' => $this->photo ? asset('images/'. $this->photo) : asset('images/no_photo.png'),
-            'type' => $this->type
+            'type' => $this->type,
+            'projects' => ProjectResource::collection($this->whenLoaded('projects')),
         ];
     }
 }

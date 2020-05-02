@@ -15,6 +15,9 @@ export default new Vuex.Store({
         loading: state => state.loading,
         userId: state => state.user ? state.user.id : null,
         user: state => state.user,
+        role: state => state.user ? state.user.type : null,
+        isSenior: state => state.user ? state.user.type === 'senior' : false,
+        isClient: state => state.user ? state.user.type === 'client' : false,
     },
     mutations: {
         SET_TOKEN(state, token) {

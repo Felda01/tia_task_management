@@ -2,7 +2,7 @@
     <div class="task-list">
         <template v-if="loading">
             <div class="row mb-4">
-                <div class="col">
+                <div class="col-12">
                     <content-placeholders class="mb-4">
                         <content-placeholders-heading />
                     </content-placeholders>

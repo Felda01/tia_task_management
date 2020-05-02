@@ -9,6 +9,13 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -61,8 +68,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ClientList",
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['isSenior'])),
   data: function data() {
     return {
       loading: false,
@@ -139,7 +148,7 @@ __webpack_require__.r(__webpack_exports__);
           options: this.clientTypeOptions
         }
       }, {
-        label: this.$t('client.user.email'),
+        label: this.$t('user.email'),
         required: true,
         name: 'email',
         input: 'text',
@@ -147,7 +156,7 @@ __webpack_require__.r(__webpack_exports__);
         value: '',
         config: {}
       }, {
-        label: this.$t('client.user.first_name'),
+        label: this.$t('user.first_name'),
         required: true,
         name: 'first_name',
         input: 'text',
@@ -155,7 +164,7 @@ __webpack_require__.r(__webpack_exports__);
         value: '',
         config: {}
       }, {
-        label: this.$t('client.user.last_name'),
+        label: this.$t('user.last_name'),
         required: true,
         name: 'last_name',
         input: 'text',
@@ -239,14 +248,16 @@ var render = function() {
                   [
                     _c("h1", [_vm._v(_vm._s(_vm.$t("client_list.clients")))]),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-outline-primary",
-                        on: { click: _vm.addClientModal }
-                      },
-                      [_vm._v(_vm._s(_vm.$t("client_list.add.client.btn")))]
-                    )
+                    _vm.isSenior
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-outline-primary",
+                            on: { click: _vm.addClientModal }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("client_list.add.client.btn")))]
+                        )
+                      : _vm._e()
                   ]
                 ),
                 _vm._v(" "),
@@ -298,38 +309,37 @@ var render = function() {
                                       [_vm._v("Projects:")]
                                     ),
                                     _vm._v(" "),
-                                    client.active_projects &&
-                                    client.active_projects.length > 0
+                                    client.projects &&
+                                    client.projects.length > 0
                                       ? [
-                                          _vm._l(
-                                            client.active_projects,
-                                            function(project) {
-                                              return [
-                                                _c(
-                                                  "router-link",
-                                                  {
-                                                    staticClass:
-                                                      "text-decoration-none d-block",
-                                                    attrs: {
-                                                      to: {
-                                                        name: "projects.show",
-                                                        params: {
-                                                          slug: project.slug
-                                                        }
+                                          _vm._l(client.projects, function(
+                                            project
+                                          ) {
+                                            return [
+                                              _c(
+                                                "router-link",
+                                                {
+                                                  staticClass:
+                                                    "text-decoration-none d-block",
+                                                  attrs: {
+                                                    to: {
+                                                      name: "projects.show",
+                                                      params: {
+                                                        slug: project.slug
                                                       }
                                                     }
-                                                  },
-                                                  [
-                                                    _vm._v(
-                                                      _vm._s(project.slug) +
-                                                        ": " +
-                                                        _vm._s(project.title)
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            }
-                                          )
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(project.slug) +
+                                                      ": " +
+                                                      _vm._s(project.title)
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          })
                                         ]
                                       : _vm._e()
                                   ],

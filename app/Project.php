@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,7 +36,15 @@ class Project extends Model
      *
      * @var array
      */
-    protected $guarded = [''];
+    protected $guarded = ['maxEndDate', 'minStartDate'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['is_admin'];
+
 
     /**
      * @return BelongsTo
@@ -70,6 +79,14 @@ class Project extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    public function activeTasks()
+    {
+        return $this->tasks()->whereIn('status', [Task::STATUS_IN_PROGRESS, Task::STATUS_TODO]);
+    }
+
+    /**
      * @return BelongsToMany
      */
     public function users()
@@ -93,5 +110,21 @@ class Project extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMaxEndDateAttribute()
+    {
+        return Carbon::parse($this->tasks()->max('end_date'));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMinStartDateAttribute()
+    {
+        return Carbon::parse($this->tasks()->min('start_date'));
     }
 }

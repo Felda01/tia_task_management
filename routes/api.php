@@ -31,11 +31,13 @@ Route::middleware('auth:api')->group(function () {
     Route::get('projects/{project}/roadmap', 'API\ProjectController@roadmap')->name('projects.show.roadmap');
     Route::get('projects/{project}/board', 'API\ProjectController@board')->name('projects.show.board');
     Route::get('projects/{project}/gantt', 'API\ProjectController@gantt')->name('projects.show.gantt');
+    Route::put('projects/{project}/assign-user', 'API\ProjectController@assignUser')->name('projects.assignUser');
 
     Route::apiResource('versions', 'API\VersionController', ['except' => ['destroy', 'index', 'show']]);
     Route::apiResource('tasks', 'API\TaskController', ['except' => ['destroy']]);
     Route::apiResource('comments', 'API\CommentController', ['only' => ['store']]);
     Route::apiResource('time-tracking', 'API\TimeTrackingController', ['except' => ['update', 'index', 'show']]);
+    Route::apiResource('users', 'API\UserController');
 });
 
 

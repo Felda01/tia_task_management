@@ -30,15 +30,16 @@ class TaskStoreRequest extends FormRequest
      */
     public function rules()
     {
+        /** @var Project $project */
         $project = Project::find($this->request->get('project_id'));
 
         return [
+            'project_id' => 'required|integer|exists:projects,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'priority' => ['required', Rule::in([Task::PRIORITY_NONE, Task::PRIORITY_LOW, Task::PRIORITY_NORMAL, Task::PRIORITY_HIGH, Task::PRIORITY_IMMEDIATE])],
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after:start_date',
-            'project_id' => 'required|integer|exists:projects,id',
+            'start_date' => 'required|date|after_or_equal:'.$project->start_date,
+            'end_date' => 'required|date|after_or_equal:start_date|before_or_equal:'.$project->end_date,
             'version_id' => 'nullable|exists:versions,id',
             'assignee_id' => ['nullable', 'exists:users,id', new UserFromProjectRule($project)]
         ];

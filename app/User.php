@@ -110,4 +110,23 @@ class User extends Authenticatable
     {
         $this->notify(new CustomResetPasswordNotification($token));
     }
+
+    /**
+     * Scope a query to only include employees.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEmployee($query)
+    {
+        return $query->whereIn('type', [self::TYPE_JUNIOR, self::TYPE_SENIOR]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSenior()
+    {
+        return $this->type === self::TYPE_SENIOR;
+    }
 }

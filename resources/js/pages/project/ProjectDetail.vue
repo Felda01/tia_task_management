@@ -27,7 +27,7 @@
             <template v-else-if="project">
                 <div class="col-12 mb-4 d-flex justify-content-between">
                     <h1>{{ project.slug }}: {{ project.title }}</h1>
-                    <button class="btn btn-outline-primary" @click="editProjectModal">{{ $t('project.edit.btn') }}</button>
+                    <button v-if="isSenior" class="btn btn-outline-primary" @click="editProjectModal">{{ $t('project.edit.btn') }}</button>
                 </div>
                 <div class="col-lg-4 col-12">
                     <div class="card mb-4">
@@ -41,7 +41,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-4">{{ $t('project.status') }}:</div>
-                                <div class="col-lg-8 col-md-7">{{ project.status }}</div>
+                                <div class="col-lg-8 col-md-7">{{ project.status | capitalize }}</div>
                             </div>
                         </div>
                     </div>
@@ -61,8 +61,9 @@
                         </div>
                     </div>
                     <div class="card mb-4">
-                        <div class="card-header">
+                        <div class="card-header d-flex justify-content-between">
                             <h5 class="mb-0">{{ $t('project.team') }}</h5>
+                            <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="addUserToProjectModal">{{ $t('project.team.add.btn') }}</button>
                         </div>
                         <div class="card-body">
                             <div class="d-flex" :class="{'mb-2': index < project.users.length - 1}" v-for="(user, index) in project.users" :key="user.id">
@@ -89,56 +90,68 @@
                     </div>
                 </div>
                 <div class="col-lg-8 col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
+                    <div class="row">
+                        <div class="col-12 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0">{{ $t('project.show.tasks') }}</h5>
+                                    <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="addTaskModal">{{ $t('project.task.add.btn') }}</button>
                                 </div>
-                                <div class="col text-right">
-                                    <button class="btn btn-outline-primary btn-sm" @click="addTaskModal">{{ $t('project.task.add.btn') }}</button>
+                                <div class="card-body">
+                                    Filter
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <template v-if="project.tasks && project.tasks.length > 0">
-                                <div class="card" v-for="(version, index) in sortedVersions" :key="version.id" :class="{'mb-4': index < project.versions.length - 1}">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col d-flex align-items-center">
-                                                <h5 class="mb-0">{{ version.title }} ({{ new Date(version.end_date) | date('DD.MM.YYYY') }})</h5>
+                        <template v-if="filteredTasks.length > 0">
+                            <div class="col-lg-6 col-12 mb-4" v-for="task in filteredTasks">
+                                <router-link :to="{ name: 'tasks.show', params: { id: task.id } }" class="text-decoration-none">
+                                    <div class="card h-100">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">{{ task.title }}</h5>
+                                        </div>
+                                        <div class="card-body d-flex justify-content-between">
+                                            <div class="d-flex">
+                                                <div v-if="task.assignee" class="d-flex align-items-center">
+                                                    <img :src="task.assignee.photo" class="avatar avatar-md mr-2" :alt="task.assignee.fullName">
+                                                </div>
+                                                <div>
+                                                    <p class="mb-0">{{ new Date(task.start_date) | date('DD.MM.YYYY') }}</p>
+                                                    <p class="mb-0">{{ new Date(task.end_date) | date('DD.MM.YYYY') }}</p>
+                                                </div>
                                             </div>
-                                            <div class="col text-right">
-                                                <button class="btn btn-outline-primary btn-sm" @click="editVersionModal(version)">{{ $t('project.version.edit.btn') }}</button>
-                                                <button class="btn btn-outline-danger btn-sm" @click="deleteVersionModal(version)">{{ $t('project.version.delete.btn') }}</button>
+                                            <div>
+                                                <p class="mb-0">{{ task.status | capitalize }}</p>
+                                                <p class="mb-0">{{ task.priority | capitalize }}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        <template v-if="version.tasks && version.tasks.length > 0">
-
-                                        </template>
-                                        <template v-else>
-                                            {{ $t('version.task.no_tasks')}}
-                                        </template>
-                                    </div>
-                                </div>
-                            </template>
-                            <template v-else>
+                                </router-link>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="col-12">
                                 {{ $t('project.task.no_tasks')}}
-                            </template>
-                        </div>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </template>
 
+            <!-- Edit project modal -->
             <custom-modal ref="editProjectModal" @ok="editProject" :modalSchema="modalSchemaEditProject" />
+
+            <!-- Add task modal -->
             <custom-modal ref="addTaskModal" @ok="addTask" :modalSchema="modalSchemaAddTask" />
+
+            <!-- Add user to project modal -->
+            <custom-modal ref="addUserToProjectModal" @ok="addUserToProject" :modalSchema="modalSchemaAddUserToProject" />
         </div>
     </div>
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     export default {
         name: "ProjectDetail",
         computed: {
@@ -146,7 +159,16 @@
                 if (this.project && this.project.versions) {
                     return _.orderBy(this.project.versions, 'end_date', 'asc');
                 }
-            }
+            },
+            filteredTasks() {
+                if (this.project.tasks && this.project.tasks.length > 0) {
+                    return this.project.tasks;
+                }
+                return [];
+            },
+            ...mapGetters([
+                'isSenior'
+            ]),
         },
         data() {
             return {
@@ -155,6 +177,7 @@
                 projectStatusOptions: [],
                 taskStatusOptions: [],
                 taskPriorityOptions: [],
+                allUsers: [],
                 modalSchemaEditProject: {
                     form: {
                         url: '/api/projects/' + this.$route.params.slug,
@@ -198,6 +221,18 @@
                     modalTitle: this.$t('project.task.add.title.modal'),
                     okBtnTitle: this.$t('modal.add.btn')
                 },
+                modalSchemaAddUserToProject: {
+                    form: {
+                        url: '/api/projects/' + this.$route.params.slug + '/assign-user',
+                        method: 'put',
+                        fields: [],
+                        hiddenFields: [],
+                        config: {}
+                    },
+                    modalRef: 'addUserToProject',
+                    modalTitle: this.$t('project.add.user.title.modal'),
+                    okBtnTitle: this.$t('modal.assign.btn')
+                }
             }
         },
         created() {
@@ -211,6 +246,7 @@
                     this.projectStatusOptions = response.data.meta.projectStatusOptions;
                     this.taskStatusOptions = response.data.meta.taskStatusOptions;
                     this.taskPriorityOptions = response.data.meta.taskPriorityOptions;
+                    this.allUsers = response.data.meta.allUsers.data;
                     this.loading = false;
                 });
             },
@@ -243,7 +279,9 @@
                         input: 'date',
                         type: 'date',
                         value: this.project.start_date,
-                        config: {}
+                        config: {
+                            max: this.project.min_start_date
+                        }
                     },
                     {
                         label: this.$t('project.end_date'),
@@ -252,7 +290,9 @@
                         input: 'date',
                         type: 'date',
                         value: this.project.end_date,
-                        config: {}
+                        config: {
+                            min: this.project.max_end_date
+                        }
                     }
                 ];
                 this.$refs['editProjectModal'].openModal();
@@ -333,6 +373,41 @@
                 console.log(response.data);
                 let task = response.data.data;
                 this.$router.push({ name: 'tasks.show', params: {id: task.id} });
+            },
+            availableUsersForProject() {
+                let result = [];
+
+                console.log(this.allUsers, this.project.users);
+                let availableUsers = _.differenceWith(this.allUsers, this.project.users, _.isEqual);
+
+                console.log(availableUsers);
+
+                for (let i = 0; i < availableUsers.length; i++) {
+                    result.push({'text': availableUsers[i].fullName, 'value': availableUsers[i].id})
+                }
+
+                return result;
+            },
+            addUserToProjectModal() {
+                this.modalSchemaAddUserToProject.form.fields = [
+                    {
+                        label: this.$t('project.user'),
+                        required: false,
+                        name: 'user_id',
+                        input: 'select',
+                        type: 'select',
+                        value: null,
+                        config: {
+                            options: this.availableUsersForProject(),
+                            disabledOption: true
+                        }
+                    },
+                ];
+
+                this.$refs['addUserToProjectModal'].openModal();
+            },
+            addUserToProject(response) {
+                this.task.users = response.data.data;
             },
         }
     }

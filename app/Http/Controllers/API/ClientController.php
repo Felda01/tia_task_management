@@ -27,7 +27,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return (new ClientCollection(Client::with(['user', 'activeProjects'])->simplePaginate(12)))->additional(['meta' => [
+        return (new ClientCollection(Client::with(['user', 'activeProjects'])->get()))->additional(['meta' => [
             'clientTypeOptions' => [
                 ['text' => Client::TYPE_A, 'value' => Client::TYPE_A ],
                 ['text' => Client::TYPE_B, 'value' => Client::TYPE_B ],

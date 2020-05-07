@@ -46,7 +46,7 @@ Vue.axios.interceptors.response.use(function (response) {
 Vue.component('app', require('./components/App.vue').default);
 Vue.component('custom-modal', require('./components/CustomModal.vue').default);
 
-import { BNavbar, BNavbarNav, BNavbarToggle, BNavbarBrand, BNavItem, BCollapse, BModal, BFormSelect, BFormSelectOption, BOverlay, BFormDatepicker, ModalPlugin } from 'bootstrap-vue';
+import { BNavbar, BNavbarNav, BNavbarToggle, BNavbarBrand, BNavItem, BCollapse, BModal, BFormSelect, BFormSelectOption, BOverlay, BFormDatepicker, ModalPlugin, BAlert } from 'bootstrap-vue';
 
 Vue.component('b-navbar', BNavbar);
 Vue.component('b-nav-item', BNavItem);
@@ -59,6 +59,7 @@ Vue.component('b-form-select', BFormSelect);
 Vue.component('b-form-select-option', BFormSelectOption);
 Vue.component('b-overlay', BOverlay);
 Vue.component('b-form-datepicker', BFormDatepicker);
+Vue.component('b-alert', BAlert);
 
 Vue.use(ModalPlugin);
 

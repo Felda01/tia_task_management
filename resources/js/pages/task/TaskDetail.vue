@@ -41,6 +41,12 @@
                 </div>
             </template>
             <template v-else-if="task">
+                <div class="col-12 mb-4" v-if="task.status === 'todo' && startConflicts.length > 0">
+                    <b-alert show variant="danger">{{ $t('task.dependencies.warning.start') }}<span v-for="(dependency, index) in startConflicts"><router-link :to="{ name: 'tasks.show', params: { id: dependency.id } }" class="text-decoration-none alert-link">{{ dependency.title }}</router-link><template v-if="index < startConflicts.length - 1">, </template></span></b-alert>
+                </div>
+                <div class="col-12 mb-4" v-if="task.status === 'in progress' && finishConflicts.length > 0">
+                    <b-alert show variant="danger">{{ $t('task.dependencies.warning.finish') }}<span v-for="(dependency, index) in finishConflicts"><router-link :to="{ name: 'tasks.show', params: { id: dependency.id } }" class="text-decoration-none alert-link">{{ dependency.title }}</router-link><template v-if="index < finishConflicts.length - 1">, </template></span></b-alert>
+                </div>
                 <div class="col-12 mb-4 d-flex justify-content-between">
                     <h1>{{ task.title }}</h1>
                     <button class="btn btn-outline-primary" @click="editTaskModal">{{ $t('task.edit.btn') }}</button>
@@ -127,7 +133,7 @@
                             <template v-if="task.timeTracking && task.timeTracking.length > 0">
                                 <div v-for="(item, indexItem) in groupedTimeTrackingByDate" :key="'item-'+ indexItem">
                                     <p class="mb-2">{{ new Date(item.date) | date('DD.MM.YYYY') }}</p>
-                                    <div v-for="(time, index) in item.timeTracking" :key="'time-' + time.id" class="mb-2 d-flex justify-content-between">
+                                    <div v-for="(time, index) in item.timeTracking" :key="'time-' + time.id" class="mb-2 d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
                                             <img :src="time.user.photo" class="avatar avatar-sm mr-2" :alt="time.user.fullName">
                                             <p class="mb-0">{{ time.user.fullName }} - {{ time.time }}</p>
@@ -153,7 +159,7 @@
                             <template v-if="task.dependencies && task.dependencies.length > 0">
                                 <div v-for="(item, indexItem) in groupedDependenciesByType" :key="'dep-item-' + indexItem">
                                     <p class="mb-2">{{ item.type | capitalize}}</p>
-                                    <div v-for="(dependency, index) in item.dependencies" :key="'dep-' + dependency.id" class="d-flex justify-content-between" :class="{'mb-2': indexItem !== groupedDependenciesByType.length - 1 && index !== item.dependencies.length - 1}">
+                                    <div v-for="(dependency, index) in item.dependencies" :key="'dep-' + dependency.id" class="d-flex justify-content-between align-items-center" :class="{'mb-2': indexItem < groupedDependenciesByType.length - 1 || index < item.dependencies.length - 1}">
                                         <router-link :to="{ name: 'tasks.show', params: { id: dependency.id } }" class="text-decoration-none">{{ dependency.title }}</router-link>
                                         <button v-if="isSenior" class="btn btn-sm btn-outline-danger" @click="removeDependency(dependency)">X</button>
                                     </div>
@@ -250,7 +256,6 @@
                 return [];
             },
             availableTaskDependencies() {
-                let self = this;
                 if (this.task) {
                     return _.differenceWith(this.task.project.tasks, [...this.task.dependencies, this.task], function(arrVal, othVal) {
                         return arrVal.id === othVal.id;
@@ -330,6 +335,8 @@
                     okVariant: 'success',
                     cancelVariant: 'danger',
                 },
+                startConflicts: [],
+                finishConflicts: [],
             }
         },
         created() {
@@ -343,12 +350,14 @@
                     this.taskStatusOptions = response.data.meta.taskStatusOptions;
                     this.taskPriorityOptions = response.data.meta.taskPriorityOptions;
                     this.commentTypeOptions = response.data.meta.commentTypeOptions;
-                    this.taskDependenciesTypeOptions = response.data.meta.taskDependenciesTypeOptions
+                    this.taskDependenciesTypeOptions = response.data.meta.taskDependenciesTypeOptions;
+                    this.checkDependenciesConflicts();
                     this.loading = false;
                 });
             },
             editTask(response) {
                 this.task = response.data.data;
+                this.checkDependenciesConflicts();
             },
             editTaskModal() {
                 let versionOptions = [
@@ -604,7 +613,8 @@
                 this.$refs['addDependencyModal'].openModal();
             },
             addDependency(response) {
-                this.task = response.data.data
+                this.task = response.data.data;
+                this.checkDependenciesConflicts();
             },
             removeDependency(dependency) {
                 this.$bvModal.msgBoxConfirm(this.$t('dependency.removeMessage'), this.removeTimeTrackingMessageBoxOptions).then(value => {
@@ -613,9 +623,49 @@
                             this.task.dependencies = _.filter(this.task.dependencies, function(dependencyElement) {
                                 return dependencyElement.id !== dependency.id;
                             });
+                            this.checkDependenciesConflicts();
                         });
                     }
                 });
+            },
+            checkDependenciesConflicts() {
+                if (this.task && this.task.dependencies.length > 0) {
+                    this.startConflicts = [];
+                    this.finishConflicts = [];
+                    for (let i = 0; i < this.task.dependencies.length; i++) {
+                        let dependency = this.task.dependencies[i];
+                        switch (dependency.type) {
+                            case 'finish to start': {
+                                if (dependency.status !== 'completed') {
+                                    this.startConflicts.push(dependency);
+                                }
+                                break;
+                            }
+                            case 'finish to finish': {
+                                if (dependency.status !== 'completed') {
+                                    this.finishConflicts.push(dependency);
+                                }
+                                break;
+                            }
+                            case 'start to start': {
+                                if (dependency.status !== 'in progress') {
+                                    this.startConflicts.push(dependency);
+                                }
+                                break;
+                            }
+                            case 'start to finish': {
+                                if (dependency.status !== 'in progress') {
+                                    this.finishConflicts.push(dependency);
+                                }
+                                break
+                            }
+                            default: {
+
+                            }
+                        }
+                    }
+                }
+                return false;
             }
         }
     }

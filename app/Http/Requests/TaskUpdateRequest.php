@@ -2,6 +2,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\OldDateOrAfterEqualRule;
+use App\Rules\TaskDependenciesRule;
 use App\Rules\UserFromProjectRule;
 use App\Task;
 use Carbon\Carbon;
@@ -40,7 +41,7 @@ class TaskUpdateRequest extends FormRequest
             'start_date' => 'required|date|after_or_equal:'.$task->project->start_date,
             'end_date' => 'required|date|after_or_equal:start_date|before_or_equal:'.$task->project->end_date,
             'project_id' => 'required|integer|exists:projects,id',
-            'status' => ['required', Rule::in(Task::STATUS_TODO, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETED)],
+            'status' => ['required', Rule::in(Task::STATUS_TODO, Task::STATUS_IN_PROGRESS, Task::STATUS_COMPLETED), new TaskDependenciesRule($task)],
             'version_id' => 'nullable|exists:versions,id',
             'assignee_id' => ['nullable', 'exists:users,id', new UserFromProjectRule($task->project)]
         ];

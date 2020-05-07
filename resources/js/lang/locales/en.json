@@ -161,5 +161,7 @@
     "dependency.task": "Task",
     "dependency.type": "Dependency type",
     "dependency.removeMessage": "Are you sure you want to delete it ?",
-    "task.dependencies.no_dependencies": "No dependencies"
+    "task.dependencies.no_dependencies": "No dependencies",
+    "task.dependencies.warning.start": "Task can not be started - is in conflict with: ",
+    "task.dependencies.warning.finish": "Task can not be completed - is in conflict with: "
 }

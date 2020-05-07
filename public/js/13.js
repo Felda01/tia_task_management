@@ -237,6 +237,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TaskDetail",
@@ -293,8 +299,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return [];
     },
     availableTaskDependencies: function availableTaskDependencies() {
-      var self = this;
-
       if (this.task) {
         return _.differenceWith(this.task.project.tasks, [].concat(_toConsumableArray(this.task.dependencies), [this.task]), function (arrVal, othVal) {
           return arrVal.id === othVal.id;
@@ -369,7 +373,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         title: this.$t('modalWarning'),
         okVariant: 'success',
         cancelVariant: 'danger'
-      }
+      },
+      startConflicts: [],
+      finishConflicts: []
     };
   },
   created: function created() {
@@ -386,11 +392,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.taskPriorityOptions = response.data.meta.taskPriorityOptions;
         _this.commentTypeOptions = response.data.meta.commentTypeOptions;
         _this.taskDependenciesTypeOptions = response.data.meta.taskDependenciesTypeOptions;
+
+        _this.checkDependenciesConflicts();
+
         _this.loading = false;
       });
     },
     editTask: function editTask(response) {
       this.task = response.data.data;
+      this.checkDependenciesConflicts();
     },
     editTaskModal: function editTaskModal() {
       var versionOptions = [{
@@ -639,6 +649,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     addDependency: function addDependency(response) {
       this.task = response.data.data;
+      this.checkDependenciesConflicts();
     },
     removeDependency: function removeDependency(dependency) {
       var _this3 = this;
@@ -651,9 +662,64 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             _this3.task.dependencies = _.filter(_this3.task.dependencies, function (dependencyElement) {
               return dependencyElement.id !== dependency.id;
             });
+
+            _this3.checkDependenciesConflicts();
           });
         }
       });
+    },
+    checkDependenciesConflicts: function checkDependenciesConflicts() {
+      if (this.task && this.task.dependencies.length > 0) {
+        this.startConflicts = [];
+        this.finishConflicts = [];
+
+        for (var i = 0; i < this.task.dependencies.length; i++) {
+          var dependency = this.task.dependencies[i];
+
+          switch (dependency.type) {
+            case 'finish to start':
+              {
+                if (dependency.status !== 'completed') {
+                  this.startConflicts.push(dependency);
+                }
+
+                break;
+              }
+
+            case 'finish to finish':
+              {
+                if (dependency.status !== 'completed') {
+                  this.finishConflicts.push(dependency);
+                }
+
+                break;
+              }
+
+            case 'start to start':
+              {
+                if (dependency.status !== 'in progress') {
+                  this.startConflicts.push(dependency);
+                }
+
+                break;
+              }
+
+            case 'start to finish':
+              {
+                if (dependency.status !== 'in progress') {
+                  this.finishConflicts.push(dependency);
+                }
+
+                break;
+              }
+
+            default:
+              {}
+          }
+        }
+      }
+
+      return false;
     }
   }
 });
@@ -793,6 +859,103 @@ var render = function() {
             ]
           : _vm.task
           ? [
+              _vm.task.status === "todo" && _vm.startConflicts.length > 0
+                ? _c(
+                    "div",
+                    { staticClass: "col-12 mb-4" },
+                    [
+                      _c(
+                        "b-alert",
+                        { attrs: { show: "", variant: "danger" } },
+                        [
+                          _vm._v(
+                            _vm._s(_vm.$t("task.dependencies.warning.start"))
+                          ),
+                          _vm._l(_vm.startConflicts, function(
+                            dependency,
+                            index
+                          ) {
+                            return _c(
+                              "span",
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    staticClass:
+                                      "text-decoration-none alert-link",
+                                    attrs: {
+                                      to: {
+                                        name: "tasks.show",
+                                        params: { id: dependency.id }
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(dependency.title))]
+                                ),
+                                index < _vm.startConflicts.length - 1
+                                  ? [_vm._v(", ")]
+                                  : _vm._e()
+                              ],
+                              2
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.task.status === "in progress" &&
+              _vm.finishConflicts.length > 0
+                ? _c(
+                    "div",
+                    { staticClass: "col-12 mb-4" },
+                    [
+                      _c(
+                        "b-alert",
+                        { attrs: { show: "", variant: "danger" } },
+                        [
+                          _vm._v(
+                            _vm._s(_vm.$t("task.dependencies.warning.finish"))
+                          ),
+                          _vm._l(_vm.finishConflicts, function(
+                            dependency,
+                            index
+                          ) {
+                            return _c(
+                              "span",
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    staticClass:
+                                      "text-decoration-none alert-link",
+                                    attrs: {
+                                      to: {
+                                        name: "tasks.show",
+                                        params: { id: dependency.id }
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(dependency.title))]
+                                ),
+                                index < _vm.finishConflicts.length - 1
+                                  ? [_vm._v(", ")]
+                                  : _vm._e()
+                              ],
+                              2
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c(
                 "div",
                 { staticClass: "col-12 mb-4 d-flex justify-content-between" },
@@ -1065,7 +1228,7 @@ var render = function() {
                                       {
                                         key: "time-" + time.id,
                                         staticClass:
-                                          "mb-2 d-flex justify-content-between"
+                                          "mb-2 d-flex justify-content-between align-items-center"
                                       },
                                       [
                                         _c(
@@ -1196,14 +1359,14 @@ var render = function() {
                                     {
                                       key: "dep-" + dependency.id,
                                       staticClass:
-                                        "d-flex justify-content-between",
+                                        "d-flex justify-content-between align-items-center",
                                       class: {
                                         "mb-2":
-                                          indexItem !==
+                                          indexItem <
                                             _vm.groupedDependenciesByType
                                               .length -
-                                              1 &&
-                                          index !== item.dependencies.length - 1
+                                              1 ||
+                                          index < item.dependencies.length - 1
                                       }
                                     },
                                     [

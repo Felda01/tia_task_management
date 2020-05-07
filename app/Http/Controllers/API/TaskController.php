@@ -3,6 +3,8 @@ namespace App\Http\Controllers\API;
 
 use App\Comment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TaskDestroyDependencyRequest;
+use App\Http\Requests\TaskStoreDependencyRequest;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Http\Resources\TaskCollection;
@@ -63,22 +65,28 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return (new TaskResource($task->load(['version', 'assignee', 'reporter', 'dependencies', 'comments', 'timeTrackings.user', 'project.users', 'project.versions', 'comments.user'])))->additional(['meta' => [
+        return (new TaskResource($task->load(['version', 'assignee', 'reporter', 'dependencies.pivot', 'comments', 'timeTrackings.user', 'project.users', 'project.versions', 'project.activeTasks', 'comments.user'])))->additional(['meta' => [
             'taskStatusOptions' => [
-                ['text' => ucfirst(Task::STATUS_TODO), 'value' => Task::STATUS_TODO ],
-                ['text' => ucfirst(Task::STATUS_IN_PROGRESS), 'value' => Task::STATUS_IN_PROGRESS ],
-                ['text' => ucfirst(Task::STATUS_COMPLETED), 'value' => Task::STATUS_COMPLETED ],
+                [ 'text' => ucfirst(Task::STATUS_TODO), 'value' => Task::STATUS_TODO ],
+                [ 'text' => ucfirst(Task::STATUS_IN_PROGRESS), 'value' => Task::STATUS_IN_PROGRESS ],
+                [ 'text' => ucfirst(Task::STATUS_COMPLETED), 'value' => Task::STATUS_COMPLETED ],
             ],
             'taskPriorityOptions' => [
-                ['text' => ucfirst(Task::PRIORITY_NONE), 'value' => Task::PRIORITY_NONE ],
-                ['text' => ucfirst(Task::PRIORITY_LOW), 'value' => Task::PRIORITY_LOW ],
-                ['text' => ucfirst(Task::PRIORITY_NORMAL), 'value' => Task::PRIORITY_NORMAL ],
-                ['text' => ucfirst(Task::PRIORITY_HIGH), 'value' => Task::PRIORITY_HIGH ],
-                ['text' => ucfirst(Task::PRIORITY_IMMEDIATE), 'value' => Task::PRIORITY_IMMEDIATE ],
+                [ 'text' => ucfirst(Task::PRIORITY_NONE), 'value' => Task::PRIORITY_NONE ],
+                [ 'text' => ucfirst(Task::PRIORITY_LOW), 'value' => Task::PRIORITY_LOW ],
+                [ 'text' => ucfirst(Task::PRIORITY_NORMAL), 'value' => Task::PRIORITY_NORMAL ],
+                [ 'text' => ucfirst(Task::PRIORITY_HIGH), 'value' => Task::PRIORITY_HIGH ],
+                [ 'text' => ucfirst(Task::PRIORITY_IMMEDIATE), 'value' => Task::PRIORITY_IMMEDIATE ],
             ],
             'commentTypeOptions' => [
-                ['text' => ucfirst(Comment::TYPE_ALL), 'value' => Comment::TYPE_ALL ],
-                ['text' => ucfirst(Comment::TYPE_INTERN), 'value' => Comment::TYPE_INTERN ],
+                [ 'text' => ucfirst(Comment::TYPE_ALL), 'value' => Comment::TYPE_ALL ],
+                [ 'text' => ucfirst(Comment::TYPE_INTERN), 'value' => Comment::TYPE_INTERN ],
+            ],
+            'taskDependenciesTypeOptions' => [
+                [ 'text' => ucfirst(Task::DEPENDENCIES_FS), 'value' => Task::DEPENDENCIES_FS ],
+                [ 'text' => ucfirst(Task::DEPENDENCIES_FF), 'value' => Task::DEPENDENCIES_FF ],
+                [ 'text' => ucfirst(Task::DEPENDENCIES_SS), 'value' => Task::DEPENDENCIES_SS ],
+                [ 'text' => ucfirst(Task::DEPENDENCIES_SF), 'value' => Task::DEPENDENCIES_SF ],
             ]
         ]]);
     }
@@ -94,6 +102,32 @@ class TaskController extends Controller
     {
         $task->update($request->all());
 
-        return new TaskResource($task->load(['version', 'assignee', 'reporter', 'dependencies', 'comments', 'timeTrackings', 'project.users', 'project.versions', 'comments.user']));
+        return new TaskResource($task->load(['version', 'assignee', 'reporter', 'dependencies', 'comments', 'timeTrackings', 'project.users', 'project.versions', 'project.activeTasks', 'comments.user']));
+    }
+
+    /**
+     * @param TaskStoreDependencyRequest $request
+     * @param Task $task
+     * @return TaskResource
+     */
+    public function storeDependency(TaskStoreDependencyRequest $request, Task $task)
+    {
+        $task->dependencies()->attach($request->input('task_id'), ['type' => $request->input('type')]);
+        $task->save();
+
+        return new TaskResource($task->load(['version', 'assignee', 'reporter', 'dependencies', 'comments', 'timeTrackings', 'project.users', 'project.versions', 'project.activeTasks', 'comments.user']));
+    }
+
+    /**
+     * @param TaskDestroyDependencyRequest $request
+     * @param Task $task
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyDependency(TaskDestroyDependencyRequest $request, Task $task)
+    {
+        $task->dependencies()->detach($request->input('task_id'));
+        $task->save();
+
+        return response()->json(null, 204);
     }
 }

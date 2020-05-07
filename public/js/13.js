@@ -10,12 +10,39 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -250,6 +277,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       return [];
+    },
+    groupedDependenciesByType: function groupedDependenciesByType() {
+      if (this.task && this.task.dependencies) {
+        return _(this.task.dependencies).groupBy(function (x) {
+          return x.type;
+        }).map(function (value, key) {
+          return {
+            type: key,
+            dependencies: value
+          };
+        }).value();
+      }
+
+      return [];
+    },
+    availableTaskDependencies: function availableTaskDependencies() {
+      var self = this;
+
+      if (this.task) {
+        return _.differenceWith(this.task.project.tasks, [].concat(_toConsumableArray(this.task.dependencies), [this.task]), function (arrVal, othVal) {
+          return arrVal.id === othVal.id;
+        });
+      }
+
+      return [];
     }
   }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['isSenior', 'isClient', 'userId'])),
   data: function data() {
@@ -271,6 +323,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       taskPriorityOptions: [],
       taskStatusOptions: [],
       commentTypeOptions: [],
+      taskDependenciesTypeOptions: [],
       modalSchemaAddComment: {
         form: {
           url: '/api/comments',
@@ -299,6 +352,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         title: this.$t('modalWarning'),
         okVariant: 'success',
         cancelVariant: 'danger'
+      },
+      modalSchemaAddDependency: {
+        form: {
+          url: '',
+          method: 'put',
+          fields: [],
+          hiddenFields: [],
+          config: {}
+        },
+        modalRef: 'addDependency',
+        modalTitle: this.$t('dependencies.add.title.modal'),
+        okBtnTitle: this.$t('modal.add.btn')
+      },
+      removeDependencyMessageBoxOptions: {
+        title: this.$t('modalWarning'),
+        okVariant: 'success',
+        cancelVariant: 'danger'
       }
     };
   },
@@ -315,6 +385,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.taskStatusOptions = response.data.meta.taskStatusOptions;
         _this.taskPriorityOptions = response.data.meta.taskPriorityOptions;
         _this.commentTypeOptions = response.data.meta.commentTypeOptions;
+        _this.taskDependenciesTypeOptions = response.data.meta.taskDependenciesTypeOptions;
         _this.loading = false;
       });
     },
@@ -524,6 +595,61 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this2.axios["delete"]('/api/time-tracking/' + time.id).then(function (response) {
             _this2.task.timeTracking = _.filter(_this2.task.timeTracking, function (timeElement) {
               return timeElement.id !== time.id;
+            });
+          });
+        }
+      });
+    },
+    addDependencyModal: function addDependencyModal() {
+      this.modalSchemaAddDependency.form.url = '/api/tasks/' + this.$route.params.id + '/store-dependency';
+      var tasks = [];
+
+      for (var i = 0; i < this.availableTaskDependencies.length; i++) {
+        var task = this.availableTaskDependencies[i];
+        tasks.push({
+          'text': task.title,
+          'value': task.id
+        });
+      }
+
+      this.modalSchemaAddDependency.form.fields = [{
+        label: this.$t('dependency.task'),
+        required: true,
+        name: 'task_id',
+        input: 'select',
+        type: 'select',
+        value: '',
+        config: {
+          options: tasks,
+          disabledOption: true
+        }
+      }, {
+        label: this.$t('dependency.type'),
+        required: true,
+        name: 'type',
+        input: 'select',
+        type: 'select',
+        value: '',
+        config: {
+          options: this.taskDependenciesTypeOptions,
+          disabledOption: true
+        }
+      }];
+      this.$refs['addDependencyModal'].openModal();
+    },
+    addDependency: function addDependency(response) {
+      this.task = response.data.data;
+    },
+    removeDependency: function removeDependency(dependency) {
+      var _this3 = this;
+
+      this.$bvModal.msgBoxConfirm(this.$t('dependency.removeMessage'), this.removeTimeTrackingMessageBoxOptions).then(function (value) {
+        if (value) {
+          _this3.axios.put('/api/tasks/' + _this3.task.id + '/destroy-dependency', {
+            'task_id': dependency.id
+          }).then(function (response) {
+            _this3.task.dependencies = _.filter(_this3.task.dependencies, function (dependencyElement) {
+              return dependencyElement.id !== dependency.id;
             });
           });
         }
@@ -1018,13 +1144,120 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card mb-4" }, [
-                  _c("div", { staticClass: "card-header" }, [
-                    _c("h5", { staticClass: "mb-0" }, [
-                      _vm._v(_vm._s(_vm.$t("task.show.dependencies")))
-                    ])
-                  ]),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "card-header d-flex justify-content-between align-items-center"
+                    },
+                    [
+                      _c("h5", { staticClass: "mb-0" }, [
+                        _vm._v(_vm._s(_vm.$t("task.show.dependencies")))
+                      ]),
+                      _vm._v(" "),
+                      _vm.isSenior && _vm.availableTaskDependencies.length > 0
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-outline-primary",
+                              on: { click: _vm.addDependencyModal }
+                            },
+                            [_vm._v(_vm._s(_vm.$t("task.add.dependency.btn")))]
+                          )
+                        : _vm._e()
+                    ]
+                  ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "card-body" })
+                  _c(
+                    "div",
+                    { staticClass: "card-body" },
+                    [
+                      _vm.task.dependencies && _vm.task.dependencies.length > 0
+                        ? _vm._l(_vm.groupedDependenciesByType, function(
+                            item,
+                            indexItem
+                          ) {
+                            return _c(
+                              "div",
+                              { key: "dep-item-" + indexItem },
+                              [
+                                _c("p", { staticClass: "mb-2" }, [
+                                  _vm._v(
+                                    _vm._s(_vm._f("capitalize")(item.type))
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(item.dependencies, function(
+                                  dependency,
+                                  index
+                                ) {
+                                  return _c(
+                                    "div",
+                                    {
+                                      key: "dep-" + dependency.id,
+                                      staticClass:
+                                        "d-flex justify-content-between",
+                                      class: {
+                                        "mb-2":
+                                          indexItem !==
+                                            _vm.groupedDependenciesByType
+                                              .length -
+                                              1 &&
+                                          index !== item.dependencies.length - 1
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "router-link",
+                                        {
+                                          staticClass: "text-decoration-none",
+                                          attrs: {
+                                            to: {
+                                              name: "tasks.show",
+                                              params: { id: dependency.id }
+                                            }
+                                          }
+                                        },
+                                        [_vm._v(_vm._s(dependency.title))]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm.isSenior
+                                        ? _c(
+                                            "button",
+                                            {
+                                              staticClass:
+                                                "btn btn-sm btn-outline-danger",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.removeDependency(
+                                                    dependency
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("X")]
+                                          )
+                                        : _vm._e()
+                                    ],
+                                    1
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          })
+                        : [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(
+                                  _vm.$t("task.dependencies.no_dependencies")
+                                ) +
+                                "\n                        "
+                            )
+                          ]
+                    ],
+                    2
+                  )
                 ])
               ]),
               _vm._v(" "),
@@ -1178,6 +1411,12 @@ var render = function() {
           ref: "addTimeTrackingModal",
           attrs: { modalSchema: _vm.modalSchemaAddTimeTracking },
           on: { ok: _vm.addTimeTracking }
+        }),
+        _vm._v(" "),
+        _c("custom-modal", {
+          ref: "addDependencyModal",
+          attrs: { modalSchema: _vm.modalSchemaAddDependency },
+          on: { ok: _vm.addDependency }
         })
       ],
       2

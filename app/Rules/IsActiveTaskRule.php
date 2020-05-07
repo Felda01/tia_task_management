@@ -1,28 +1,20 @@
 <?php
+
 namespace App\Rules;
 
-use App\Project;
+use App\Task;
 use Illuminate\Contracts\Validation\Rule;
 
-/**
- * Class UserFromProjectRule
- * @package App\Rules
- */
-class UserFromProjectRule implements Rule
+class IsActiveTaskRule implements Rule
 {
-    /**
-     * @var Project
-     */
-    public $project;
-
     /**
      * Create a new rule instance.
      *
-     * @param $project Project
+     * @return void
      */
-    public function __construct($project)
+    public function __construct()
     {
-        $this->project = $project;
+        //
     }
 
     /**
@@ -34,8 +26,10 @@ class UserFromProjectRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        if ($this->project) {
-            return $this->project->hasUser($value);
+        $task = Task::find($value);
+
+        if ($task) {
+            return in_array($task->status, [Task::STATUS_TODO, Task::STATUS_COMPLETED]);
         }
         return false;
     }
@@ -47,6 +41,6 @@ class UserFromProjectRule implements Rule
      */
     public function message()
     {
-        return 'User is not from this project.';
+        return 'Task is not active.';
     }
 }

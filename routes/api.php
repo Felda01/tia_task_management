@@ -34,9 +34,15 @@ Route::middleware('auth:api')->group(function () {
     Route::put('projects/{project}/assign-user', 'API\ProjectController@assignUser')->name('projects.assignUser');
 
     Route::apiResource('versions', 'API\VersionController', ['except' => ['destroy', 'index', 'show']]);
+
     Route::apiResource('tasks', 'API\TaskController', ['except' => ['destroy']]);
+    Route::put('tasks/{task}/store-dependency', 'API\TaskController@storeDependency')->name('tasks.storeDependency');
+    Route::put('tasks/{task}/destroy-dependency', 'API\TaskController@destroyDependency')->name('tasks.destroyDependency');
+
     Route::apiResource('comments', 'API\CommentController', ['only' => ['store']]);
+
     Route::apiResource('time-tracking', 'API\TimeTrackingController', ['except' => ['update', 'index', 'show']]);
+
     Route::apiResource('users', 'API\UserController');
 });
 

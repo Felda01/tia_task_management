@@ -145,10 +145,24 @@
                         </div>
                     </div>
                     <div class="card mb-4">
-                        <div class="card-header">
+                        <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">{{ $t('task.show.dependencies') }}</h5>
+                            <button v-if="isSenior && availableTaskDependencies.length > 0" class="btn btn-sm btn-outline-primary" @click="addDependencyModal">{{ $t('task.add.dependency.btn') }}</button>
                         </div>
-                        <div class="card-body"></div>
+                        <div class="card-body">
+                            <template v-if="task.dependencies && task.dependencies.length > 0">
+                                <div v-for="(item, indexItem) in groupedDependenciesByType" :key="'dep-item-' + indexItem">
+                                    <p class="mb-2">{{ item.type | capitalize}}</p>
+                                    <div v-for="(dependency, index) in item.dependencies" :key="'dep-' + dependency.id" class="d-flex justify-content-between" :class="{'mb-2': indexItem !== groupedDependenciesByType.length - 1 && index !== item.dependencies.length - 1}">
+                                        <router-link :to="{ name: 'tasks.show', params: { id: dependency.id } }" class="text-decoration-none">{{ dependency.title }}</router-link>
+                                        <button v-if="isSenior" class="btn btn-sm btn-outline-danger" @click="removeDependency(dependency)">X</button>
+                                    </div>
+                                </div>
+                            </template>
+                            <template v-else>
+                                {{ $t('task.dependencies.no_dependencies') }}
+                            </template>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -188,6 +202,7 @@
             <custom-modal ref="editTaskModal" @ok="editTask" :modalSchema="modalSchemaEditTask" />
             <custom-modal ref="addCommentModal" @ok="addComment" :modalSchema="modalSchemaAddComment" />
             <custom-modal ref="addTimeTrackingModal" @ok="addTimeTracking" :modalSchema="modalSchemaAddTimeTracking" />
+            <custom-modal ref="addDependencyModal" @ok="addDependency" :modalSchema="modalSchemaAddDependency" />
         </div>
     </div>
 </template>
@@ -225,6 +240,24 @@
                 }
                 return [];
             },
+            groupedDependenciesByType() {
+                if (this.task && this.task.dependencies) {
+                    return _(this.task.dependencies)
+                        .groupBy(x => x.type)
+                        .map((value, key) => ({type: key, dependencies: value}))
+                        .value();
+                }
+                return [];
+            },
+            availableTaskDependencies() {
+                let self = this;
+                if (this.task) {
+                    return _.differenceWith(this.task.project.tasks, [...this.task.dependencies, this.task], function(arrVal, othVal) {
+                        return arrVal.id === othVal.id;
+                    });
+                }
+                return [];
+            },
             ...mapGetters([
                 'isSenior',
                 'isClient',
@@ -250,6 +283,7 @@
                 taskPriorityOptions: [],
                 taskStatusOptions: [],
                 commentTypeOptions: [],
+                taskDependenciesTypeOptions: [],
                 modalSchemaAddComment: {
                     form: {
                         url: '/api/comments',
@@ -278,8 +312,24 @@
                     title: this.$t('modalWarning'),
                     okVariant: 'success',
                     cancelVariant: 'danger',
-                }
-
+                },
+                modalSchemaAddDependency: {
+                    form: {
+                        url: '',
+                        method: 'put',
+                        fields: [],
+                        hiddenFields: [],
+                        config: {}
+                    },
+                    modalRef: 'addDependency',
+                    modalTitle: this.$t('dependencies.add.title.modal'),
+                    okBtnTitle: this.$t('modal.add.btn')
+                },
+                removeDependencyMessageBoxOptions: {
+                    title: this.$t('modalWarning'),
+                    okVariant: 'success',
+                    cancelVariant: 'danger',
+                },
             }
         },
         created() {
@@ -293,6 +343,7 @@
                     this.taskStatusOptions = response.data.meta.taskStatusOptions;
                     this.taskPriorityOptions = response.data.meta.taskPriorityOptions;
                     this.commentTypeOptions = response.data.meta.commentTypeOptions;
+                    this.taskDependenciesTypeOptions = response.data.meta.taskDependenciesTypeOptions
                     this.loading = false;
                 });
             },
@@ -514,6 +565,58 @@
                     }
                 });
             },
+            addDependencyModal() {
+                this.modalSchemaAddDependency.form.url = '/api/tasks/' + this.$route.params.id + '/store-dependency';
+
+                let tasks = [];
+                for (let i = 0; i < this.availableTaskDependencies.length; i++) {
+                    let task = this.availableTaskDependencies[i];
+                    tasks.push({ 'text': task.title, 'value': task.id});
+                }
+
+                this.modalSchemaAddDependency.form.fields = [
+                    {
+                        label: this.$t('dependency.task'),
+                        required: true,
+                        name: 'task_id',
+                        input: 'select',
+                        type: 'select',
+                        value: '',
+                        config: {
+                            options: tasks,
+                            disabledOption: true
+                        }
+                    },
+                    {
+                        label: this.$t('dependency.type'),
+                        required: true,
+                        name: 'type',
+                        input: 'select',
+                        type: 'select',
+                        value: '',
+                        config: {
+                            options: this.taskDependenciesTypeOptions,
+                            disabledOption: true
+                        }
+                    },
+                ];
+
+                this.$refs['addDependencyModal'].openModal();
+            },
+            addDependency(response) {
+                this.task = response.data.data
+            },
+            removeDependency(dependency) {
+                this.$bvModal.msgBoxConfirm(this.$t('dependency.removeMessage'), this.removeTimeTrackingMessageBoxOptions).then(value => {
+                    if (value) {
+                        this.axios.put('/api/tasks/' + this.task.id + '/destroy-dependency', {'task_id': dependency.id}).then(response => {
+                            this.task.dependencies = _.filter(this.task.dependencies, function(dependencyElement) {
+                                return dependencyElement.id !== dependency.id;
+                            });
+                        });
+                    }
+                });
+            }
         }
     }
 </script>

@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Task extends Model
 {
+    use EagerLoadPivotTrait;
+
     const STATUS_TODO = 'todo';
     const STATUS_IN_PROGRESS = 'in progress';
     const STATUS_COMPLETED = 'completed';
@@ -21,6 +24,11 @@ class Task extends Model
     const PRIORITY_NORMAL = 'normal';
     const PRIORITY_HIGH = 'high';
     const PRIORITY_IMMEDIATE = 'immediate';
+
+    const DEPENDENCIES_FS = 'finish to start';
+    const DEPENDENCIES_FF = 'finish to finish';
+    const DEPENDENCIES_SS = 'start to start';
+    const DEPENDENCIES_SF = 'start to finish';
 
     /**
      * The attributes that should be mutated to dates.
@@ -104,5 +112,13 @@ class Task extends Model
     public function dependencies()
     {
         return $this->belongsToMany(Task::class, 'task_dependencies', 'task_id', 'task_dependency_id')->withPivot('type');
+    }
+
+    /**
+     * @param $task_id
+     */
+    public function hasDependency($task_id)
+    {
+        return $this->dependencies()->where('task_dependency_id', $task_id)->exists();
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Resources;
 
+use App\Task;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -31,6 +32,10 @@ class TaskResource extends JsonResource
             'reporter' => new UserResource($this->reporter),
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
             'timeTracking' => TimeTrackingResource::collection($this->whenLoaded('timeTrackings')),
+            'dependencies' => TaskResource::collection($this->whenLoaded('dependencies')),
+            'type' => $this->whenPivotLoaded('task_dependencies', function () {
+                return $this->pivot->type;
+            })
         ];
     }
 }

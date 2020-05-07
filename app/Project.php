@@ -87,6 +87,15 @@ class Project extends Model
     }
 
     /**
+     * @param $task_id
+     * @return bool
+     */
+    public function hasActiveTask($task_id)
+    {
+        return $this->activeTasks()->where('id', $task_id)->exists();
+    }
+
+    /**
      * @return BelongsToMany
      */
     public function users()

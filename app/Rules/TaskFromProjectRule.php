@@ -1,26 +1,20 @@
 <?php
+
 namespace App\Rules;
 
 use App\Project;
 use Illuminate\Contracts\Validation\Rule;
 
-/**
- * Class UserFromProjectRule
- * @package App\Rules
- */
-class UserFromProjectRule implements Rule
+class TaskFromProjectRule implements Rule
 {
-    /**
-     * @var Project
-     */
     public $project;
 
     /**
      * Create a new rule instance.
      *
-     * @param $project Project
+     * @param Project $project
      */
-    public function __construct($project)
+    public function __construct(Project $project)
     {
         $this->project = $project;
     }
@@ -35,7 +29,7 @@ class UserFromProjectRule implements Rule
     public function passes($attribute, $value)
     {
         if ($this->project) {
-            return $this->project->hasUser($value);
+            return $this->project->hasActiveTask($value);
         }
         return false;
     }
@@ -47,6 +41,6 @@ class UserFromProjectRule implements Rule
      */
     public function message()
     {
-        return 'User is not from this project.';
+        return 'Task is not from active tasks of this project.';
     }
 }

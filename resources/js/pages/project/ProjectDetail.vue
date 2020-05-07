@@ -377,10 +377,7 @@
             availableUsersForProject() {
                 let result = [];
 
-                console.log(this.allUsers, this.project.users);
                 let availableUsers = _.differenceWith(this.allUsers, this.project.users, _.isEqual);
-
-                console.log(availableUsers);
 
                 for (let i = 0; i < availableUsers.length; i++) {
                     result.push({'text': availableUsers[i].fullName, 'value': availableUsers[i].id})

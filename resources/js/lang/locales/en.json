@@ -155,5 +155,11 @@
     "user_list.users": "Users",
     "user_list.add.user.btn": "Register new user",
     "user.add.title": "Register user",
-    "modal.register.btn": "Register"
+    "modal.register.btn": "Register",
+    "dependencies.add.title.modal": "Add dependency",
+    "task.add.dependency.btn": "Add dependency",
+    "dependency.task": "Task",
+    "dependency.type": "Dependency type",
+    "dependency.removeMessage": "Are you sure you want to delete it ?",
+    "task.dependencies.no_dependencies": "No dependencies"
 }

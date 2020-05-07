@@ -391,11 +391,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     availableUsersForProject: function availableUsersForProject() {
       var result = [];
-      console.log(this.allUsers, this.project.users);
 
       var availableUsers = _.differenceWith(this.allUsers, this.project.users, _.isEqual);
-
-      console.log(availableUsers);
 
       for (var i = 0; i < availableUsers.length; i++) {
         result.push({

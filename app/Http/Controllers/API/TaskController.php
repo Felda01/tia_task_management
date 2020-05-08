@@ -20,6 +20,17 @@ use Carbon\Carbon;
 class TaskController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('task.show')->only(['show']);
+        $this->middleware('employees')->only(['index']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return TaskCollection

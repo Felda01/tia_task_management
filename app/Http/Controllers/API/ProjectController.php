@@ -20,6 +20,15 @@ use Illuminate\Http\Request;
  */
 class ProjectController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('project.show')->only(['show', 'roadmap', 'board', 'gantt']);
+    }
 
     /**
      * Store a newly created resource in storage.

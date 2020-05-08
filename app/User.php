@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -128,5 +129,29 @@ class User extends Authenticatable
     public function isSenior()
     {
         return $this->type === self::TYPE_SENIOR;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClient()
+    {
+        return $this->type === self::TYPE_CLIENT;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isJunior()
+    {
+        return $this->type === self::TYPE_JUNIOR;
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function client()
+    {
+        return $this->hasOne(Client::class);
     }
 }

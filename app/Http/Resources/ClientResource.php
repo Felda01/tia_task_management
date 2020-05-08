@@ -20,7 +20,7 @@ class ClientResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'user' => new UserResource($this->user),
+            'user' => new UserResource($this->whenLoaded('user')),
             'type' => $this->type,
             'projects' => ProjectResource::collection($this->whenLoaded('activeProjects')),
         ];

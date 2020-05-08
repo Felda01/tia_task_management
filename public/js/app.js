@@ -2024,6 +2024,17 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2067,12 +2078,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "App",
-  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    loggedIn: 'loggedIn',
-    loading: 'loading',
-    userId: 'userId',
-    user: 'user'
-  }),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['loggedIn', 'loading', 'userId', 'user', 'isClient'])),
   methods: {
     logout: function logout() {
       var _this = this;
@@ -83823,25 +83829,44 @@ var render = function() {
                       _c(
                         "b-navbar-nav",
                         [
-                          _c(
-                            "b-nav-item",
-                            { attrs: { to: { name: "clients" } } },
-                            [_vm._v(_vm._s(_vm.$t("navigation.clients")))]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-nav-item",
-                            { attrs: { to: { name: "tasks" } } },
-                            [_vm._v(_vm._s(_vm.$t("navigation.tasks")))]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-nav-item",
-                            { attrs: { to: { name: "users" } } },
-                            [_vm._v(_vm._s(_vm.$t("navigation.users")))]
-                          )
+                          _vm.userId && _vm.isClient
+                            ? [
+                                _c(
+                                  "b-nav-item",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "clients.show",
+                                        params: { id: _vm.user.client.id }
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(_vm.user.client.name))]
+                                )
+                              ]
+                            : _vm.userId && !_vm.isClient
+                            ? [
+                                _c(
+                                  "b-nav-item",
+                                  { attrs: { to: { name: "clients" } } },
+                                  [_vm._v(_vm._s(_vm.$t("navigation.clients")))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-nav-item",
+                                  { attrs: { to: { name: "tasks" } } },
+                                  [_vm._v(_vm._s(_vm.$t("navigation.tasks")))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-nav-item",
+                                  { attrs: { to: { name: "users" } } },
+                                  [_vm._v(_vm._s(_vm.$t("navigation.users")))]
+                                )
+                              ]
+                            : _vm._e()
                         ],
-                        1
+                        2
                       ),
                       _vm._v(" "),
                       _c(
@@ -101321,14 +101346,6 @@ function page(path) {
   name: 'users.show',
   component: page('user/UserDetail.vue'),
   beforeEnter: vue_router_multiguard__WEBPACK_IMPORTED_MODULE_0___default()([auth])
-}, {
-  path: '/404',
-  name: '404',
-  component: page('errors/404.vue')
-}, {
-  path: '/403',
-  name: '403',
-  component: page('errors/403.vue')
 }, {
   path: '*',
   name: '404',

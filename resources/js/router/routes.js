@@ -38,9 +38,5 @@ export default [
     { path: '/users', name: 'users', component: page('user/UserList.vue'), beforeEnter: VueRouterMultiguard([auth]) },
     { path: '/users/:id', name: 'users.show', component: page('user/UserDetail.vue'), beforeEnter: VueRouterMultiguard([auth]) },
 
-    { path: '/404', name: '404', component: page('errors/404.vue') },
-
-    { path: '/403', name: '403', component: page('errors/403.vue') },
-
     { path: '*', name: '404', component: page('errors/404.vue') }
 ];

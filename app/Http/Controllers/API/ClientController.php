@@ -3,6 +3,7 @@ namespace App\Http\Controllers\API;
 
 use App\Client;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ClientIndexRequest;
 use App\Http\Requests\ClientStoreRequest;
 use App\Http\Requests\ClientUpdateRequest;
 use App\Http\Resources\ClientCollection;
@@ -20,6 +21,17 @@ use Illuminate\Support\Str;
  */
 class ClientController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('employees')->only(['index']);
+        $this->middleware('employees.client')->only(['show']);
+    }
+
     /**
      * Display a listing of the resource.
      *

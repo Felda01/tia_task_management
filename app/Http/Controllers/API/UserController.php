@@ -23,6 +23,16 @@ use Illuminate\Support\Str;
 class UserController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('employees')->only(['index', 'show']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return UserCollection

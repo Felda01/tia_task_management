@@ -7,9 +7,14 @@
                 <b-navbar-toggle target="nav-collapse" v-if="loggedIn"></b-navbar-toggle>
                 <b-collapse id="nav-collapse" is-nav v-if="loggedIn">
                     <b-navbar-nav>
-                        <b-nav-item :to="{ name: 'clients'}" >{{ $t('navigation.clients') }}</b-nav-item>
-                        <b-nav-item :to="{ name: 'tasks'}" >{{ $t('navigation.tasks') }}</b-nav-item>
-                        <b-nav-item :to="{ name: 'users'}" >{{ $t('navigation.users') }}</b-nav-item>
+                        <template v-if="userId && isClient">
+                            <b-nav-item :to="{ name: 'clients.show', params: { id: user.client.id }}" >{{ user.client.name }}</b-nav-item>
+                        </template>
+                        <template v-else-if="userId && !isClient">
+                            <b-nav-item :to="{ name: 'clients'}" >{{ $t('navigation.clients') }}</b-nav-item>
+                            <b-nav-item :to="{ name: 'tasks'}" >{{ $t('navigation.tasks') }}</b-nav-item>
+                            <b-nav-item :to="{ name: 'users'}" >{{ $t('navigation.users') }}</b-nav-item>
+                        </template>
                     </b-navbar-nav>
 
                     <b-navbar-nav class="ml-auto">
@@ -43,12 +48,15 @@
 
     export default {
         name: "App",
-        computed: mapGetters({
-            loggedIn: 'loggedIn',
-            loading: 'loading',
-            userId: 'userId',
-            user: 'user'
-        }),
+        computed: {
+            ...mapGetters([
+                'loggedIn',
+                'loading',
+                'userId',
+                'user',
+                'isClient',
+            ]),
+        },
         methods: {
             logout() {
                 this.axios.post('/api/logout')

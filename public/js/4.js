@@ -88,7 +88,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.form.post('/api/password/reset').then(function (response) {
-        _this.status = response.data.message;
+        _this.status = response.data.status + ' ' + _this.$t('password.reset');
 
         _this.form.reset();
 
@@ -96,7 +96,7 @@ __webpack_require__.r(__webpack_exports__);
           _this.$router.replace({
             name: 'login'
           });
-        }, 10000);
+        }, 6000);
       });
     }
   }

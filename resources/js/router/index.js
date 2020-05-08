@@ -25,7 +25,11 @@ router.beforeEach((to, from, next) => {
                 })
                 .catch(errors => {
                     store.dispatch('logout');
-                    router.push( { name: 'login', query: { redirect: to.fullPath } });
+                    if (to.name === 'password.request' || to.name === 'password.reset') {
+                        next();
+                    } else {
+                        router.push( { name: 'login', query: { redirect: to.fullPath } });
+                    }
                 });
         } else {
             next();

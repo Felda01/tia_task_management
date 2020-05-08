@@ -27,7 +27,9 @@ Vue.axios.interceptors.response.use(function (response) {
 }, function (error) {
     if (error.response.status === 401) {
         store.dispatch('logout');
-        router.push({ name: 'login', query: { redirect: router.currentRoute.fullPath } });
+        if (router.currentRoute.name !== 'password.request' && router.currentRoute.name !== 'password.reset') {
+            router.push({ name: 'login', query: { redirect: router.currentRoute.fullPath } });
+        }
     } else if (error.response.status === 404) {
         router.replace({ name: '404' });
     }

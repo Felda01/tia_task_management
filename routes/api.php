@@ -18,6 +18,8 @@ Route::middleware('guest')->group(function () {
     Route::post('register', 'AuthController@register')->name('register');
     Route::post('login', 'AuthController@login')->name('login');
     Route::post('refresh-token', 'AuthController@refreshToken')->name('refreshToken');
+    Route::post('password/email', 'AuthController@sendResetLinkEmail')->name('password.email');
+    Route::post('password/reset', 'AuthController@reset')->name('password.reset');
 });
 
 Route::middleware('auth:api')->group(function () {

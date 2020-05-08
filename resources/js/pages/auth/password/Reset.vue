@@ -71,12 +71,12 @@
         },
         methods: {
             reset () {
-                this.form.post('/api/password/reset').then((response) => {
-                    this.status = response.data.message;
+                this.form.post('/api/password/reset').then(response => {
+                    this.status = response.data.status + ' ' + this.$t('password.reset');
                     this.form.reset();
                     let interval = setTimeout(() => {
                         this.$router.replace({ name: 'login' });
-                    }, 10000)
+                    }, 6000);
                 });
             }
         }

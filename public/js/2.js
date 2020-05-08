@@ -121,9 +121,7 @@ var render = function() {
   return _c("div", { staticClass: "login" }, [
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-header" }, [
-        _vm._v(
-          "\n                " + _vm._s(_vm.$t("login")) + "\n            "
-        )
+        _vm._v("\n            " + _vm._s(_vm.$t("login")) + "\n        ")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
@@ -226,71 +224,91 @@ var render = function() {
             _c("div", { staticClass: "form-group row" }, [
               _c("div", { staticClass: "col-md-3" }),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-7 d-flex" }, [
-                _c(
-                  "div",
-                  { staticClass: "custom-control custom-checkbox d-flex" },
-                  [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.remember,
-                          expression: "remember"
-                        }
-                      ],
-                      staticClass: "custom-control-input",
-                      attrs: {
-                        id: "remember",
-                        name: "remember",
-                        type: "checkbox"
-                      },
-                      domProps: {
-                        checked: Array.isArray(_vm.remember)
-                          ? _vm._i(_vm.remember, null) > -1
-                          : _vm.remember
-                      },
-                      on: {
-                        change: function($event) {
-                          var $$a = _vm.remember,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = null,
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 && (_vm.remember = $$a.concat([$$v]))
+              _c(
+                "div",
+                { staticClass: "col-md-7 d-flex" },
+                [
+                  _c(
+                    "div",
+                    { staticClass: "custom-control custom-checkbox d-flex" },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.remember,
+                            expression: "remember"
+                          }
+                        ],
+                        staticClass: "custom-control-input",
+                        attrs: {
+                          id: "remember",
+                          name: "remember",
+                          type: "checkbox"
+                        },
+                        domProps: {
+                          checked: Array.isArray(_vm.remember)
+                            ? _vm._i(_vm.remember, null) > -1
+                            : _vm.remember
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.remember,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 && (_vm.remember = $$a.concat([$$v]))
+                              } else {
+                                $$i > -1 &&
+                                  (_vm.remember = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
+                              }
                             } else {
-                              $$i > -1 &&
-                                (_vm.remember = $$a
-                                  .slice(0, $$i)
-                                  .concat($$a.slice($$i + 1)))
+                              _vm.remember = $$c
                             }
-                          } else {
-                            _vm.remember = $$c
                           }
                         }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "custom-control-label my-auto",
-                        attrs: { for: "remember" }
-                      },
-                      [
-                        _vm._v(
-                          "\n                                    " +
-                            _vm._s(_vm.$t("remember_me")) +
-                            "\n                                "
-                        )
-                      ]
-                    )
-                  ]
-                )
-              ])
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "custom-control-label my-auto",
+                          attrs: { for: "remember" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.$t("remember_me")) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "small ml-auto my-auto",
+                      attrs: { to: { name: "password.request" } }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.$t("forgot_password")) +
+                          "\n                        "
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group row" }, [
@@ -309,9 +327,9 @@ var render = function() {
                         })
                       : _vm._e(),
                     _vm._v(
-                      "\n                                " +
+                      "\n                            " +
                         _vm._s(_vm.$t("login")) +
-                        "\n                            "
+                        "\n                        "
                     )
                   ]
                 )

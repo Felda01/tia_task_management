@@ -10,31 +10,43 @@
 
                 <!-- Field -->
                 <div class="form-group" v-for="(field, index) in modalSchema.form.fields">
-                    <label :class="{'custom-file-label': field.input === 'file'}" :for="'input-' + field.name">{{ field.label }}{{ field.required ? ' *' : '' }}</label>
-                    <div :class="{'custom-file': field.input === 'file'}">
-                        <template v-if="field.input === 'text'">
-                            <input v-model="form[field.name]" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name" class="form-control" :type="field.type" :name="field.name">
-                        </template>
-                        <template v-else-if="field.input === 'date'">
-                            <b-form-datepicker v-model="form[field.name]" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name" class="form-control"
-                                               :min="field.config.min ? field.config.min : null" :max="field.config.max ? field.config.max : null"></b-form-datepicker>
-                        </template>
-                        <template v-else-if="field.input === 'select'">
-                            <b-form-select v-model="form[field.name]" :options="field.config.options" class="form-control" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name">
-                                <template v-slot:first v-if="field.config.disabledOption">
-                                    <b-form-select-option value="" disabled>{{ $t('modal.select.first.option') }}</b-form-select-option>
-                                </template>
-                            </b-form-select>
-                        </template>
-                        <template v-else-if="field.input === 'file'">
-                            <input type="file" class="custom-file-input" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name" @change="uploadFile(field.name)">
-                        </template>
-                        <template v-else-if="field.input === 'textarea'">
-                            <textarea v-model="form[field.name]" class="form-control" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name"></textarea>
-                        </template>
+                    <template v-if="field.input === 'file'">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <img :src="field.config.photo" class="avatar avatar-md mr-3" :alt="field.name">
+                            <div class="position-relative">
+                                <div class="custom-file" :class="{ 'is-invalid': form.errors.has(field.name) }">
+                                    <input type="file" class="custom-file-input"  :id="'input-' + field.name" @change="uploadFile" :name="field.name">
+                                    <label class="custom-file-label mb-0" :for="'input-' + field.name"><template v-if="fileName">{{ fileName }}</template><template v-else>{{ field.label }}</template></label>
+                                    <has-error :form="form" :field="field.name" />
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <label :for="'input-' + field.name">{{ field.label }}{{ field.required ? ' *' : '' }}</label>
+                        <div :class="{'custom-file': field.input === 'file'}">
+                            <template v-if="field.input === 'text'">
+                                <input v-model="form[field.name]" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name" class="form-control" :type="field.type" :name="field.name">
+                            </template>
+                            <template v-else-if="field.input === 'date'">
+                                <b-form-datepicker v-model="form[field.name]" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name" class="form-control"
+                                                   :min="field.config.min ? field.config.min : null" :max="field.config.max ? field.config.max : null"></b-form-datepicker>
+                            </template>
+                            <template v-else-if="field.input === 'select'">
+                                <b-form-select v-model="form[field.name]" :options="field.config.options" class="form-control" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name">
+                                    <template v-slot:first v-if="field.config.disabledOption">
+                                        <b-form-select-option value="" disabled>{{ $t('modal.select.first.option') }}</b-form-select-option>
+                                    </template>
+                                </b-form-select>
+                            </template>
+                            <template v-else-if="field.input === 'textarea'">
+                                <textarea v-model="form[field.name]" class="form-control" :class="{ 'is-invalid': form.errors.has(field.name) }" :id="'input-' + field.name"></textarea>
+                            </template>
 
-                        <has-error :form="form" :field="field.name" />
-                    </div>
+                            <has-error :form="form" :field="field.name" />
+                        </div>
+                    </template>
+
                 </div>
             </form>
             <template v-slot:modal-footer="{ ok, cancel }" v-if="form">
@@ -61,7 +73,8 @@
         },
         data() {
             return {
-                form: null
+                form: null,
+                fileName: ''
             }
         },
         methods: {
@@ -72,7 +85,6 @@
             },
             okModal(bvModalEvt) {
                 bvModalEvt.preventDefault();
-
                 this.form.submit(this.modalSchema.form.method, this.modalSchema.form.url, this.modalSchema.form.config).then(response => {
                     this.$emit('ok', response);
 
@@ -81,13 +93,15 @@
                     });
                 });
             },
-            uploadFile(event, field) {
+            uploadFile(event) {
                 let result = event.target.files;
                 if (result && result[0]) {
-                    this.form[field] = result[0];
+                    this.form[event.target.name] = result[0];
+                    this.fileName = result[0].name;
                 }
             },
             openModal() {
+                this.fileName = '';
                 let fields = {};
                 for (let i = 0; i < this.modalSchema.form.fields.length; i++) {
                     let field = this.modalSchema.form.fields[i];
@@ -100,7 +114,7 @@
                 this.form = new Form(fields);
 
                 this.$bvModal.show(this.modalSchema.modalRef);
-            }
+            },
         }
     }
 </script>

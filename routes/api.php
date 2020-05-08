@@ -44,6 +44,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('time-tracking', 'API\TimeTrackingController', ['except' => ['update', 'index', 'show']]);
 
     Route::apiResource('users', 'API\UserController');
+    Route::put('users/{user}/position', 'API\UserController@updatePosition')->name('users.position');
 });
 
 

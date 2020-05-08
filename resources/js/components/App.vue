@@ -13,7 +13,7 @@
                     </b-navbar-nav>
 
                     <b-navbar-nav class="ml-auto">
-                        <b-nav-item v-if="userId" :to="{ name: 'users.show', params: { id: userId } }" >{{ $t('navigation.profile') }}</b-nav-item>
+                        <b-nav-item v-if="userId" :to="{ name: 'users.show', params: { id: userId } }"><span><img :src="user.photo" class="avatar avatar-sm mr-2" :alt="user.fullName"></span>{{ user.fullName }}</b-nav-item>
                         <b-nav-item @click="logout">{{ $t('logout')}}</b-nav-item>
                     </b-navbar-nav>
                 </b-collapse>
@@ -46,7 +46,8 @@
         computed: mapGetters({
             loggedIn: 'loggedIn',
             loading: 'loading',
-            userId: 'userId'
+            userId: 'userId',
+            user: 'user'
         }),
         methods: {
             logout() {

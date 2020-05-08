@@ -5,7 +5,7 @@ use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,8 +14,12 @@ class UserStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        $user = request()->user('api');
-        return $user->isSenior();
+        /** @var User $user */
+        $user = User::find($this->route('user'))->first();
+
+        $authUser = request()->user('api');
+
+        return $user->id === $authUser->id;
     }
 
     /**
@@ -25,11 +29,13 @@ class UserStoreRequest extends FormRequest
      */
     public function rules()
     {
+        $user = $this->route('user');
+
         return [
-            'email' => 'required|unique:users|email',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user)],
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
-            'type' => ['required', 'string', Rule::in(User::TYPE_SENIOR, User::TYPE_JUNIOR)],
+            'photo' => 'nullable|file|image|mimes:jpeg,jpg,png|max:4096'
         ];
     }
 
@@ -41,7 +47,6 @@ class UserStoreRequest extends FormRequest
     public function attributes()
     {
         return[
-            'type' => 'position',
             'first_name' => 'first name',
             'last_name' => 'last name',
         ];

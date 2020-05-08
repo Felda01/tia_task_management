@@ -2,7 +2,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserDestroyRequest;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdatePositionRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\User;
@@ -71,7 +74,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource($user->load(['projects']));
+        return (new UserResource($user->load(['projects'])))->additional(['meta' => [
+            'usersTypeOptions' => [
+                ['text' => ucfirst(User::TYPE_JUNIOR), 'value' => User::TYPE_JUNIOR ],
+                ['text' => ucfirst(User::TYPE_SENIOR), 'value' => User::TYPE_SENIOR ],
+            ]
+        ]]);
     }
 
     /**
@@ -79,40 +87,60 @@ class UserController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param User $user
-     * @return void
+     * @return UserResource
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-//        if ($request->hasFile('logo')) {
-//            $logo = $request->file('logo');
-//
-//            if ($client->logo) {
-//                $oldLogoPath = public_path('images/'.$client->logo);
-//                if (File::exists($oldLogoPath)) {
-//                    File::delete($oldLogoPath);
-//                }
-//            }
-//
-//            $imageName = md5($logo->getClientOriginalName() . time()) . "." . $logo->getClientOriginalExtension();
-//
-//            $logo->move(public_path('images'), $imageName);
-//
-//            $client->logo = $imageName;
-//            $client->save();
-//        }
+        $user->update($request->only(['email', 'first_name', 'last_name']));
+
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+
+            if ($user->photo) {
+                $oldPhotoPath = public_path('images/'.$user->photo);
+                if (File::exists($oldPhotoPath)) {
+                    File::delete($oldPhotoPath);
+                }
+            }
+
+            $imageName = md5($photo->getClientOriginalName() . time()) . "." . $photo->getClientOriginalExtension();
+
+            $photo->move(public_path('images'), $imageName);
+
+            $user->photo = $imageName;
+            $user->save();
+        }
+
+        return new UserResource($user->load(['projects']));
+    }
+
+    /**
+     * @param UserUpdatePositionRequest $request
+     * @param User $user
+     */
+    public function updatePosition(UserUpdatePositionRequest $request, User $user)
+    {
+        $user->update($request->only(['type']));
+
+        return new UserResource($user->load(['projects']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param UserDestroyRequest $request
      * @param User $user
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(User $user)
+    public function destroy(UserDestroyRequest $request, User $user)
     {
-        //
+        try {
+            $user->delete();
+            return response()->json(null, 204);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage(), 400]);
+        }
     }
-
 
     /**
      * @return UserResource

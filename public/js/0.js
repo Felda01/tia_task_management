@@ -84,6 +84,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -92,7 +99,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     owner: function owner() {
       return this.user && this.user.id === this.userId;
     }
-  }, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['userId', 'role'])),
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['userId', 'isSenior'])),
   data: function data() {
     return {
       loading: false,
@@ -100,19 +107,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       modalSchemaEditUser: {
         form: {
           url: '/api/users/' + this.$route.params.id,
-          method: 'put',
+          method: 'post',
           fields: [],
           hiddenFields: [],
           config: {
             // Transform form data to FormData
             transformRequest: [function (data, headers) {
               return Object(object_to_formdata__WEBPACK_IMPORTED_MODULE_0__["objectToFormData"])(data);
-            }]
+            }],
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
           }
         },
-        modalRef: 'editClient',
-        modalTitle: this.$t('client.edit.title'),
+        modalRef: 'editUser',
+        modalTitle: this.$t('user.edit.title'),
         okBtnTitle: this.$t('modal.edit.btn')
+      },
+      modalSchemaEditUserType: {
+        form: {
+          url: '/api/users/' + this.$route.params.id + '/position',
+          method: 'put',
+          fields: [],
+          hiddenFields: [],
+          config: {}
+        },
+        modalRef: 'editUserType',
+        modalTitle: this.$t('user.type.edit.title'),
+        okBtnTitle: this.$t('modal.edit.btn')
+      },
+      removeUserMessageBoxOptions: {
+        title: this.$t('modalWarning'),
+        okVariant: 'success',
+        cancelVariant: 'danger'
       }
     };
   },
@@ -126,6 +153,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.loading = true;
       this.axios.get('/api/users/' + this.$route.params.id).then(function (response) {
         _this.user = response.data.data;
+        _this.usersTypeOptions = response.data.meta.usersTypeOptions;
         _this.loading = false;
       });
     },
@@ -136,7 +164,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: 'email',
         input: 'text',
         type: 'email',
-        value: '',
+        value: this.user.email,
         config: {}
       }, {
         label: this.$t('user.first_name'),
@@ -144,7 +172,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: 'first_name',
         input: 'text',
         type: 'text',
-        value: '',
+        value: this.user.first_name,
         config: {}
       }, {
         label: this.$t('user.last_name'),
@@ -152,16 +180,64 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: 'last_name',
         input: 'text',
         type: 'text',
-        value: '',
+        value: this.user.last_name,
         config: {}
+      }, {
+        label: this.$t('user.new.photo'),
+        required: false,
+        name: 'photo',
+        input: 'file',
+        type: 'file',
+        value: null,
+        config: {
+          photo: this.user.photo
+        }
       }];
+      this.modalSchemaEditUser.form.hiddenFields = [{
+        name: '_method',
+        value: "PUT"
+      }];
+      this.$refs['editUserModal'].openModal();
     },
     editUser: function editUser(response) {
       this.user = response.data.data;
+      this.$store.dispatch('getUser');
     },
-    editUserTypeModal: function editUserTypeModal() {},
+    editUserTypeModal: function editUserTypeModal() {
+      var options = [];
+      var self = this;
+      options = _.filter(this.usersTypeOptions, function (optionElement) {
+        return optionElement.value !== self.user.type;
+      });
+      this.modalSchemaEditUserType.form.fields = [{
+        label: this.$t('user.type'),
+        required: true,
+        name: 'type',
+        input: 'select',
+        type: 'select',
+        value: 'senior',
+        config: {
+          options: options
+        }
+      }];
+      this.$refs['editUserTypeModal'].openModal();
+    },
     editUserType: function editUserType(response) {
       this.user = response.data.data;
+      this.$store.dispatch('getUser');
+    },
+    removeUser: function removeUser() {
+      var _this2 = this;
+
+      this.$bvModal.msgBoxConfirm(this.$t('user.removeMessage'), this.removeUserMessageBoxOptions).then(function (value) {
+        if (value) {
+          _this2.axios["delete"]('/api/users/' + _this2.user.id).then(function (response) {
+            _this2.$router.replace({
+              name: 'users'
+            });
+          });
+        }
+      });
     }
   }
 });
@@ -294,6 +370,17 @@ var render = function() {
                         },
                         [_vm._v(_vm._s(_vm.$t("user.edit.btn")))]
                       )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  !_vm.owner && _vm.isSenior
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-danger",
+                          on: { click: _vm.removeUser }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("user.remove.btn")))]
+                      )
                     : _vm._e()
                 ]
               ),
@@ -348,7 +435,7 @@ var render = function() {
                         _vm._v(_vm._s(_vm.$t("user.show.position")))
                       ]),
                       _vm._v(" "),
-                      _vm.user.type === "junior" && _vm.role === "senior"
+                      _vm.user.type === "junior" && _vm.isSenior
                         ? _c(
                             "button",
                             {
@@ -377,7 +464,19 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "col-lg-8 col-12" })
             ]
-          : _vm._e()
+          : _vm._e(),
+        _vm._v(" "),
+        _c("custom-modal", {
+          ref: "editUserTypeModal",
+          attrs: { modalSchema: _vm.modalSchemaEditUserType },
+          on: { ok: _vm.editUserType }
+        }),
+        _vm._v(" "),
+        _c("custom-modal", {
+          ref: "editUserModal",
+          attrs: { modalSchema: _vm.modalSchemaEditUser },
+          on: { ok: _vm.editUser }
+        })
       ],
       2
     )

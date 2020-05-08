@@ -205,9 +205,17 @@
                     </div>
                 </div>
             </template>
+
+            <!-- Edit task modal -->
             <custom-modal ref="editTaskModal" @ok="editTask" :modalSchema="modalSchemaEditTask" />
+
+            <!-- Add comment modal -->
             <custom-modal ref="addCommentModal" @ok="addComment" :modalSchema="modalSchemaAddComment" />
+
+            <!-- Add time tracking modal -->
             <custom-modal ref="addTimeTrackingModal" @ok="addTimeTracking" :modalSchema="modalSchemaAddTimeTracking" />
+
+            <!-- Add dependencies modal -->
             <custom-modal ref="addDependencyModal" @ok="addDependency" :modalSchema="modalSchemaAddDependency" />
         </div>
     </div>

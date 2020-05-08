@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Http\Requests;
 
 use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserStoreRequest extends FormRequest
+class UserUpdatePositionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +27,7 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|unique:users|email',
-            'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'type' => ['required', 'string', Rule::in(User::TYPE_SENIOR, User::TYPE_JUNIOR)],
+            'type' => ['required', 'string', Rule::in(User::TYPE_JUNIOR, User::TYPE_SENIOR)],
         ];
     }
 
@@ -42,8 +40,6 @@ class UserStoreRequest extends FormRequest
     {
         return[
             'type' => 'position',
-            'first_name' => 'first name',
-            'last_name' => 'last name',
         ];
     }
 }

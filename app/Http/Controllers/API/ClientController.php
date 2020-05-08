@@ -29,7 +29,7 @@ class ClientController extends Controller
     public function __construct()
     {
         $this->middleware('employees')->only(['index']);
-        $this->middleware('employees.client')->only(['show']);
+        $this->middleware('client.show')->only(['show']);
     }
 
     /**

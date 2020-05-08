@@ -9,6 +9,13 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -74,15 +81,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoadMap",
-  computed: {
+  computed: _objectSpread({
     sortedVersions: function sortedVersions() {
       if (this.project && this.project.versions) {
         return _.orderBy(this.project.versions, 'end_date', 'asc');
       }
     }
-  },
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['isSenior', 'userId'])),
   data: function data() {
     return {
       project: null,
@@ -274,14 +282,20 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "col text-right" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-outline-primary btn-sm",
-                            on: { click: _vm.addVersionModal }
-                          },
-                          [_vm._v(_vm._s(_vm.$t("project.version.add.btn")))]
-                        )
+                        _vm.isSenior
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-outline-primary btn-sm",
+                                on: { click: _vm.addVersionModal }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(_vm.$t("project.version.add.btn"))
+                                )
+                              ]
+                            )
+                          : _vm._e()
                       ])
                     ])
                   ]),
@@ -332,53 +346,57 @@ var render = function() {
                                       "div",
                                       { staticClass: "col text-right" },
                                       [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn btn-outline-primary btn-sm",
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.editVersionModal(
-                                                  version
+                                        _vm.isSenior
+                                          ? _c(
+                                              "button",
+                                              {
+                                                staticClass:
+                                                  "btn btn-outline-primary btn-sm",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.editVersionModal(
+                                                      version
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.$t(
+                                                      "project.version.edit.btn"
+                                                    )
+                                                  )
                                                 )
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _vm._v(
-                                              _vm._s(
-                                                _vm.$t(
-                                                  "project.version.edit.btn"
-                                                )
-                                              )
+                                              ]
                                             )
-                                          ]
-                                        ),
+                                          : _vm._e(),
                                         _vm._v(" "),
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn btn-outline-danger btn-sm",
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.deleteVersionModal(
-                                                  version
+                                        _vm.isSenior
+                                          ? _c(
+                                              "button",
+                                              {
+                                                staticClass:
+                                                  "btn btn-outline-danger btn-sm",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.deleteVersionModal(
+                                                      version
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.$t(
+                                                      "project.version.delete.btn"
+                                                    )
+                                                  )
                                                 )
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _vm._v(
-                                              _vm._s(
-                                                _vm.$t(
-                                                  "project.version.delete.btn"
-                                                )
-                                              )
+                                              ]
                                             )
-                                          ]
-                                        )
+                                          : _vm._e()
                                       ]
                                     )
                                   ])

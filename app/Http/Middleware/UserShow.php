@@ -2,12 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use App\Client;
 use App\User;
 use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
 
-class OnlyEmployeesAndClient
+class UserShow
 {
     /**
      * Handle an incoming request.
@@ -18,14 +17,13 @@ class OnlyEmployeesAndClient
      */
     public function handle($request, Closure $next)
     {
+        /** @var User $authUser */
+        $authUser = $request->user('api');
+
         /** @var User $user */
-        $user = $request->user('api');
+        $user = $request->route('user');
 
-        /** @var Client $client */
-        $client = $request->route('client');
-        $clientUser = $client->user()->first();
-
-        if ($user->isClient() && $clientUser->id !== $user->id) {
+        if ($authUser->isClient() && $authUser->id !== $user->id) {
             throw new AuthorizationException;
         }
 

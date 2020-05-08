@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\VersionDestroyRequest;
 use App\Http\Requests\VersionStoreRequest;
 use App\Http\Requests\VersionUpdateRequest;
 use App\Http\Resources\VersionResource;
@@ -46,10 +47,11 @@ class VersionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param VersionDestroyRequest $request
      * @param Version $version
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Version $version)
+    public function destroy(VersionDestroyRequest $request, Version $version)
     {
         $version->tasks()->update(['version_id' => null]);
 

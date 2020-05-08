@@ -101399,6 +101399,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     isClient: function isClient(state) {
       return state.user ? state.user.type === 'client' : false;
+    },
+    isEmployee: function isEmployee(state) {
+      return state.user ? state.user.type === 'senior' || state.user.type === 'junior' : false;
     }
   },
   mutations: {

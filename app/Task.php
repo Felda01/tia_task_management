@@ -98,12 +98,13 @@ class Task extends Model
      */
     public function comments()
     {
-        return $this->hasMany(Comment::class);
-    }
+        /** @var User $user */
+        $user = request()->user('api');
+        if ($user->isClient()) {
+            return $this->hasMany(Comment::class)->where('type', Comment::TYPE_ALL);
+        }
 
-    public function commentsForClient()
-    {
-        return $this->comments()->where('type', Comment::TYPE_ALL);
+        return $this->hasMany(Comment::class);
     }
 
     /**

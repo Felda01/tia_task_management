@@ -18,6 +18,7 @@ export default new Vuex.Store({
         role: state => state.user ? state.user.type : null,
         isSenior: state => state.user ? state.user.type === 'senior' : false,
         isClient: state => state.user ? state.user.type === 'client' : false,
+        isEmployee: state => state.user ? state.user.type === 'senior' || state.user.type === 'junior' : false,
     },
     mutations: {
         SET_TOKEN(state, token) {

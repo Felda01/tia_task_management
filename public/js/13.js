@@ -315,7 +315,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return [];
     }
-  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['isSenior', 'isClient', 'userId'])),
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['isSenior', 'isClient', 'userId', 'isEmployee'])),
   data: function data() {
     return {
       task: null,
@@ -970,14 +970,16 @@ var render = function() {
                 [
                   _c("h1", [_vm._v(_vm._s(_vm.task.title))]),
                   _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-outline-primary",
-                      on: { click: _vm.editTaskModal }
-                    },
-                    [_vm._v(_vm._s(_vm.$t("task.edit.btn")))]
-                  )
+                  _vm.isEmployee
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-primary",
+                          on: { click: _vm.editTaskModal }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("task.edit.btn")))]
+                      )
+                    : _vm._e()
                 ]
               ),
               _vm._v(" "),
@@ -1191,14 +1193,20 @@ var render = function() {
                         _vm._v(_vm._s(_vm.$t("task.show.time_tracking")))
                       ]),
                       _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-sm btn-outline-primary",
-                          on: { click: _vm.addTimeTrackingModal }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("task.add.time_tracking.btn")))]
-                      )
+                      _vm.isEmployee
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-outline-primary",
+                              on: { click: _vm.addTimeTrackingModal }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(_vm.$t("task.add.time_tracking.btn"))
+                              )
+                            ]
+                          )
+                        : _vm._e()
                     ]
                   ),
                   _vm._v(" "),

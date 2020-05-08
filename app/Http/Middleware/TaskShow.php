@@ -29,9 +29,9 @@ class TaskShow
         $project = $task->project()->first();
 
         if ($user->isClient()) {
-            $userClientId = $user->client()->first('id');
-            $projectClientId = $project->client()->first('id');
-            if ($userClientId !== $projectClientId) {
+            $userClient = $user->client()->first();
+            $projectClient = $project->client()->first();
+            if ($userClient->id !== $projectClient->id) {
                 throw new AuthorizationException;
             }
         } else if ($user->isJunior() && !$project->hasUser($user->id)) {

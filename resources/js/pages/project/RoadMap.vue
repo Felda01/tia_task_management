@@ -21,7 +21,7 @@
                                     <h5 class="mb-0">{{ $t('project.show.versions') }}</h5>
                                 </div>
                                 <div class="col text-right">
-                                    <button class="btn btn-outline-primary btn-sm" @click="addVersionModal">{{ $t('project.version.add.btn') }}</button>
+                                    <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="addVersionModal">{{ $t('project.version.add.btn') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -34,8 +34,8 @@
                                                 <h5 class="mb-0">{{ version.title }} ({{ new Date(version.end_date) | date('DD.MM.YYYY') }})</h5>
                                             </div>
                                             <div class="col text-right">
-                                                <button class="btn btn-outline-primary btn-sm" @click="editVersionModal(version)">{{ $t('project.version.edit.btn') }}</button>
-                                                <button class="btn btn-outline-danger btn-sm" @click="deleteVersionModal(version)">{{ $t('project.version.delete.btn') }}</button>
+                                                <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="editVersionModal(version)">{{ $t('project.version.edit.btn') }}</button>
+                                                <button v-if="isSenior" class="btn btn-outline-danger btn-sm" @click="deleteVersionModal(version)">{{ $t('project.version.delete.btn') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -64,6 +64,8 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     export default {
         name: "RoadMap",
         computed: {
@@ -71,7 +73,11 @@
                 if (this.project && this.project.versions) {
                     return _.orderBy(this.project.versions, 'end_date', 'asc');
                 }
-            }
+            },
+            ...mapGetters([
+                'isSenior',
+                'userId',
+            ]),
         },
         data() {
             return {

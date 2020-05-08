@@ -29,7 +29,8 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('employees')->only(['index', 'show']);
+        $this->middleware('employees')->only(['index']);
+        $this->middleware('user.show')->only(['show']);
     }
 
     /**

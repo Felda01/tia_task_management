@@ -49,7 +49,7 @@
                 </div>
                 <div class="col-12 mb-4 d-flex justify-content-between">
                     <h1>{{ task.title }}</h1>
-                    <button class="btn btn-outline-primary" @click="editTaskModal">{{ $t('task.edit.btn') }}</button>
+                    <button v-if="isEmployee" class="btn btn-outline-primary" @click="editTaskModal">{{ $t('task.edit.btn') }}</button>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-4">
@@ -127,7 +127,7 @@
                     <div class="card mb-4">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">{{ $t('task.show.time_tracking') }}</h5>
-                            <button class="btn btn-sm btn-outline-primary" @click="addTimeTrackingModal">{{ $t('task.add.time_tracking.btn') }}</button>
+                            <button v-if="isEmployee" class="btn btn-sm btn-outline-primary" @click="addTimeTrackingModal">{{ $t('task.add.time_tracking.btn') }}</button>
                         </div>
                         <div class="card-body">
                             <template v-if="task.timeTracking && task.timeTracking.length > 0">
@@ -274,7 +274,8 @@
             ...mapGetters([
                 'isSenior',
                 'isClient',
-                'userId'
+                'userId',
+                'isEmployee'
             ]),
         },
         data() {

@@ -2,12 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use App\Project;
+use App\Client;
 use App\User;
 use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
 
-class ProjectShow
+class ClientShow
 {
     /**
      * Handle an incoming request.
@@ -21,16 +21,11 @@ class ProjectShow
         /** @var User $user */
         $user = $request->user('api');
 
-        /** @var Project $project */
-        $project = $request->route('project');
+        /** @var Client $client */
+        $client = $request->route('client');
+        $clientUser = $client->user()->first();
 
-        if ($user->isClient()) {
-            $userClient = $user->client()->first();
-            $projectClient = $project->client()->first();
-            if ($userClient->id !== $projectClient->id) {
-                throw new AuthorizationException;
-            }
-        } else if ($user->isJunior() && !$project->hasUser($user->id)) {
+        if ($user->isClient() && $clientUser->id !== $user->id) {
             throw new AuthorizationException;
         }
 

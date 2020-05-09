@@ -135,16 +135,26 @@
                         </template>
                     </div>
                 </div>
+
+                <!-- Edit project modal -->
+                <custom-modal ref="editProjectModal" @ok="editProject" :modalSchema="modalSchemaEditProject" />
+
+                <!-- Add task modal -->
+                <custom-modal ref="addTaskModal" @ok="addTask" :modalSchema="modalSchemaAddTask" />
+
+                <!-- Add user to project modal -->
+                <custom-modal ref="addUserToProjectModal" @ok="addUserToProject" :modalSchema="modalSchemaAddUserToProject" />
             </template>
-
-            <!-- Edit project modal -->
-            <custom-modal ref="editProjectModal" @ok="editProject" :modalSchema="modalSchemaEditProject" />
-
-            <!-- Add task modal -->
-            <custom-modal ref="addTaskModal" @ok="addTask" :modalSchema="modalSchemaAddTask" />
-
-            <!-- Add user to project modal -->
-            <custom-modal ref="addUserToProjectModal" @ok="addUserToProject" :modalSchema="modalSchemaAddUserToProject" />
+            <template v-else-if="errorCode === 403">
+                <div class="col-12">
+                    <error-forbidden />
+                </div>
+            </template>
+            <template v-else-if="errorCode === 404">
+                <div class="col-12">
+                    <error-not-found />
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -174,6 +184,7 @@
             return {
                 project: null,
                 loading: false,
+                errorCode: 0,
                 projectStatusOptions: [],
                 taskStatusOptions: [],
                 taskPriorityOptions: [],
@@ -241,12 +252,15 @@
         methods: {
             fetchData() {
                 this.loading = true;
-                this.axios.get('/api/projects/' + this.$route.params.slug).then((response) => {
+                this.axios.get('/api/projects/' + this.$route.params.slug).then(response => {
                     this.project = response.data.data;
                     this.projectStatusOptions = response.data.meta.projectStatusOptions;
                     this.taskStatusOptions = response.data.meta.taskStatusOptions;
                     this.taskPriorityOptions = response.data.meta.taskPriorityOptions;
                     this.allUsers = response.data.meta.allUsers.data;
+                    this.loading = false;
+                }).catch(error => {
+                    this.errorCode = error.response.status;
                     this.loading = false;
                 });
             },

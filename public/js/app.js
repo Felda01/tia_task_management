@@ -2232,6 +2232,50 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Forbidden.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Forbidden.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Forbidden"
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NotFound.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NotFound.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "NotFound"
+});
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap-vue/esm/bv-config.js":
 /*!*****************************************************!*\
   !*** ./node_modules/bootstrap-vue/esm/bv-config.js ***!
@@ -84464,6 +84508,66 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Forbidden.vue?vue&type=template&id=1e70a19e&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Forbidden.vue?vue&type=template&id=1e70a19e& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "forbidden" }, [
+    _c("h1", { staticClass: "display-3" }, [
+      _vm._v(_vm._s(_vm.$t("error.forbidden.title")))
+    ]),
+    _vm._v(" "),
+    _c("h3", [_vm._v(_vm._s(_vm.$t("error.forbidden.message")))])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NotFound.vue?vue&type=template&id=2ce50e5a&":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NotFound.vue?vue&type=template&id=2ce50e5a& ***!
+  \***********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "forbidden" }, [
+    _c("h1", { staticClass: "display-3" }, [
+      _vm._v(_vm._s(_vm.$t("error.notFound.title")))
+    ]),
+    _vm._v(" "),
+    _c("h3", [_vm._v(_vm._s(_vm.$t("error.notFound.message")))])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
 /*!********************************************************************!*\
   !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
@@ -100688,10 +100792,6 @@ Vue.axios.interceptors.response.use(function (response) {
         }
       });
     }
-  } else if (error.response.status === 404) {
-    _router_index_js__WEBPACK_IMPORTED_MODULE_3__["default"].replace({
-      name: '404'
-    });
   }
 
   return Promise.reject(error);
@@ -100706,6 +100806,8 @@ Vue.axios.interceptors.response.use(function (response) {
 
 Vue.component('app', __webpack_require__(/*! ./components/App.vue */ "./resources/js/components/App.vue")["default"]);
 Vue.component('custom-modal', __webpack_require__(/*! ./components/CustomModal.vue */ "./resources/js/components/CustomModal.vue")["default"]);
+Vue.component('error-forbidden', __webpack_require__(/*! ./components/Forbidden.vue */ "./resources/js/components/Forbidden.vue")["default"]);
+Vue.component('error-not-found', __webpack_require__(/*! ./components/NotFound.vue */ "./resources/js/components/NotFound.vue")["default"]);
 
 Vue.component('b-navbar', bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__["BNavbar"]);
 Vue.component('b-nav-item', bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__["BNavItem"]);
@@ -100927,6 +101029,144 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Forbidden.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/Forbidden.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Forbidden_vue_vue_type_template_id_1e70a19e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Forbidden.vue?vue&type=template&id=1e70a19e& */ "./resources/js/components/Forbidden.vue?vue&type=template&id=1e70a19e&");
+/* harmony import */ var _Forbidden_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Forbidden.vue?vue&type=script&lang=js& */ "./resources/js/components/Forbidden.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Forbidden_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Forbidden_vue_vue_type_template_id_1e70a19e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Forbidden_vue_vue_type_template_id_1e70a19e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Forbidden.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Forbidden.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/Forbidden.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Forbidden_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Forbidden.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Forbidden.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Forbidden_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Forbidden.vue?vue&type=template&id=1e70a19e&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/Forbidden.vue?vue&type=template&id=1e70a19e& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Forbidden_vue_vue_type_template_id_1e70a19e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Forbidden.vue?vue&type=template&id=1e70a19e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Forbidden.vue?vue&type=template&id=1e70a19e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Forbidden_vue_vue_type_template_id_1e70a19e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Forbidden_vue_vue_type_template_id_1e70a19e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/NotFound.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/components/NotFound.vue ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _NotFound_vue_vue_type_template_id_2ce50e5a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NotFound.vue?vue&type=template&id=2ce50e5a& */ "./resources/js/components/NotFound.vue?vue&type=template&id=2ce50e5a&");
+/* harmony import */ var _NotFound_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NotFound.vue?vue&type=script&lang=js& */ "./resources/js/components/NotFound.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _NotFound_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _NotFound_vue_vue_type_template_id_2ce50e5a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _NotFound_vue_vue_type_template_id_2ce50e5a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/NotFound.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/NotFound.vue?vue&type=script&lang=js&":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/NotFound.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NotFound_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./NotFound.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NotFound.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NotFound_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/NotFound.vue?vue&type=template&id=2ce50e5a&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/NotFound.vue?vue&type=template&id=2ce50e5a& ***!
+  \*****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NotFound_vue_vue_type_template_id_2ce50e5a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./NotFound.vue?vue&type=template&id=2ce50e5a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NotFound.vue?vue&type=template&id=2ce50e5a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NotFound_vue_vue_type_template_id_2ce50e5a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NotFound_vue_vue_type_template_id_2ce50e5a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/lang/index.js":
 /*!************************************!*\
   !*** ./resources/js/lang/index.js ***!
@@ -101003,10 +101243,10 @@ webpackContext.id = "./resources/js/lang/locales sync recursive [A-Za-z0-9-_,\\s
 /*!*******************************************!*\
   !*** ./resources/js/lang/locales/en.json ***!
   \*******************************************/
-/*! exports provided: ok, cancel, error_alert_title, error_alert_text, token_expired_alert_title, token_expired_alert_text, login, register, page_not_found, go_home, logout, email, remember_me, password, forgot_password, confirm_password, name, toggle_navigation, home, you_are_logged_in, reset_password, send_password_reset_link, settings, profile, your_info, info_updated, update, your_password, password_updated, new_password, login_with, register_with, verify_email, send_verification_link, resend_verification_link, failed_to_verify_email, verify_email_address, password.reset, load_more_btn, navigation.clients, navigation.profile, navigation.tasks, navigation.users, navigation.timeTracking, modal.edit.btn, modal.add.btn, modal.assign.btn, modal.select.first.option, client_list.add.client.btn, client_list.clients, client.add.title, client.name, client.type, client.no_clients, client.show.projects, client.show.contact, client.edit.btn, client.edit.user.btn, client.edit.title, client.edit.user.title, client.project.add.btn, client.project.add.title.modal, client.project.no_projects, project.title, project.title.modal, project.slug, project.start_date, project.end_date, project.status, project.client.name, project.edit.btn, project.version.add.btn, project.show.versions, project.version.no_versions, project.version.edit.btn, project.version.delete.btn, project.team, project.team.add.btn, project.add.user.title.modal, project.user, project.edit.title.modal, project.version.add.title.modal, project.version.edit.title.modal, version.title, project.overview, project.overview.roadmap, project.overview.board, project.overview.gantt, project.overview.back_to_project, project.show.details, project.show.dates, version.end_date, version.task.no_tasks, project.task.no_tasks, project.task.add.title.modal, project.task.add.btn, project.show.tasks, task.title, task.description, task.start_date, task.end_date, task.priority, task.version, task.assignee.no_assignee, task.assignee, task.status, task.version.no_version, task.show.details, task.show.details.version, task.show.details.status, task.show.details.priority, task.show.people, task.show.people.assignee, task.show.people.reporter, task.show.dates, task.show.dates.start_date, task.show.dates.end_date, task.show.description, task.show.dependencies, task.show.dependencies.fs, task.show.dependencies.ff, task.show.dependencies.ss, task.show.dependencies.sf, task.show.comments, task.show.details.project, task.edit.btn, task.edit.title.modal, task.add.comment.btn, task.comments.no_comments, task.my_open_tasks, task.no_open_tasks, task.show.time_tracking, task.add.time_tracking.btn, comment.message, comment.type, comment.add.title.modal, comment.text.added, comment.restricted_to, time_tracking.add.title.modal, time_tracking.date, time_tracking.time, time_tracking.removeMessage, task.time_tracking.no_time_tracking, task.time_tracking.total, modalWarning, user.email, user.first_name, user.last_name, user.full_name, user.type, user.new.photo, user.show.position, user.edit.btn, user.remove.btn, user.type.edit.btn, user.show.detail, user_list.users, user_list.add.user.btn, user.add.title, user.type.edit.title, user.edit.title, user.removeMessage, modal.register.btn, dependencies.add.title.modal, task.add.dependency.btn, dependency.task, dependency.type, dependency.removeMessage, task.dependencies.no_dependencies, task.dependencies.warning.start, task.dependencies.warning.finish, default */
+/*! exports provided: ok, cancel, error_alert_title, error_alert_text, token_expired_alert_title, token_expired_alert_text, login, register, page_not_found, go_home, logout, email, remember_me, password, forgot_password, confirm_password, name, toggle_navigation, home, you_are_logged_in, reset_password, send_password_reset_link, settings, profile, your_info, info_updated, update, your_password, password_updated, new_password, login_with, register_with, verify_email, send_verification_link, resend_verification_link, failed_to_verify_email, verify_email_address, password.reset, load_more_btn, navigation.clients, navigation.profile, navigation.tasks, navigation.users, navigation.timeTracking, modal.edit.btn, modal.add.btn, modal.assign.btn, modal.select.first.option, client_list.add.client.btn, client_list.clients, client.add.title, client.name, client.type, client.no_clients, client.show.projects, client.show.contact, client.edit.btn, client.edit.user.btn, client.edit.title, client.edit.user.title, client.project.add.btn, client.project.add.title.modal, client.project.no_projects, project.title, project.title.modal, project.slug, project.start_date, project.end_date, project.status, project.client.name, project.edit.btn, project.version.add.btn, project.show.versions, project.version.no_versions, project.version.edit.btn, project.version.delete.btn, project.team, project.team.add.btn, project.add.user.title.modal, project.user, project.edit.title.modal, project.version.add.title.modal, project.version.edit.title.modal, version.title, project.overview, project.overview.roadmap, project.overview.board, project.overview.gantt, project.overview.back_to_project, project.show.details, project.show.dates, version.end_date, version.task.no_tasks, project.task.no_tasks, project.task.add.title.modal, project.task.add.btn, project.show.tasks, task.title, task.description, task.start_date, task.end_date, task.priority, task.version, task.assignee.no_assignee, task.assignee, task.status, task.version.no_version, task.show.details, task.show.details.version, task.show.details.status, task.show.details.priority, task.show.people, task.show.people.assignee, task.show.people.reporter, task.show.dates, task.show.dates.start_date, task.show.dates.end_date, task.show.description, task.show.dependencies, task.show.dependencies.fs, task.show.dependencies.ff, task.show.dependencies.ss, task.show.dependencies.sf, task.show.comments, task.show.details.project, task.edit.btn, task.edit.title.modal, task.add.comment.btn, task.comments.no_comments, task.my_open_tasks, task.no_open_tasks, task.show.time_tracking, task.add.time_tracking.btn, comment.message, comment.type, comment.add.title.modal, comment.text.added, comment.restricted_to, time_tracking.add.title.modal, time_tracking.date, time_tracking.time, time_tracking.removeMessage, task.time_tracking.no_time_tracking, task.time_tracking.total, modalWarning, user.email, user.first_name, user.last_name, user.full_name, user.type, user.new.photo, user.show.position, user.edit.btn, user.remove.btn, user.type.edit.btn, user.show.detail, user_list.users, user_list.add.user.btn, user.add.title, user.type.edit.title, user.edit.title, user.removeMessage, modal.register.btn, dependencies.add.title.modal, task.add.dependency.btn, dependency.task, dependency.type, dependency.removeMessage, task.dependencies.no_dependencies, task.dependencies.warning.start, task.dependencies.warning.finish, error.forbidden.title, error.forbidden.message, error.notFound.title, error.notFound.message, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"ok\":\"Ok\",\"cancel\":\"Cancel\",\"error_alert_title\":\"Oops...\",\"error_alert_text\":\"Something went wrong! Please try again.\",\"token_expired_alert_title\":\"Session Expired!\",\"token_expired_alert_text\":\"Please log in again to continue.\",\"login\":\"Log In\",\"register\":\"Register\",\"page_not_found\":\"Page Not Found\",\"go_home\":\"Go Home\",\"logout\":\"Logout\",\"email\":\"Email\",\"remember_me\":\"Remember Me\",\"password\":\"Password\",\"forgot_password\":\"Forgot Your Password?\",\"confirm_password\":\"Confirm Password\",\"name\":\"Name\",\"toggle_navigation\":\"Toggle navigation\",\"home\":\"Home\",\"you_are_logged_in\":\"You are logged in!\",\"reset_password\":\"Reset Password\",\"send_password_reset_link\":\"Send Password Reset Link\",\"settings\":\"Settings\",\"profile\":\"Profile\",\"your_info\":\"Your Info\",\"info_updated\":\"Your info has been updated!\",\"update\":\"Update\",\"your_password\":\"Your Password\",\"password_updated\":\"Your password has been updated!\",\"new_password\":\"New Password\",\"login_with\":\"Login with\",\"register_with\":\"Register with\",\"verify_email\":\"Verify Email\",\"send_verification_link\":\"Send Verification Link\",\"resend_verification_link\":\"Resend Verification Link ?\",\"failed_to_verify_email\":\"Failed to verify email.\",\"verify_email_address\":\"We sent you an email with an the verification link.\",\"password.reset\":\"Redirecting to login page...\",\"load_more_btn\":\"Load more\",\"navigation.clients\":\"Clients\",\"navigation.profile\":\"Profile\",\"navigation.tasks\":\"Tasks\",\"navigation.users\":\"Users\",\"navigation.timeTracking\":\"Time tracking\",\"modal.edit.btn\":\"Update\",\"modal.add.btn\":\"Create\",\"modal.assign.btn\":\"Assign\",\"modal.select.first.option\":\"-- Please select an option --\",\"client_list.add.client.btn\":\"Add client\",\"client_list.clients\":\"Clients\",\"client.add.title\":\"Create new client\",\"client.name\":\"Name\",\"client.type\":\"Priority\",\"client.no_clients\":\"There are no clients available\",\"client.show.projects\":\"Projects\",\"client.show.contact\":\"Contact person\",\"client.edit.btn\":\"Edit client\",\"client.edit.user.btn\":\"Edit contact person\",\"client.edit.title\":\"Update client\",\"client.edit.user.title\":\"Update contact person\",\"client.project.add.btn\":\"Create project\",\"client.project.add.title.modal\":\"Create project\",\"client.project.no_projects\":\"There are no projects available\",\"project.title\":\"Title\",\"project.title.modal\":\"Create project\",\"project.slug\":\"Short code\",\"project.start_date\":\"Start date\",\"project.end_date\":\"End date\",\"project.status\":\"Status\",\"project.client.name\":\"Client\",\"project.edit.btn\":\"Edit project\",\"project.version.add.btn\":\"Create version\",\"project.show.versions\":\"Versions\",\"project.version.no_versions\":\"There are no version available\",\"project.version.edit.btn\":\"Edit version\",\"project.version.delete.btn\":\"Delete version\",\"project.team\":\"Team\",\"project.team.add.btn\":\"Assign user\",\"project.add.user.title.modal\":\"Assign user\",\"project.user\":\"User\",\"project.edit.title.modal\":\"Update project\",\"project.version.add.title.modal\":\"Create version\",\"project.version.edit.title.modal\":\"Update version\",\"version.title\":\"Title\",\"project.overview\":\"Overview\",\"project.overview.roadmap\":\"Road map\",\"project.overview.board\":\"Board\",\"project.overview.gantt\":\"Gantt\",\"project.overview.back_to_project\":\"Back to project\",\"project.show.details\":\"Details\",\"project.show.dates\":\"Dates\",\"version.end_date\":\"End date\",\"version.task.no_tasks\":\"There are no task available in this version\",\"project.task.no_tasks\":\"There are no task available\",\"project.task.add.title.modal\":\"Create task\",\"project.task.add.btn\":\"Create task\",\"project.show.tasks\":\"Tasks\",\"task.title\":\"Title\",\"task.description\":\"Description\",\"task.start_date\":\"Start date\",\"task.end_date\":\"End date\",\"task.priority\":\"Priority\",\"task.version\":\"Version\",\"task.assignee.no_assignee\":\"None\",\"task.assignee\":\"Assignee\",\"task.status\":\"Status\",\"task.version.no_version\":\"No version\",\"task.show.details\":\"Details\",\"task.show.details.version\":\"Version\",\"task.show.details.status\":\"Status\",\"task.show.details.priority\":\"Priority\",\"task.show.people\":\"People\",\"task.show.people.assignee\":\"Assignee\",\"task.show.people.reporter\":\"Reporter\",\"task.show.dates\":\"Dates\",\"task.show.dates.start_date\":\"Start date\",\"task.show.dates.end_date\":\"End date\",\"task.show.description\":\"Description\",\"task.show.dependencies\":\"Dependencies\",\"task.show.dependencies.fs\":\"Finish to start (FS)\",\"task.show.dependencies.ff\":\"Finish to finish (FF)\",\"task.show.dependencies.ss\":\"Start to start (SS)\",\"task.show.dependencies.sf\":\"Start to finish (SF)\",\"task.show.comments\":\"Comments\",\"task.show.details.project\":\"Project\",\"task.edit.btn\":\"Edit task\",\"task.edit.title.modal\":\"Update task\",\"task.add.comment.btn\":\"Add comment\",\"task.comments.no_comments\":\"No comments\",\"task.my_open_tasks\":\"My open tasks\",\"task.no_open_tasks\":\"No open tasks\",\"task.show.time_tracking\":\"Time tracking\",\"task.add.time_tracking.btn\":\"Add hours\",\"comment.message\":\"Message\",\"comment.type\":\"Type\",\"comment.add.title.modal\":\"Create comment\",\"comment.text.added\":\"added a comment -\",\"comment.restricted_to\":\" - Restricted to\",\"time_tracking.add.title.modal\":\"Add hours\",\"time_tracking.date\":\"Date\",\"time_tracking.time\":\"Hours\",\"time_tracking.removeMessage\":\"Are you sure you want to delete it ?\",\"task.time_tracking.no_time_tracking\":\"No hours\",\"task.time_tracking.total\":\"Total\",\"modalWarning\":\"Warning\",\"user.email\":\"Email\",\"user.first_name\":\"First name\",\"user.last_name\":\"Last name\",\"user.full_name\":\"Name\",\"user.type\":\"Position\",\"user.new.photo\":\"Choose new photo...\",\"user.show.position\":\"Position\",\"user.edit.btn\":\"Edit profile\",\"user.remove.btn\":\"Release\",\"user.type.edit.btn\":\"Edit position\",\"user.show.detail\":\"Details\",\"user_list.users\":\"Users\",\"user_list.add.user.btn\":\"Register new user\",\"user.add.title\":\"Register user\",\"user.type.edit.title\":\"Update position\",\"user.edit.title\":\"Update user\",\"user.removeMessage\":\"Are you sure you want to release this user ?\",\"modal.register.btn\":\"Register\",\"dependencies.add.title.modal\":\"Add dependency\",\"task.add.dependency.btn\":\"Add dependency\",\"dependency.task\":\"Task\",\"dependency.type\":\"Dependency type\",\"dependency.removeMessage\":\"Are you sure you want to delete it ?\",\"task.dependencies.no_dependencies\":\"No dependencies\",\"task.dependencies.warning.start\":\"Task can not be started - is in conflict with: \",\"task.dependencies.warning.finish\":\"Task can not be completed - is in conflict with: \"}");
+module.exports = JSON.parse("{\"ok\":\"Ok\",\"cancel\":\"Cancel\",\"error_alert_title\":\"Oops...\",\"error_alert_text\":\"Something went wrong! Please try again.\",\"token_expired_alert_title\":\"Session Expired!\",\"token_expired_alert_text\":\"Please log in again to continue.\",\"login\":\"Log In\",\"register\":\"Register\",\"page_not_found\":\"Page Not Found\",\"go_home\":\"Go Home\",\"logout\":\"Logout\",\"email\":\"Email\",\"remember_me\":\"Remember Me\",\"password\":\"Password\",\"forgot_password\":\"Forgot Your Password?\",\"confirm_password\":\"Confirm Password\",\"name\":\"Name\",\"toggle_navigation\":\"Toggle navigation\",\"home\":\"Home\",\"you_are_logged_in\":\"You are logged in!\",\"reset_password\":\"Reset Password\",\"send_password_reset_link\":\"Send Password Reset Link\",\"settings\":\"Settings\",\"profile\":\"Profile\",\"your_info\":\"Your Info\",\"info_updated\":\"Your info has been updated!\",\"update\":\"Update\",\"your_password\":\"Your Password\",\"password_updated\":\"Your password has been updated!\",\"new_password\":\"New Password\",\"login_with\":\"Login with\",\"register_with\":\"Register with\",\"verify_email\":\"Verify Email\",\"send_verification_link\":\"Send Verification Link\",\"resend_verification_link\":\"Resend Verification Link ?\",\"failed_to_verify_email\":\"Failed to verify email.\",\"verify_email_address\":\"We sent you an email with an the verification link.\",\"password.reset\":\"Redirecting to login page...\",\"load_more_btn\":\"Load more\",\"navigation.clients\":\"Clients\",\"navigation.profile\":\"Profile\",\"navigation.tasks\":\"Tasks\",\"navigation.users\":\"Users\",\"navigation.timeTracking\":\"Time tracking\",\"modal.edit.btn\":\"Update\",\"modal.add.btn\":\"Create\",\"modal.assign.btn\":\"Assign\",\"modal.select.first.option\":\"-- Please select an option --\",\"client_list.add.client.btn\":\"Add client\",\"client_list.clients\":\"Clients\",\"client.add.title\":\"Create new client\",\"client.name\":\"Name\",\"client.type\":\"Priority\",\"client.no_clients\":\"There are no clients available\",\"client.show.projects\":\"Projects\",\"client.show.contact\":\"Contact person\",\"client.edit.btn\":\"Edit client\",\"client.edit.user.btn\":\"Edit contact person\",\"client.edit.title\":\"Update client\",\"client.edit.user.title\":\"Update contact person\",\"client.project.add.btn\":\"Create project\",\"client.project.add.title.modal\":\"Create project\",\"client.project.no_projects\":\"There are no projects available\",\"project.title\":\"Title\",\"project.title.modal\":\"Create project\",\"project.slug\":\"Short code\",\"project.start_date\":\"Start date\",\"project.end_date\":\"End date\",\"project.status\":\"Status\",\"project.client.name\":\"Client\",\"project.edit.btn\":\"Edit project\",\"project.version.add.btn\":\"Create version\",\"project.show.versions\":\"Versions\",\"project.version.no_versions\":\"There are no version available\",\"project.version.edit.btn\":\"Edit version\",\"project.version.delete.btn\":\"Delete version\",\"project.team\":\"Team\",\"project.team.add.btn\":\"Assign user\",\"project.add.user.title.modal\":\"Assign user\",\"project.user\":\"User\",\"project.edit.title.modal\":\"Update project\",\"project.version.add.title.modal\":\"Create version\",\"project.version.edit.title.modal\":\"Update version\",\"version.title\":\"Title\",\"project.overview\":\"Overview\",\"project.overview.roadmap\":\"Road map\",\"project.overview.board\":\"Board\",\"project.overview.gantt\":\"Gantt\",\"project.overview.back_to_project\":\"Back to project\",\"project.show.details\":\"Details\",\"project.show.dates\":\"Dates\",\"version.end_date\":\"End date\",\"version.task.no_tasks\":\"There are no task available in this version\",\"project.task.no_tasks\":\"There are no task available\",\"project.task.add.title.modal\":\"Create task\",\"project.task.add.btn\":\"Create task\",\"project.show.tasks\":\"Tasks\",\"task.title\":\"Title\",\"task.description\":\"Description\",\"task.start_date\":\"Start date\",\"task.end_date\":\"End date\",\"task.priority\":\"Priority\",\"task.version\":\"Version\",\"task.assignee.no_assignee\":\"None\",\"task.assignee\":\"Assignee\",\"task.status\":\"Status\",\"task.version.no_version\":\"No version\",\"task.show.details\":\"Details\",\"task.show.details.version\":\"Version\",\"task.show.details.status\":\"Status\",\"task.show.details.priority\":\"Priority\",\"task.show.people\":\"People\",\"task.show.people.assignee\":\"Assignee\",\"task.show.people.reporter\":\"Reporter\",\"task.show.dates\":\"Dates\",\"task.show.dates.start_date\":\"Start date\",\"task.show.dates.end_date\":\"End date\",\"task.show.description\":\"Description\",\"task.show.dependencies\":\"Dependencies\",\"task.show.dependencies.fs\":\"Finish to start (FS)\",\"task.show.dependencies.ff\":\"Finish to finish (FF)\",\"task.show.dependencies.ss\":\"Start to start (SS)\",\"task.show.dependencies.sf\":\"Start to finish (SF)\",\"task.show.comments\":\"Comments\",\"task.show.details.project\":\"Project\",\"task.edit.btn\":\"Edit task\",\"task.edit.title.modal\":\"Update task\",\"task.add.comment.btn\":\"Add comment\",\"task.comments.no_comments\":\"No comments\",\"task.my_open_tasks\":\"My open tasks\",\"task.no_open_tasks\":\"No open tasks\",\"task.show.time_tracking\":\"Time tracking\",\"task.add.time_tracking.btn\":\"Add hours\",\"comment.message\":\"Message\",\"comment.type\":\"Type\",\"comment.add.title.modal\":\"Create comment\",\"comment.text.added\":\"added a comment -\",\"comment.restricted_to\":\" - Restricted to\",\"time_tracking.add.title.modal\":\"Add hours\",\"time_tracking.date\":\"Date\",\"time_tracking.time\":\"Hours\",\"time_tracking.removeMessage\":\"Are you sure you want to delete it ?\",\"task.time_tracking.no_time_tracking\":\"No hours\",\"task.time_tracking.total\":\"Total\",\"modalWarning\":\"Warning\",\"user.email\":\"Email\",\"user.first_name\":\"First name\",\"user.last_name\":\"Last name\",\"user.full_name\":\"Name\",\"user.type\":\"Position\",\"user.new.photo\":\"Choose new photo...\",\"user.show.position\":\"Position\",\"user.edit.btn\":\"Edit profile\",\"user.remove.btn\":\"Release\",\"user.type.edit.btn\":\"Edit position\",\"user.show.detail\":\"Details\",\"user_list.users\":\"Users\",\"user_list.add.user.btn\":\"Register new user\",\"user.add.title\":\"Register user\",\"user.type.edit.title\":\"Update position\",\"user.edit.title\":\"Update user\",\"user.removeMessage\":\"Are you sure you want to release this user ?\",\"modal.register.btn\":\"Register\",\"dependencies.add.title.modal\":\"Add dependency\",\"task.add.dependency.btn\":\"Add dependency\",\"dependency.task\":\"Task\",\"dependency.type\":\"Dependency type\",\"dependency.removeMessage\":\"Are you sure you want to delete it ?\",\"task.dependencies.no_dependencies\":\"No dependencies\",\"task.dependencies.warning.start\":\"Task can not be started - is in conflict with: \",\"task.dependencies.warning.finish\":\"Task can not be completed - is in conflict with: \",\"error.forbidden.title\":\"403 Forbidden\",\"error.forbidden.message\":\"Access denied. You do not have the permission to access this page on this server.\",\"error.notFound.title\":\"404 Page not found\",\"error.notFound.message\":\"The page you were looking for does not exist.\"}");
 
 /***/ }),
 
@@ -101065,14 +101305,6 @@ var map = {
 	"./client/ClientList.vue": [
 		"./resources/js/pages/client/ClientList.vue",
 		6
-	],
-	"./errors/403": [
-		"./resources/js/pages/errors/403.vue",
-		7
-	],
-	"./errors/403.vue": [
-		"./resources/js/pages/errors/403.vue",
-		7
 	],
 	"./errors/404": [
 		"./resources/js/pages/errors/404.vue",

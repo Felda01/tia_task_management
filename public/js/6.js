@@ -68,6 +68,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ClientList",
@@ -88,7 +99,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         modalRef: 'addClient',
         modalTitle: this.$t('client.add.title'),
         okBtnTitle: this.$t('modal.add.btn')
-      }
+      },
+      errorCode: 0
     };
   },
   created: function created() {
@@ -104,6 +116,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.links = response.data.links;
         _this.meta = response.data.meta;
         _this.clientTypeOptions = response.data.meta.clientTypeOptions;
+        _this.loading = false;
+      })["catch"](function (error) {
+        _this.errorCode = error.response.status;
         _this.loading = false;
       });
     },
@@ -194,183 +209,179 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "client-list" },
-    [
-      _c(
-        "div",
-        { staticClass: "row" },
-        [
-          _vm.loading
-            ? [
-                _c(
+  return _c("div", { staticClass: "client-list" }, [
+    _c(
+      "div",
+      { staticClass: "row" },
+      [
+        _vm.loading
+          ? [
+              _c(
+                "div",
+                { staticClass: "col-12" },
+                [
+                  _c(
+                    "content-placeholders",
+                    { staticClass: "mb-4" },
+                    [_c("content-placeholders-heading")],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _vm._l(12, function(n) {
+                return _c(
                   "div",
-                  { staticClass: "col-12" },
+                  { staticClass: "col-lg-4 col-md-6 col-12" },
                   [
                     _c(
                       "content-placeholders",
                       { staticClass: "mb-4" },
-                      [_c("content-placeholders-heading")],
+                      [
+                        _c("content-placeholders-heading"),
+                        _vm._v(" "),
+                        _c("content-placeholders-text", { attrs: { lines: 3 } })
+                      ],
                       1
                     )
                   ],
                   1
-                ),
-                _vm._v(" "),
-                _vm._l(12, function(n) {
-                  return _c(
-                    "div",
-                    { staticClass: "col-lg-4 col-md-6 col-12" },
-                    [
-                      _c(
-                        "content-placeholders",
-                        { staticClass: "mb-4" },
-                        [
-                          _c("content-placeholders-heading"),
-                          _vm._v(" "),
-                          _c("content-placeholders-text", {
-                            attrs: { lines: 3 }
-                          })
-                        ],
-                        1
+                )
+              })
+            ]
+          : _vm.clients
+          ? [
+              _c(
+                "div",
+                { staticClass: "col-12 mb-4 d-flex justify-content-between" },
+                [
+                  _c("h1", [_vm._v(_vm._s(_vm.$t("client_list.clients")))]),
+                  _vm._v(" "),
+                  _vm.isSenior
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-primary",
+                          on: { click: _vm.addClientModal }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("client_list.add.client.btn")))]
                       )
-                    ],
-                    1
-                  )
-                })
-              ]
-            : _vm.clients
-            ? [
-                _c(
-                  "div",
-                  { staticClass: "col-12 mb-4 d-flex justify-content-between" },
-                  [
-                    _c("h1", [_vm._v(_vm._s(_vm.$t("client_list.clients")))]),
-                    _vm._v(" "),
-                    _vm.isSenior
-                      ? _c(
-                          "button",
+                    : _vm._e()
+                ]
+              ),
+              _vm._v(" "),
+              _vm.clients.length > 0
+                ? _vm._l(_vm.clients, function(client) {
+                    return _c(
+                      "div",
+                      { staticClass: "col-lg-4 col-md-6 col-12 mb-4" },
+                      [
+                        _c(
+                          "router-link",
                           {
-                            staticClass: "btn btn-outline-primary",
-                            on: { click: _vm.addClientModal }
-                          },
-                          [_vm._v(_vm._s(_vm.$t("client_list.add.client.btn")))]
-                        )
-                      : _vm._e()
-                  ]
-                ),
-                _vm._v(" "),
-                _vm.clients.length > 0
-                  ? _vm._l(_vm.clients, function(client) {
-                      return _c(
-                        "div",
-                        { staticClass: "col-lg-4 col-md-6 col-12 mb-4" },
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "text-decoration-none",
-                              attrs: {
-                                to: {
-                                  name: "clients.show",
-                                  params: { id: client.id }
-                                }
+                            staticClass: "text-decoration-none",
+                            attrs: {
+                              to: {
+                                name: "clients.show",
+                                params: { id: client.id }
                               }
-                            },
-                            [
-                              _c("div", { staticClass: "card h-100" }, [
-                                _c("div", { staticClass: "card-header" }, [
-                                  _c("h5", { staticClass: "mb-0" }, [
-                                    _c(
-                                      "span",
-                                      {
-                                        class:
-                                          "badge badge-" +
-                                          _vm.badgeType(client.type) +
-                                          " text-uppercase mr-2"
-                                      },
-                                      [_vm._v(_vm._s(client.type))]
-                                    ),
-                                    _vm._v(_vm._s(client.name))
-                                  ])
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "card-body" },
-                                  [
-                                    _c(
-                                      "p",
-                                      {
-                                        staticClass:
-                                          "font-weight-bold text-decoration-none text-black-50 mb-1"
-                                      },
-                                      [_vm._v("Projects:")]
-                                    ),
-                                    _vm._v(" "),
-                                    client.projects &&
-                                    client.projects.length > 0
-                                      ? [
-                                          _vm._l(client.projects, function(
-                                            project
-                                          ) {
-                                            return [
-                                              _c(
-                                                "router-link",
-                                                {
-                                                  staticClass:
-                                                    "text-decoration-none d-block",
-                                                  attrs: {
-                                                    to: {
-                                                      name: "projects.show",
-                                                      params: {
-                                                        slug: project.slug
-                                                      }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "card h-100" }, [
+                              _c("div", { staticClass: "card-header" }, [
+                                _c("h5", { staticClass: "mb-0" }, [
+                                  _c(
+                                    "span",
+                                    {
+                                      class:
+                                        "badge badge-" +
+                                        _vm.badgeType(client.type) +
+                                        " text-uppercase mr-2"
+                                    },
+                                    [_vm._v(_vm._s(client.type))]
+                                  ),
+                                  _vm._v(_vm._s(client.name))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "card-body" },
+                                [
+                                  _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "font-weight-bold text-decoration-none text-black-50 mb-1"
+                                    },
+                                    [_vm._v("Projects:")]
+                                  ),
+                                  _vm._v(" "),
+                                  client.projects && client.projects.length > 0
+                                    ? [
+                                        _vm._l(client.projects, function(
+                                          project
+                                        ) {
+                                          return [
+                                            _c(
+                                              "router-link",
+                                              {
+                                                staticClass:
+                                                  "text-decoration-none d-block",
+                                                attrs: {
+                                                  to: {
+                                                    name: "projects.show",
+                                                    params: {
+                                                      slug: project.slug
                                                     }
                                                   }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    _vm._s(project.slug) +
-                                                      ": " +
-                                                      _vm._s(project.title)
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          })
-                                        ]
-                                      : _vm._e()
-                                  ],
-                                  2
-                                )
-                              ])
-                            ]
-                          )
-                        ],
-                        1
-                      )
-                    })
-                  : [
-                      _c("div", { staticClass: "col-12" }, [
-                        _c("p", [_vm._v(_vm._s(_vm.$t("client.no_clients")))])
-                      ])
-                    ]
-              ]
-            : _vm._e()
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c("custom-modal", {
-        ref: "addClientModal",
-        attrs: { modalSchema: _vm.modalSchemaAddClient },
-        on: { ok: _vm.addClient }
-      })
-    ],
-    1
-  )
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(project.slug) +
+                                                    ": " +
+                                                    _vm._s(project.title)
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        })
+                                      ]
+                                    : _vm._e()
+                                ],
+                                2
+                              )
+                            ])
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  })
+                : [
+                    _c("div", { staticClass: "col-12" }, [
+                      _c("p", [_vm._v(_vm._s(_vm.$t("client.no_clients")))])
+                    ])
+                  ],
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "addClientModal",
+                attrs: { modalSchema: _vm.modalSchemaAddClient },
+                on: { ok: _vm.addClient }
+              })
+            ]
+          : _vm.errorCode === 403
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-forbidden")], 1)]
+          : _vm.errorCode === 404
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-not-found")], 1)]
+          : _vm._e()
+      ],
+      2
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

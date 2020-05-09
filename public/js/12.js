@@ -81,6 +81,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoadMap",
@@ -95,6 +108,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       project: null,
       loading: false,
+      errorCode: 0,
       modalSchemaAddVersion: {
         form: {
           url: '/api/versions',
@@ -147,6 +161,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.loading = true;
       this.axios.get('/api/projects/' + this.$route.params.slug + "/roadmap").then(function (response) {
         _this.project = response.data.data;
+        _this.loading = false;
+      })["catch"](function (error) {
+        _this.errorCode = error.response.status;
         _this.loading = false;
       });
     },
@@ -434,21 +451,25 @@ var render = function() {
                     2
                   )
                 ])
-              ])
+              ]),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "addVersionModal",
+                attrs: { modalSchema: _vm.modalSchemaAddVersion },
+                on: { ok: _vm.addVersion }
+              }),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "editVersionModal",
+                attrs: { modalSchema: _vm.modalSchemaEditVersion },
+                on: { ok: _vm.editVersion }
+              })
             ]
-          : _vm._e(),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "addVersionModal",
-          attrs: { modalSchema: _vm.modalSchemaAddVersion },
-          on: { ok: _vm.addVersion }
-        }),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "editVersionModal",
-          attrs: { modalSchema: _vm.modalSchemaEditVersion },
-          on: { ok: _vm.editVersion }
-        })
+          : _vm.errorCode === 403
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-forbidden")], 1)]
+          : _vm.errorCode === 404
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-not-found")], 1)]
+          : _vm._e()
       ],
       2
     )

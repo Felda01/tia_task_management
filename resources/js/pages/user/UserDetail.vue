@@ -61,13 +61,23 @@
                 <div class="col-lg-8 col-12">
 
                 </div>
+
+                <!-- Edit user type modal -->
+                <custom-modal ref="editUserTypeModal" @ok="editUserType" :modalSchema="modalSchemaEditUserType" />
+
+                <!-- Edit user modal -->
+                <custom-modal ref="editUserModal" @ok="editUser" :modalSchema="modalSchemaEditUser" />
             </template>
-
-            <!-- Edit user type modal -->
-            <custom-modal ref="editUserTypeModal" @ok="editUserType" :modalSchema="modalSchemaEditUserType" />
-
-            <!-- Edit user modal -->
-            <custom-modal ref="editUserModal" @ok="editUser" :modalSchema="modalSchemaEditUser" />
+            <template v-else-if="errorCode === 403">
+                <div class="col-12">
+                    <error-forbidden />
+                </div>
+            </template>
+            <template v-else-if="errorCode === 404">
+                <div class="col-12">
+                    <error-not-found />
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -93,6 +103,7 @@
             return {
                 loading: false,
                 user: null,
+                errorCode: 0,
                 modalSchemaEditUser: {
                     form: {
                         url: '/api/users/' + this.$route.params.id,
@@ -141,6 +152,9 @@
                 this.axios.get('/api/users/' + this.$route.params.id).then((response) => {
                     this.user = response.data.data;
                     this.usersTypeOptions = response.data.meta.usersTypeOptions;
+                    this.loading = false;
+                }).catch(error => {
+                    this.errorCode = error.response.status;
                     this.loading = false;
                 });
             },

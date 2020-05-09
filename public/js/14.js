@@ -48,12 +48,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TaskList",
   data: function data() {
     return {
       loading: false,
-      tasks: []
+      tasks: [],
+      errorCode: 0
     };
   },
   created: function created() {
@@ -67,6 +72,9 @@ __webpack_require__.r(__webpack_exports__);
       this.axios.get('/api/tasks').then(function (response) {
         _this.tasks = response.data.data;
         console.log(_this.tasks);
+        _this.loading = false;
+      })["catch"](function (error) {
+        _this.errorCode = error.response.status;
         _this.loading = false;
       });
     }
@@ -90,13 +98,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "task-list" },
-    [
-      _vm.loading
-        ? [
-            _c("div", { staticClass: "row mb-4" }, [
+  return _c("div", { staticClass: "task-list" }, [
+    _c(
+      "div",
+      { staticClass: "row" },
+      [
+        _vm.loading
+          ? [
               _c(
                 "div",
                 { staticClass: "col-12" },
@@ -109,12 +117,8 @@ var render = function() {
                   )
                 ],
                 1
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "row mb-4" },
+              ),
+              _vm._v(" "),
               _vm._l(12, function(n) {
                 return _c(
                   "div",
@@ -133,32 +137,31 @@ var render = function() {
                   ],
                   1
                 )
-              }),
-              0
-            )
-          ]
-        : _vm.tasks && _vm.tasks.length > 0
-        ? [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-12" }, [
-                _c("h1", [_vm._v(_vm._s(_vm.$t("task.my_open_tasks")))])
-              ])
-            ])
-          ]
-        : [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-12" }, [
+              })
+            ]
+          : _vm.tasks
+          ? [
+              _c("div", { staticClass: "col-12 mb-4" }, [
                 _c("h1", [_vm._v(_vm._s(_vm.$t("task.my_open_tasks")))])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-12" }, [
-                _c("p", [_vm._v(_vm._s(_vm.$t("task.no_open_tasks")))])
-              ])
-            ])
-          ]
-    ],
-    2
-  )
+              _vm.tasks.length > 0
+                ? [_vm._v("\n                Tasks\n            ")]
+                : [
+                    _c("div", { staticClass: "col-12" }, [
+                      _c("p", [_vm._v(_vm._s(_vm.$t("task.no_open_tasks")))])
+                    ])
+                  ]
+            ]
+          : _vm.errorCode === 403
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-forbidden")], 1)]
+          : _vm.errorCode === 404
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-not-found")], 1)]
+          : _vm._e()
+      ],
+      2
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -251,6 +251,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TaskDetail",
@@ -320,6 +330,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       task: null,
       loading: false,
+      errorCode: 0,
       modalSchemaEditTask: {
         form: {
           url: '/api/tasks/' + this.$route.params.id,
@@ -403,6 +414,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         _this.checkDependenciesConflicts();
 
+        _this.loading = false;
+      })["catch"](function (error) {
+        _this.errorCode = error.response.status;
         _this.loading = false;
       });
     },
@@ -1570,33 +1584,37 @@ var render = function() {
                     2
                   )
                 ])
-              ])
+              ]),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "editTaskModal",
+                attrs: { modalSchema: _vm.modalSchemaEditTask },
+                on: { ok: _vm.editTask }
+              }),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "addCommentModal",
+                attrs: { modalSchema: _vm.modalSchemaAddComment },
+                on: { ok: _vm.addComment }
+              }),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "addTimeTrackingModal",
+                attrs: { modalSchema: _vm.modalSchemaAddTimeTracking },
+                on: { ok: _vm.addTimeTracking }
+              }),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "addDependencyModal",
+                attrs: { modalSchema: _vm.modalSchemaAddDependency },
+                on: { ok: _vm.addDependency }
+              })
             ]
-          : _vm._e(),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "editTaskModal",
-          attrs: { modalSchema: _vm.modalSchemaEditTask },
-          on: { ok: _vm.editTask }
-        }),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "addCommentModal",
-          attrs: { modalSchema: _vm.modalSchemaAddComment },
-          on: { ok: _vm.addComment }
-        }),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "addTimeTrackingModal",
-          attrs: { modalSchema: _vm.modalSchemaAddTimeTracking },
-          on: { ok: _vm.addTimeTracking }
-        }),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "addDependencyModal",
-          attrs: { modalSchema: _vm.modalSchemaAddDependency },
-          on: { ok: _vm.addDependency }
-        })
+          : _vm.errorCode === 403
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-forbidden")], 1)]
+          : _vm.errorCode === 404
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-not-found")], 1)]
+          : _vm._e()
       ],
       2
     )

@@ -30,9 +30,8 @@ Vue.axios.interceptors.response.use(function (response) {
         if (router.currentRoute.name !== 'password.request' && router.currentRoute.name !== 'password.reset') {
             router.push({ name: 'login', query: { redirect: router.currentRoute.fullPath } });
         }
-    } else if (error.response.status === 404) {
-        router.replace({ name: '404' });
     }
+
     return Promise.reject(error)
 });
 
@@ -47,6 +46,8 @@ Vue.axios.interceptors.response.use(function (response) {
 
 Vue.component('app', require('./components/App.vue').default);
 Vue.component('custom-modal', require('./components/CustomModal.vue').default);
+Vue.component('error-forbidden', require('./components/Forbidden.vue').default);
+Vue.component('error-not-found', require('./components/NotFound.vue').default);
 
 import { BNavbar, BNavbarNav, BNavbarToggle, BNavbarBrand, BNavItem, BCollapse, BModal, BFormSelect, BFormSelectOption, BOverlay, BFormDatepicker, ModalPlugin, BAlert } from 'bootstrap-vue';
 

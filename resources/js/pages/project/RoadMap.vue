@@ -55,10 +55,23 @@
                         </div>
                     </div>
                 </div>
-            </template>
 
-            <custom-modal ref="addVersionModal" @ok="addVersion" :modalSchema="modalSchemaAddVersion" />
-            <custom-modal ref="editVersionModal" @ok="editVersion" :modalSchema="modalSchemaEditVersion" />
+                <!-- Modal Add Version -->
+                <custom-modal ref="addVersionModal" @ok="addVersion" :modalSchema="modalSchemaAddVersion" />
+
+                <!-- Modal Edit Version -->
+                <custom-modal ref="editVersionModal" @ok="editVersion" :modalSchema="modalSchemaEditVersion" />
+            </template>
+            <template v-else-if="errorCode === 403">
+                <div class="col-12">
+                    <error-forbidden />
+                </div>
+            </template>
+            <template v-else-if="errorCode === 404">
+                <div class="col-12">
+                    <error-not-found />
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -83,7 +96,7 @@
             return {
                 project: null,
                 loading: false,
-
+                errorCode: 0,
                 modalSchemaAddVersion: {
                     form: {
                         url: '/api/versions',
@@ -139,6 +152,9 @@
                 this.loading = true;
                 this.axios.get('/api/projects/' + this.$route.params.slug + "/roadmap").then((response) => {
                     this.project = response.data.data;
+                    this.loading = false;
+                }).catch(error => {
+                    this.errorCode = error.response.status;
                     this.loading = false;
                 });
             },

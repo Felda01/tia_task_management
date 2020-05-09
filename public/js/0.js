@@ -91,6 +91,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -104,6 +114,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       loading: false,
       user: null,
+      errorCode: 0,
       modalSchemaEditUser: {
         form: {
           url: '/api/users/' + this.$route.params.id,
@@ -154,6 +165,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.axios.get('/api/users/' + this.$route.params.id).then(function (response) {
         _this.user = response.data.data;
         _this.usersTypeOptions = response.data.meta.usersTypeOptions;
+        _this.loading = false;
+      })["catch"](function (error) {
+        _this.errorCode = error.response.status;
         _this.loading = false;
       });
     },
@@ -462,21 +476,25 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-lg-8 col-12" })
+              _c("div", { staticClass: "col-lg-8 col-12" }),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "editUserTypeModal",
+                attrs: { modalSchema: _vm.modalSchemaEditUserType },
+                on: { ok: _vm.editUserType }
+              }),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "editUserModal",
+                attrs: { modalSchema: _vm.modalSchemaEditUser },
+                on: { ok: _vm.editUser }
+              })
             ]
-          : _vm._e(),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "editUserTypeModal",
-          attrs: { modalSchema: _vm.modalSchemaEditUserType },
-          on: { ok: _vm.editUserType }
-        }),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "editUserModal",
-          attrs: { modalSchema: _vm.modalSchemaEditUser },
-          on: { ok: _vm.editUser }
-        })
+          : _vm.errorCode === 403
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-forbidden")], 1)]
+          : _vm.errorCode === 404
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-not-found")], 1)]
+          : _vm._e()
       ],
       2
     )

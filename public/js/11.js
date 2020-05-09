@@ -167,6 +167,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProjectDetail",
@@ -188,6 +198,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       project: null,
       loading: false,
+      errorCode: 0,
       projectStatusOptions: [],
       taskStatusOptions: [],
       taskPriorityOptions: [],
@@ -260,6 +271,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.taskStatusOptions = response.data.meta.taskStatusOptions;
         _this.taskPriorityOptions = response.data.meta.taskPriorityOptions;
         _this.allUsers = response.data.meta.allUsers.data;
+        _this.loading = false;
+      })["catch"](function (error) {
+        _this.errorCode = error.response.status;
         _this.loading = false;
       });
     },
@@ -916,27 +930,31 @@ var render = function() {
                   ],
                   2
                 )
-              ])
+              ]),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "editProjectModal",
+                attrs: { modalSchema: _vm.modalSchemaEditProject },
+                on: { ok: _vm.editProject }
+              }),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "addTaskModal",
+                attrs: { modalSchema: _vm.modalSchemaAddTask },
+                on: { ok: _vm.addTask }
+              }),
+              _vm._v(" "),
+              _c("custom-modal", {
+                ref: "addUserToProjectModal",
+                attrs: { modalSchema: _vm.modalSchemaAddUserToProject },
+                on: { ok: _vm.addUserToProject }
+              })
             ]
-          : _vm._e(),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "editProjectModal",
-          attrs: { modalSchema: _vm.modalSchemaEditProject },
-          on: { ok: _vm.editProject }
-        }),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "addTaskModal",
-          attrs: { modalSchema: _vm.modalSchemaAddTask },
-          on: { ok: _vm.addTask }
-        }),
-        _vm._v(" "),
-        _c("custom-modal", {
-          ref: "addUserToProjectModal",
-          attrs: { modalSchema: _vm.modalSchemaAddUserToProject },
-          on: { ok: _vm.addUserToProject }
-        })
+          : _vm.errorCode === 403
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-forbidden")], 1)]
+          : _vm.errorCode === 404
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-not-found")], 1)]
+          : _vm._e()
       ],
       2
     )

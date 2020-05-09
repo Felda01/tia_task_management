@@ -43,10 +43,21 @@
                         <p>{{ $t('client.no_clients') }}</p>
                     </div>
                 </template>
+
+                <!-- Modal Add Client -->
+                <custom-modal ref="addClientModal" @ok="addClient" :modalSchema="modalSchemaAddClient" />
+            </template>
+            <template v-else-if="errorCode === 403">
+                <div class="col-12">
+                    <error-forbidden />
+                </div>
+            </template>
+            <template v-else-if="errorCode === 404">
+                <div class="col-12">
+                    <error-not-found />
+                </div>
             </template>
         </div>
-
-        <custom-modal ref="addClientModal" @ok="addClient" :modalSchema="modalSchemaAddClient" />
     </div>
 </template>
 
@@ -76,7 +87,8 @@
                     modalRef: 'addClient',
                     modalTitle: this.$t('client.add.title'),
                     okBtnTitle: this.$t('modal.add.btn')
-                }
+                },
+                errorCode: 0,
             }
         },
         created () {
@@ -85,11 +97,14 @@
         methods: {
             fetchData() {
                 this.loading = true;
-                this.axios.get('/api/clients').then((response) => {
+                this.axios.get('/api/clients').then(response => {
                     this.clients = response.data.data;
                     this.links = response.data.links;
                     this.meta = response.data.meta;
                     this.clientTypeOptions = response.data.meta.clientTypeOptions;
+                    this.loading = false;
+                }).catch(error => {
+                    this.errorCode = error.response.status;
                     this.loading = false;
                 });
             },

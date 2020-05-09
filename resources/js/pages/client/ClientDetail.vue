@@ -69,7 +69,7 @@
                     </div>
                 </div>
 
-                <!-- Modal edit Client -->
+                <!-- Modal Edit Client -->
                 <custom-modal ref="editClientModal" @ok="editClient" :modalSchema="modalSchemaEditClient" />
 
                 <!-- Modal Edit Client User -->
@@ -77,6 +77,16 @@
 
                 <!-- Modal Project -->
                 <custom-modal ref="addProjectModal" @ok="addProject" :modalSchema="modalSchemaAddProject" />
+            </template>
+            <template v-else-if="errorCode === 403">
+                <div class="col-12">
+                    <error-forbidden />
+                </div>
+            </template>
+            <template v-else-if="errorCode === 404">
+                <div class="col-12">
+                    <error-not-found />
+                </div>
             </template>
         </div>
     </div>
@@ -96,6 +106,7 @@
             return {
                 client: null,
                 loading: false,
+                errorCode: 0,
                 clientTypeOptions: [],
                 modalSchemaEditClient: {
                     form: {
@@ -181,6 +192,9 @@
                 this.axios.get('/api/clients/' + this.$route.params.id).then((response) => {
                     this.client = response.data.data;
                     this.clientTypeOptions = response.data.meta.clientTypeOptions;
+                    this.loading = false;
+                }).catch(error => {
+                    this.errorCode = error.response.status;
                     this.loading = false;
                 });
             },

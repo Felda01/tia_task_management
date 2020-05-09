@@ -100,6 +100,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ClientDetail",
@@ -108,6 +118,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       client: null,
       loading: false,
+      errorCode: 0,
       clientTypeOptions: [],
       modalSchemaEditClient: {
         form: {
@@ -190,6 +201,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.axios.get('/api/clients/' + this.$route.params.id).then(function (response) {
         _this.client = response.data.data;
         _this.clientTypeOptions = response.data.meta.clientTypeOptions;
+        _this.loading = false;
+      })["catch"](function (error) {
+        _this.errorCode = error.response.status;
         _this.loading = false;
       });
     },
@@ -551,6 +565,10 @@ var render = function() {
                 on: { ok: _vm.addProject }
               })
             ]
+          : _vm.errorCode === 403
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-forbidden")], 1)]
+          : _vm.errorCode === 404
+          ? [_c("div", { staticClass: "col-12" }, [_c("error-not-found")], 1)]
           : _vm._e()
       ],
       2

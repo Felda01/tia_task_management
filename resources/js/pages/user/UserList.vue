@@ -33,9 +33,21 @@
                         </router-link>
                     </div>
                 </template>
+
+                <!-- Modal Add User -->
+                <custom-modal ref="addUserModal" @ok="addUser" :modalSchema="modalSchemaAddUser" />
+            </template>
+            <template v-else-if="errorCode === 403">
+                <div class="col-12">
+                    <error-forbidden />
+                </div>
+            </template>
+            <template v-else-if="errorCode === 404">
+                <div class="col-12">
+                    <error-not-found />
+                </div>
             </template>
         </div>
-        <custom-modal ref="addUserModal" @ok="addUser" :modalSchema="modalSchemaAddUser" />
     </div>
 </template>
 
@@ -53,6 +65,7 @@
             return {
                 loading: false,
                 users: [],
+                errorCode: 0,
                 modalSchemaAddUser: {
                     form: {
                         url: '/api/users',
@@ -77,6 +90,9 @@
                 this.axios.get('/api/users').then((response) => {
                     this.users = response.data.data;
                     this.usersTypeOptions = response.data.meta.usersTypeOptions;
+                    this.loading = false;
+                }).catch(error => {
+                    this.errorCode = error.response.status;
                     this.loading = false;
                 });
             },

@@ -169,5 +169,9 @@
     "dependency.removeMessage": "Are you sure you want to delete it ?",
     "task.dependencies.no_dependencies": "No dependencies",
     "task.dependencies.warning.start": "Task can not be started - is in conflict with: ",
-    "task.dependencies.warning.finish": "Task can not be completed - is in conflict with: "
+    "task.dependencies.warning.finish": "Task can not be completed - is in conflict with: ",
+    "error.forbidden.title": "403 Forbidden",
+    "error.forbidden.message": "Access denied. You do not have the permission to access this page on this server.",
+    "error.notFound.title": "404 Page not found",
+    "error.notFound.message": "The page you were looking for does not exist."
 }

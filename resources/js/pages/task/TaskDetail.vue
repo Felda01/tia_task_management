@@ -204,19 +204,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Edit task modal -->
+                <custom-modal ref="editTaskModal" @ok="editTask" :modalSchema="modalSchemaEditTask" />
+
+                <!-- Add comment modal -->
+                <custom-modal ref="addCommentModal" @ok="addComment" :modalSchema="modalSchemaAddComment" />
+
+                <!-- Add time tracking modal -->
+                <custom-modal ref="addTimeTrackingModal" @ok="addTimeTracking" :modalSchema="modalSchemaAddTimeTracking" />
+
+                <!-- Add dependencies modal -->
+                <custom-modal ref="addDependencyModal" @ok="addDependency" :modalSchema="modalSchemaAddDependency" />
             </template>
-
-            <!-- Edit task modal -->
-            <custom-modal ref="editTaskModal" @ok="editTask" :modalSchema="modalSchemaEditTask" />
-
-            <!-- Add comment modal -->
-            <custom-modal ref="addCommentModal" @ok="addComment" :modalSchema="modalSchemaAddComment" />
-
-            <!-- Add time tracking modal -->
-            <custom-modal ref="addTimeTrackingModal" @ok="addTimeTracking" :modalSchema="modalSchemaAddTimeTracking" />
-
-            <!-- Add dependencies modal -->
-            <custom-modal ref="addDependencyModal" @ok="addDependency" :modalSchema="modalSchemaAddDependency" />
+            <template v-else-if="errorCode === 403">
+                <div class="col-12">
+                    <error-forbidden />
+                </div>
+            </template>
+            <template v-else-if="errorCode === 404">
+                <div class="col-12">
+                    <error-not-found />
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -282,6 +292,7 @@
             return {
                 task: null,
                 loading: false,
+                errorCode: 0,
                 modalSchemaEditTask: {
                     form: {
                         url: '/api/tasks/' + this.$route.params.id,
@@ -361,6 +372,9 @@
                     this.commentTypeOptions = response.data.meta.commentTypeOptions;
                     this.taskDependenciesTypeOptions = response.data.meta.taskDependenciesTypeOptions;
                     this.checkDependenciesConflicts();
+                    this.loading = false;
+                }).catch(error => {
+                    this.errorCode = error.response.status;
                     this.loading = false;
                 });
             },

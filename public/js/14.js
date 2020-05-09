@@ -52,6 +52,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TaskList",
   data: function data() {
@@ -146,7 +166,89 @@ var render = function() {
               ]),
               _vm._v(" "),
               _vm.tasks.length > 0
-                ? [_vm._v("\n                Tasks\n            ")]
+                ? _vm._l(_vm.tasks, function(task) {
+                    return _c(
+                      "div",
+                      { staticClass: "col-lg-4 col-12 mb-4" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "text-decoration-none",
+                            attrs: {
+                              to: {
+                                name: "tasks.show",
+                                params: { id: task.id }
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "card h-100" }, [
+                              _c("div", { staticClass: "card-header" }, [
+                                _c("h5", { staticClass: "mb-0" }, [
+                                  _vm._v(_vm._s(task.title))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "card-body d-flex justify-content-between"
+                                },
+                                [
+                                  _c("div", { staticClass: "d-flex" }, [
+                                    _c("div", [
+                                      _c("p", { staticClass: "mb-0" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("date")(
+                                              new Date(task.start_date),
+                                              "DD.MM.YYYY"
+                                            )
+                                          )
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", { staticClass: "mb-0" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("date")(
+                                              new Date(task.end_date),
+                                              "DD.MM.YYYY"
+                                            )
+                                          )
+                                        )
+                                      ])
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", [
+                                    _c("p", { staticClass: "mb-0" }, [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm._f("capitalize")(task.status)
+                                        )
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("p", { staticClass: "mb-0" }, [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm._f("capitalize")(task.priority)
+                                        )
+                                      )
+                                    ])
+                                  ])
+                                ]
+                              )
+                            ])
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  })
                 : [
                     _c("div", { staticClass: "col-12" }, [
                       _c("p", [_vm._v(_vm._s(_vm.$t("task.no_open_tasks")))])

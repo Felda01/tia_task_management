@@ -30,7 +30,8 @@ class ProjectResource extends JsonResource
             'client' => new ClientResource($this->whenLoaded('client')),
             'versions' => VersionResource::collection($this->whenLoaded('versions')),
             'tasks' => TaskResource::collection($this->whenLoaded('activeTasks')),
-            'users' => UserResource::collection($this->whenLoaded('users'))
+            'users' => UserResource::collection($this->whenLoaded('users')),
+            'tasks_no_version' => TaskResource::collection($this->whenLoaded('tasksWithNoVersion')),
         ];
     }
 }

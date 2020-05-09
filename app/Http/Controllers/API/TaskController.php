@@ -40,7 +40,7 @@ class TaskController extends Controller
         /** @var User $user */
         $user = request()->user('api');
 
-        return new TaskCollection($user->openAssigneeTasks->load(['version', 'assignee', 'reporter', 'project']));
+        return new TaskCollection($user->openAssigneeTasks()->with(['version', 'assignee', 'reporter', 'project'])->get());
     }
 
     /**

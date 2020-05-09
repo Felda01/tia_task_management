@@ -83,7 +83,6 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-around">
                                 <router-link :to="{ name: 'projects.show.roadmap', params: { slug: project.slug } }" class="btn btn-outline-primary btn-sm">{{ $t('project.overview.roadmap') }}</router-link>
-                                <router-link :to="{ name: 'projects.show.board', params: { slug: project.slug } }" class="btn btn-outline-primary btn-sm">{{ $t('project.overview.board') }}</router-link>
                                 <router-link :to="{ name: 'projects.show.gantt', params: { slug: project.slug } }" class="btn btn-outline-primary btn-sm">{{ $t('project.overview.gantt') }}</router-link>
                             </div>
                         </div>

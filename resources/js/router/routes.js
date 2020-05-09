@@ -29,7 +29,6 @@ export default [
 
     { path: '/projects/:slug', name: 'projects.show', component: page('project/ProjectDetail.vue'), beforeEnter: VueRouterMultiguard([auth]) },
     { path: '/projects/:slug/roadmap', name: 'projects.show.roadmap', component: page('project/RoadMap.vue'), beforeEnter: VueRouterMultiguard([auth]) },
-    { path: '/projects/:slug/board', name: 'projects.show.board', component: page('project/Board.vue'), beforeEnter: VueRouterMultiguard([auth]) },
     { path: '/projects/:slug/gantt', name: 'projects.show.gantt', component: page('project/Gantt.vue'), beforeEnter: VueRouterMultiguard([auth]) },
 
     { path: '/tasks', name: 'tasks', component: page('task/TaskList.vue'), beforeEnter: VueRouterMultiguard([auth]) },

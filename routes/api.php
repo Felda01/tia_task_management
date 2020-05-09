@@ -31,7 +31,6 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('projects', 'API\ProjectController', ['except' => ['destroy', 'index']]);
     Route::get('projects/{project}/roadmap', 'API\ProjectController@roadmap')->name('projects.show.roadmap');
-    Route::get('projects/{project}/board', 'API\ProjectController@board')->name('projects.show.board');
     Route::get('projects/{project}/gantt', 'API\ProjectController@gantt')->name('projects.show.gantt');
     Route::put('projects/{project}/assign-user', 'API\ProjectController@assignUser')->name('projects.assignUser');
 

@@ -176,7 +176,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProjectDetail",
@@ -729,20 +728,6 @@ var render = function() {
                             }
                           },
                           [_vm._v(_vm._s(_vm.$t("project.overview.roadmap")))]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "btn btn-outline-primary btn-sm",
-                            attrs: {
-                              to: {
-                                name: "projects.show.board",
-                                params: { slug: _vm.project.slug }
-                              }
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.$t("project.overview.board")))]
                         ),
                         _vm._v(" "),
                         _c(

@@ -19,7 +19,27 @@
                     <h1>{{ $t('task.my_open_tasks') }}</h1>
                 </div>
                 <template v-if="tasks.length > 0">
-                    Tasks
+                    <div class="col-lg-4 col-12 mb-4" v-for="task in tasks">
+                        <router-link :to="{ name: 'tasks.show', params: { id: task.id } }" class="text-decoration-none">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0">{{ task.title }}</h5>
+                                </div>
+                                <div class="card-body d-flex justify-content-between">
+                                    <div class="d-flex">
+                                        <div>
+                                            <p class="mb-0">{{ new Date(task.start_date) | date('DD.MM.YYYY') }}</p>
+                                            <p class="mb-0">{{ new Date(task.end_date) | date('DD.MM.YYYY') }}</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0">{{ task.status | capitalize }}</p>
+                                        <p class="mb-0">{{ task.priority | capitalize }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </router-link>
+                    </div>
                 </template>
                 <template v-else>
                     <div class="col-12">

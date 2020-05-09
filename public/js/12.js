@@ -94,6 +94,63 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoadMap",
@@ -148,6 +205,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         modalRef: 'editVersion',
         modalTitle: this.$t('project.version.edit.title.modal'),
         okBtnTitle: this.$t('modal.edit.btn')
+      },
+      removeVersionMessageBoxOptions: {
+        title: this.$t('modalWarning'),
+        okVariant: 'success',
+        cancelVariant: 'danger'
       }
     };
   },
@@ -214,7 +276,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       this.project.versions.splice(index, 1, version);
     },
-    deleteVersionModal: function deleteVersionModal(version) {//
+    deleteVersionModal: function deleteVersionModal(version) {
+      var _this2 = this;
+
+      this.$bvModal.msgBoxConfirm(this.$t('version.removeMessage'), this.removeVersionMessageBoxOptions).then(function (value) {
+        if (value) {
+          _this2.axios["delete"]('/api/versions/' + version.id).then(function (response) {
+            _this2.task.timeTracking = _.filter(_this2.task.timeTracking, function (timeElement) {
+              return timeElement.id !== time.id;
+            });
+          });
+        }
+      });
+    },
+    doneTasksInVersion: function doneTasksInVersion(version) {
+      var count = 0;
+
+      for (var i = 0; i < version.tasks.length; i++) {
+        if (version.tasks[i].status === 'completed') {
+          count += 1;
+        }
+      }
+
+      return count / version.tasks.length * 100;
     }
   }
 });
@@ -284,174 +368,529 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "col-12" }, [
-                _c("div", { staticClass: "card" }, [
-                  _c("div", { staticClass: "card-header" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _c(
-                        "div",
-                        { staticClass: "col d-flex align-items-center" },
-                        [
-                          _c("h5", { staticClass: "mb-0" }, [
-                            _vm._v(_vm._s(_vm.$t("project.show.versions")))
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col text-right" }, [
-                        _vm.isSenior
-                          ? _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-outline-primary btn-sm",
-                                on: { click: _vm.addVersionModal }
-                              },
-                              [
-                                _vm._v(
-                                  _vm._s(_vm.$t("project.version.add.btn"))
-                                )
-                              ]
-                            )
-                          : _vm._e()
-                      ])
-                    ])
-                  ]),
+              _c(
+                "div",
+                { staticClass: "col-12 mb-4 d-flex justify-content-between" },
+                [
+                  _c("h2", [_vm._v(_vm._s(_vm.$t("project.show.versions")))]),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "card-body" },
-                    [
-                      _vm.project.versions && _vm.project.versions.length > 0
-                        ? _vm._l(_vm.sortedVersions, function(version, index) {
-                            return _c(
-                              "div",
-                              {
-                                key: version.id,
-                                staticClass: "card",
-                                class: {
-                                  "mb-4":
-                                    index < _vm.project.versions.length - 1
-                                }
-                              },
-                              [
-                                _c("div", { staticClass: "card-header" }, [
-                                  _c("div", { staticClass: "row" }, [
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "col d-flex align-items-center"
-                                      },
-                                      [
-                                        _c("h5", { staticClass: "mb-0" }, [
-                                          _vm._v(
-                                            _vm._s(version.title) +
-                                              " (" +
-                                              _vm._s(
-                                                _vm._f("date")(
-                                                  new Date(version.end_date),
-                                                  "DD.MM.YYYY"
-                                                )
-                                              ) +
-                                              ")"
-                                          )
-                                        ])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "col text-right" },
-                                      [
-                                        _vm.isSenior
-                                          ? _c(
-                                              "button",
-                                              {
-                                                staticClass:
-                                                  "btn btn-outline-primary btn-sm",
-                                                on: {
-                                                  click: function($event) {
-                                                    return _vm.editVersionModal(
-                                                      version
-                                                    )
-                                                  }
-                                                }
-                                              },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    _vm.$t(
-                                                      "project.version.edit.btn"
-                                                    )
-                                                  )
-                                                )
-                                              ]
-                                            )
-                                          : _vm._e(),
-                                        _vm._v(" "),
-                                        _vm.isSenior
-                                          ? _c(
-                                              "button",
-                                              {
-                                                staticClass:
-                                                  "btn btn-outline-danger btn-sm",
-                                                on: {
-                                                  click: function($event) {
-                                                    return _vm.deleteVersionModal(
-                                                      version
-                                                    )
-                                                  }
-                                                }
-                                              },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    _vm.$t(
-                                                      "project.version.delete.btn"
-                                                    )
-                                                  )
-                                                )
-                                              ]
-                                            )
-                                          : _vm._e()
-                                      ]
-                                    )
-                                  ])
-                                ]),
-                                _vm._v(" "),
+                  _vm.isSenior
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-primary btn-sm",
+                          on: { click: _vm.addVersionModal }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("project.version.add.btn")))]
+                      )
+                    : _vm._e()
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-12" },
+                [
+                  _vm.project.versions && _vm.project.versions.length > 0
+                    ? _vm._l(_vm.sortedVersions, function(version, index) {
+                        return _c(
+                          "div",
+                          { key: version.id, staticClass: "card mb-4" },
+                          [
+                            _c("div", { staticClass: "card-header" }, [
+                              _c("div", { staticClass: "row" }, [
                                 _c(
                                   "div",
-                                  { staticClass: "card-body" },
+                                  {
+                                    staticClass: "col d-flex align-items-center"
+                                  },
                                   [
-                                    version.tasks && version.tasks.length > 0
-                                      ? void 0
-                                      : [
+                                    _c("h5", { staticClass: "mb-0" }, [
+                                      _vm._v(
+                                        _vm._s(version.title) +
+                                          " (" +
+                                          _vm._s(
+                                            _vm._f("date")(
+                                              new Date(version.end_date),
+                                              "DD.MM.YYYY"
+                                            )
+                                          ) +
+                                          ")"
+                                      )
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col text-right" }, [
+                                  _vm.isSenior
+                                    ? _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "btn btn-outline-primary btn-sm",
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.editVersionModal(
+                                                version
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
                                           _vm._v(
-                                            "\n                                        " +
-                                              _vm._s(
-                                                _vm.$t("version.task.no_tasks")
-                                              ) +
-                                              "\n                                    "
+                                            _vm._s(
+                                              _vm.$t("project.version.edit.btn")
+                                            )
                                           )
                                         ]
-                                  ],
-                                  2
-                                )
-                              ]
-                            )
-                          })
-                        : [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.$t("project.version.no_versions")) +
-                                "\n                        "
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.isSenior
+                                    ? _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "btn btn-outline-danger btn-sm",
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.deleteVersionModal(
+                                                version
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm.$t(
+                                                "project.version.delete.btn"
+                                              )
+                                            )
+                                          )
+                                        ]
+                                      )
+                                    : _vm._e()
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "card-body" },
+                              [
+                                version.tasks && version.tasks.length > 0
+                                  ? [
+                                      _c(
+                                        "div",
+                                        { staticClass: "row" },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "col-12 mb-4" },
+                                            [
+                                              _c("b-progress", {
+                                                attrs: {
+                                                  value: _vm.doneTasksInVersion(
+                                                    version
+                                                  ),
+                                                  max: 100,
+                                                  "show-progress": ""
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _vm._l(version.tasks, function(task) {
+                                            return _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "col-lg-6 col-12 mb-4"
+                                              },
+                                              [
+                                                _c(
+                                                  "router-link",
+                                                  {
+                                                    staticClass:
+                                                      "text-decoration-none",
+                                                    attrs: {
+                                                      to: {
+                                                        name: "tasks.show",
+                                                        params: { id: task.id }
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "card h-100"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "card-header"
+                                                          },
+                                                          [
+                                                            _c(
+                                                              "h5",
+                                                              {
+                                                                staticClass:
+                                                                  "mb-0"
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  _vm._s(
+                                                                    task.title
+                                                                  )
+                                                                )
+                                                              ]
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "card-body d-flex justify-content-between"
+                                                          },
+                                                          [
+                                                            _c(
+                                                              "div",
+                                                              {
+                                                                staticClass:
+                                                                  "d-flex"
+                                                              },
+                                                              [
+                                                                task.assignee
+                                                                  ? _c(
+                                                                      "div",
+                                                                      {
+                                                                        staticClass:
+                                                                          "d-flex align-items-center"
+                                                                      },
+                                                                      [
+                                                                        _c(
+                                                                          "img",
+                                                                          {
+                                                                            staticClass:
+                                                                              "avatar avatar-md mr-2",
+                                                                            attrs: {
+                                                                              src:
+                                                                                task
+                                                                                  .assignee
+                                                                                  .photo,
+                                                                              alt:
+                                                                                task
+                                                                                  .assignee
+                                                                                  .fullName
+                                                                            }
+                                                                          }
+                                                                        )
+                                                                      ]
+                                                                    )
+                                                                  : _vm._e(),
+                                                                _vm._v(" "),
+                                                                _c("div", [
+                                                                  _c(
+                                                                    "p",
+                                                                    {
+                                                                      staticClass:
+                                                                        "mb-0"
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        _vm._s(
+                                                                          _vm._f(
+                                                                            "date"
+                                                                          )(
+                                                                            new Date(
+                                                                              task.start_date
+                                                                            ),
+                                                                            "DD.MM.YYYY"
+                                                                          )
+                                                                        )
+                                                                      )
+                                                                    ]
+                                                                  ),
+                                                                  _vm._v(" "),
+                                                                  _c(
+                                                                    "p",
+                                                                    {
+                                                                      staticClass:
+                                                                        "mb-0"
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        _vm._s(
+                                                                          _vm._f(
+                                                                            "date"
+                                                                          )(
+                                                                            new Date(
+                                                                              task.end_date
+                                                                            ),
+                                                                            "DD.MM.YYYY"
+                                                                          )
+                                                                        )
+                                                                      )
+                                                                    ]
+                                                                  )
+                                                                ])
+                                                              ]
+                                                            ),
+                                                            _vm._v(" "),
+                                                            _c("div", [
+                                                              _c(
+                                                                "p",
+                                                                {
+                                                                  staticClass:
+                                                                    "mb-0"
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    _vm._s(
+                                                                      _vm._f(
+                                                                        "capitalize"
+                                                                      )(
+                                                                        task.status
+                                                                      )
+                                                                    )
+                                                                  )
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "p",
+                                                                {
+                                                                  staticClass:
+                                                                    "mb-0"
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    _vm._s(
+                                                                      _vm._f(
+                                                                        "capitalize"
+                                                                      )(
+                                                                        task.priority
+                                                                      )
+                                                                    )
+                                                                  )
+                                                                ]
+                                                              )
+                                                            ])
+                                                          ]
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ],
+                                              1
+                                            )
+                                          })
+                                        ],
+                                        2
+                                      )
+                                    ]
+                                  : [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(
+                                            _vm.$t("version.task.no_tasks")
+                                          ) +
+                                          "\n                            "
+                                      )
+                                    ]
+                              ],
+                              2
                             )
                           ]
-                    ],
-                    2
-                  )
-                ])
-              ]),
+                        )
+                      })
+                    : [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.$t("project.version.no_versions")) +
+                            "\n                "
+                        )
+                      ],
+                  _vm._v(" "),
+                  _vm.project.tasks_no_version &&
+                  _vm.project.tasks_no_version.length > 0
+                    ? [
+                        _c("div", { staticClass: "card" }, [
+                          _vm._m(0),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "card-body" }, [
+                            _c(
+                              "div",
+                              { staticClass: "row" },
+                              _vm._l(_vm.project.tasks_no_version, function(
+                                task,
+                                index
+                              ) {
+                                return _c(
+                                  "div",
+                                  {
+                                    key: "task" + task.id,
+                                    staticClass: "col-lg-6 col-12 mb-4"
+                                  },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        staticClass: "text-decoration-none",
+                                        attrs: {
+                                          to: {
+                                            name: "tasks.show",
+                                            params: { id: task.id }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "card h-100" },
+                                          [
+                                            _c(
+                                              "div",
+                                              { staticClass: "card-header" },
+                                              [
+                                                _c(
+                                                  "h5",
+                                                  { staticClass: "mb-0" },
+                                                  [_vm._v(_vm._s(task.title))]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "card-body d-flex justify-content-between"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  { staticClass: "d-flex" },
+                                                  [
+                                                    task.assignee
+                                                      ? _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "d-flex align-items-center"
+                                                          },
+                                                          [
+                                                            _c("img", {
+                                                              staticClass:
+                                                                "avatar avatar-md mr-2",
+                                                              attrs: {
+                                                                src:
+                                                                  task.assignee
+                                                                    .photo,
+                                                                alt:
+                                                                  task.assignee
+                                                                    .fullName
+                                                              }
+                                                            })
+                                                          ]
+                                                        )
+                                                      : _vm._e(),
+                                                    _vm._v(" "),
+                                                    _c("div", [
+                                                      _c(
+                                                        "p",
+                                                        { staticClass: "mb-0" },
+                                                        [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              _vm._f("date")(
+                                                                new Date(
+                                                                  task.start_date
+                                                                ),
+                                                                "DD.MM.YYYY"
+                                                              )
+                                                            )
+                                                          )
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "p",
+                                                        { staticClass: "mb-0" },
+                                                        [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              _vm._f("date")(
+                                                                new Date(
+                                                                  task.end_date
+                                                                ),
+                                                                "DD.MM.YYYY"
+                                                              )
+                                                            )
+                                                          )
+                                                        ]
+                                                      )
+                                                    ])
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _c("div", [
+                                                  _c(
+                                                    "p",
+                                                    { staticClass: "mb-0" },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm._f("capitalize")(
+                                                            task.status
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "p",
+                                                    { staticClass: "mb-0" },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm._f("capitalize")(
+                                                            task.priority
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ])
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              }),
+                              0
+                            )
+                          ])
+                        ])
+                      ]
+                    : _vm._e()
+                ],
+                2
+              ),
               _vm._v(" "),
               _c("custom-modal", {
                 ref: "addVersionModal",
@@ -475,7 +914,20 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("h5", { staticClass: "mb-0" }, [_vm._v("No version")])
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

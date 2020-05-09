@@ -100821,6 +100821,7 @@ Vue.component('b-form-select-option', bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__
 Vue.component('b-overlay', bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__["BOverlay"]);
 Vue.component('b-form-datepicker', bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__["BFormDatepicker"]);
 Vue.component('b-alert', bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__["BAlert"]);
+Vue.component('b-progress', bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__["BProgress"]);
 Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__["ModalPlugin"]);
 
 Vue.component('has-error', vform__WEBPACK_IMPORTED_MODULE_6__["HasError"]);
@@ -101314,14 +101315,6 @@ var map = {
 		"./resources/js/pages/errors/404.vue",
 		8
 	],
-	"./project/Board": [
-		"./resources/js/pages/project/Board.vue",
-		9
-	],
-	"./project/Board.vue": [
-		"./resources/js/pages/project/Board.vue",
-		9
-	],
 	"./project/Gantt": [
 		"./resources/js/pages/project/Gantt.vue",
 		10
@@ -101547,11 +101540,6 @@ function page(path) {
   path: '/projects/:slug/roadmap',
   name: 'projects.show.roadmap',
   component: page('project/RoadMap.vue'),
-  beforeEnter: vue_router_multiguard__WEBPACK_IMPORTED_MODULE_0___default()([auth])
-}, {
-  path: '/projects/:slug/board',
-  name: 'projects.show.board',
-  component: page('project/Board.vue'),
   beforeEnter: vue_router_multiguard__WEBPACK_IMPORTED_MODULE_0___default()([auth])
 }, {
   path: '/projects/:slug/gantt',

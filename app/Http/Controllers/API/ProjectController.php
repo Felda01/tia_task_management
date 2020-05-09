@@ -27,7 +27,7 @@ class ProjectController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('project.show')->only(['show', 'roadmap', 'board', 'gantt']);
+        $this->middleware('project.show')->only(['show', 'roadmap', 'gantt']);
     }
 
     /**
@@ -98,15 +98,6 @@ class ProjectController extends Controller
     public function roadmap(Project $project)
     {
         return new ProjectResource($project->load(['versions.tasks.assignee', 'tasksWithNoVersion']));
-    }
-
-    /**
-     * @param Project $project
-     * @return ProjectResource
-     */
-    public function board(Project $project)
-    {
-        return new ProjectResource($project);
     }
 
     /**

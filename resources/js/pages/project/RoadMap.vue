@@ -13,47 +13,104 @@
                 <div class="col-12 mb-4">
                     <router-link :to="{ name: 'projects.show', params: { slug: project.slug } }" class="btn btn-outline-primary btn-sm">{{ $t('project.overview.back_to_project') }}</router-link>
                 </div>
+                <div class="col-12 mb-4 d-flex justify-content-between">
+                    <h2>{{ $t('project.show.versions') }}</h2>
+                    <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="addVersionModal">{{ $t('project.version.add.btn') }}</button>
+                </div>
                 <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <h5 class="mb-0">{{ $t('project.show.versions') }}</h5>
+                    <template v-if="project.versions && project.versions.length > 0">
+                        <div class="card mb-4" v-for="(version, index) in sortedVersions" :key="version.id">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col d-flex align-items-center">
+                                        <h5 class="mb-0">{{ version.title }} ({{ new Date(version.end_date) | date('DD.MM.YYYY') }})</h5>
+                                    </div>
+                                    <div class="col text-right">
+                                        <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="editVersionModal(version)">{{ $t('project.version.edit.btn') }}</button>
+                                        <button v-if="isSenior" class="btn btn-outline-danger btn-sm" @click="deleteVersionModal(version)">{{ $t('project.version.delete.btn') }}</button>
+                                    </div>
                                 </div>
-                                <div class="col text-right">
-                                    <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="addVersionModal">{{ $t('project.version.add.btn') }}</button>
+                            </div>
+                            <div class="card-body">
+                                <template v-if="version.tasks && version.tasks.length > 0">
+                                    <div class="row">
+                                        <div class="col-12 mb-4">
+                                            <b-progress :value="doneTasksInVersion(version)" :max="100" show-progress></b-progress>
+                                        </div>
+                                        <div class="col-lg-6 col-12 mb-4" v-for="task in version.tasks">
+                                            <router-link :to="{ name: 'tasks.show', params: { id: task.id } }" class="text-decoration-none">
+                                                <div class="card h-100">
+                                                    <div class="card-header">
+                                                        <h5 class="mb-0">{{ task.title }}</h5>
+                                                    </div>
+                                                    <div class="card-body d-flex justify-content-between">
+                                                        <div class="d-flex">
+                                                            <div v-if="task.assignee" class="d-flex align-items-center">
+                                                                <img :src="task.assignee.photo" class="avatar avatar-md mr-2" :alt="task.assignee.fullName">
+                                                            </div>
+                                                            <div>
+                                                                <p class="mb-0">{{ new Date(task.start_date) | date('DD.MM.YYYY') }}</p>
+                                                                <p class="mb-0">{{ new Date(task.end_date) | date('DD.MM.YYYY') }}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <p class="mb-0">{{ task.status | capitalize }}</p>
+                                                            <p class="mb-0">{{ task.priority | capitalize }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </router-link>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    {{ $t('version.task.no_tasks')}}
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else>
+                        {{ $t('project.version.no_versions')}}
+                    </template>
+                    <template v-if="project.tasks_no_version && project.tasks_no_version.length > 0">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="mb-0">No version</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-6 col-12 mb-4" v-for="(task, index) in project.tasks_no_version" :key="'task' + task.id">
+                                        <router-link :to="{ name: 'tasks.show', params: { id: task.id } }" class="text-decoration-none">
+                                            <div class="card h-100">
+                                                <div class="card-header">
+                                                    <h5 class="mb-0">{{ task.title }}</h5>
+                                                </div>
+                                                <div class="card-body d-flex justify-content-between">
+                                                    <div class="d-flex">
+                                                        <div v-if="task.assignee" class="d-flex align-items-center">
+                                                            <img :src="task.assignee.photo" class="avatar avatar-md mr-2" :alt="task.assignee.fullName">
+                                                        </div>
+                                                        <div>
+                                                            <p class="mb-0">{{ new Date(task.start_date) | date('DD.MM.YYYY') }}</p>
+                                                            <p class="mb-0">{{ new Date(task.end_date) | date('DD.MM.YYYY') }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-0">{{ task.status | capitalize }}</p>
+                                                        <p class="mb-0">{{ task.priority | capitalize }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </router-link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <template v-if="project.versions && project.versions.length > 0">
-                                <div class="card" v-for="(version, index) in sortedVersions" :key="version.id" :class="{'mb-4': index < project.versions.length - 1}">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col d-flex align-items-center">
-                                                <h5 class="mb-0">{{ version.title }} ({{ new Date(version.end_date) | date('DD.MM.YYYY') }})</h5>
-                                            </div>
-                                            <div class="col text-right">
-                                                <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="editVersionModal(version)">{{ $t('project.version.edit.btn') }}</button>
-                                                <button v-if="isSenior" class="btn btn-outline-danger btn-sm" @click="deleteVersionModal(version)">{{ $t('project.version.delete.btn') }}</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <template v-if="version.tasks && version.tasks.length > 0">
-
-                                        </template>
-                                        <template v-else>
-                                            {{ $t('version.task.no_tasks')}}
-                                        </template>
-                                    </div>
-                                </div>
-                            </template>
-                            <template v-else>
-                                {{ $t('project.version.no_versions')}}
-                            </template>
-                        </div>
-                    </div>
+                    </template>
                 </div>
 
                 <!-- Modal Add Version -->
@@ -141,7 +198,12 @@
                     modalRef: 'editVersion',
                     modalTitle: this.$t('project.version.edit.title.modal'),
                     okBtnTitle: this.$t('modal.edit.btn')
-                }
+                },
+                removeVersionMessageBoxOptions: {
+                    title: this.$t('modalWarning'),
+                    okVariant: 'success',
+                    cancelVariant: 'danger',
+                },
             }
         },
         created() {
@@ -206,7 +268,27 @@
                 this.project.versions.splice(index, 1, version);
             },
             deleteVersionModal(version) {
-                //
+                this.$bvModal.msgBoxConfirm(this.$t('version.removeMessage'), this.removeVersionMessageBoxOptions).then(value => {
+                    if (value) {
+                        this.axios.delete('/api/versions/' + version.id).then(response => {
+
+                            this.task.timeTracking = _.filter(this.task.timeTracking, function(timeElement) {
+                                return timeElement.id !== time.id;
+                            });
+                        });
+                    }
+                });
+            },
+            doneTasksInVersion(version) {
+                let count = 0;
+
+                for (let i = 0; i < version.tasks.length; i++) {
+                    if (version.tasks[i].status === 'completed') {
+                        count += 1;
+                    }
+                }
+
+                return count / version.tasks.length * 100;
             }
         }
     }

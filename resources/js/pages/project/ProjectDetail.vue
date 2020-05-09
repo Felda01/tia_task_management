@@ -97,7 +97,10 @@
                                     <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="addTaskModal">{{ $t('project.task.add.btn') }}</button>
                                 </div>
                                 <div class="card-body">
-                                    Filter
+                                    <div class="form-group">
+                                        <label for="task-sort">{{ $t('task.sort') }}</label>
+                                        <b-form-select id="task-sort" :options="taskSortOptions" v-model="taskSort" class="form-control"></b-form-select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +174,28 @@
             },
             filteredTasks() {
                 if (this.project.tasks && this.project.tasks.length > 0) {
-                    return this.project.tasks;
+                    switch (this.taskSort) {
+                        case "normal-desc": {
+                            return _.orderBy(this.project.tasks, ['id'], ['desc']);
+                        }
+                        case "end-date-asc": {
+                            return _.orderBy(this.project.tasks, ['end_date'], ['asc']);
+                        }
+                        case "end-date-desc": {
+                            return _.orderBy(this.project.tasks, ['end_date'], ['desc']);
+                        }
+                        case "priority-asc": {
+                            return _.sortBy(this.project.tasks, (e) => {
+                                return this.prioritySort(e.priority, false);
+                            });
+                        }
+                        case "priority-desc": {
+                            return _.sortBy(this.project.tasks, (e) => {
+                                return this.prioritySort(e.priority, true);
+                            });
+                        }
+                        default: return this.project.tasks;
+                    }
                 }
                 return [];
             },
@@ -242,7 +266,16 @@
                     modalRef: 'addUserToProject',
                     modalTitle: this.$t('project.add.user.title.modal'),
                     okBtnTitle: this.$t('modal.assign.btn')
-                }
+                },
+                taskSort: 'normal-asc',
+                taskSortOptions: [
+                    { value: 'normal-asc', text: this.$t('task.filter.normal.asc') },
+                    { value: 'normal-desc', text: this.$t('task.filter.normal.desc') },
+                    { value: 'end-date-asc', text: this.$t('task.filter.endDate.asc') },
+                    { value: 'end-date-desc', text: this.$t('task.filter.endDate.desc') },
+                    { value: 'priority-asc', text: this.$t('task.filter.priority.asc') },
+                    { value: 'priority-desc', text: this.$t('task.filter.priority.desc') },
+                ]
             }
         },
         created() {
@@ -419,6 +452,25 @@
             addUserToProject(response) {
                 this.task.users = response.data.data;
             },
+            prioritySort(priority, desc) {
+                switch (priority) {
+                    case "none": {
+                        return desc ? 5 : 1;
+                    }
+                    case "low": {
+                        return desc ? 4 : 2;
+                    }
+                    case "normal": {
+                        return 3;
+                    }
+                    case "high": {
+                        return desc ? 2 : 4;
+                    }
+                    case "immediate": {
+                        return desc ? 1 : 5;
+                    }
+                }
+            }
         }
     }
 </script>

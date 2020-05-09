@@ -106,7 +106,7 @@ class ProjectController extends Controller
      */
     public function gantt(Project $project)
     {
-        return new ProjectResource($project);
+        return new ProjectResource($project->load(['activeTasks.dependencies']));
     }
 
     /**

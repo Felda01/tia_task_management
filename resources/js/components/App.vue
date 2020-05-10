@@ -58,7 +58,7 @@
             ]),
         },
         created() {
-            window.Echo.channel('laravel_database_notification').listen('.notification.created', (data) => {
+            window.Echo.channel('task_management_tool_database_notification').listen('.notification.created', (data) => {
                 if (this.userId && this.userId === data.user.id) {
                     this.$bvToast.toast(data.task.project.slug + ': ' + data.task.title, {
                         title: data.message,

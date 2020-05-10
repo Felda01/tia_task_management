@@ -36,14 +36,14 @@ class Project extends Model
      *
      * @var array
      */
-    protected $guarded = ['maxEndDate', 'minStartDate'];
+    protected $guarded = [];
 
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['is_admin'];
+    protected $appends = ['max_end_date', 'min_start_date'];
 
 
     /**

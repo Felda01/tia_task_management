@@ -7,7 +7,7 @@
                         <content-placeholders-heading />
                     </content-placeholders>
                 </div>
-                <div class="col-lg-4 col-md-6 col-12" v-for="n in 12" >
+                <div class="col-lg-4 col-12" v-for="n in 12" >
                     <content-placeholders class="mb-4">
                         <content-placeholders-heading />
                         <content-placeholders-text :lines="3" />

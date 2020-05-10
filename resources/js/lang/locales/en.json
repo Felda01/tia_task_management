@@ -144,7 +144,8 @@
     "time_tracking.time": "Hours",
     "time_tracking.removeMessage": "Are you sure you want to delete it ?",
     "task.time_tracking.no_time_tracking": "No hours",
-    "task.time_tracking.total": "Total",
+    "task.time_tracking.total": "Total hours",
+    "task.time_tracking.hours": "hours:",
     "modalWarning": "Warning",
     "user.email": "Email",
     "user.first_name": "First name",
@@ -182,5 +183,6 @@
     "task.filter.endDate.desc": "End date DESC",
     "task.filter.priority.asc": "Priority ASC",
     "task.filter.priority.desc": "Priority DESC",
-    "task.sort": "Sorting"
+    "task.sort": "Sorting",
+    "dashboard.welcome": "Welcome to TMT."
 }

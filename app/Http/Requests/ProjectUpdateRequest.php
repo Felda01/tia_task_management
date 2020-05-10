@@ -36,8 +36,8 @@ class ProjectUpdateRequest extends FormRequest
 
         return [
             'title' => 'required|string|max:255',
-            'start_date' => ['required', 'date', 'before_or_equal:'.$project->minStartDate()],
-            'end_date' => ['required', 'date', 'after_or_equal:start_date', 'after_or_equal:'.$project->maxEndDate()],
+            'start_date' => ['required', 'date', 'before_or_equal:'.$project->min_start_date],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date', 'after_or_equal:'.$project->max_end_date],
             'status' => ['required', 'string', Rule::in([Project::STATUS_ACTIVE, Project::STATUS_FINISHED, Project::STATUS_CLOSED])],
         ];
     }

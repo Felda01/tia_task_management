@@ -7,13 +7,13 @@
                         <content-placeholders-heading :img="true" />
                     </content-placeholders>
                 </div>
-                <div class="col-md-4 col-12">
+                <div class="col-lg-4 col-12">
                     <content-placeholders class="mb-4">
                         <content-placeholders-heading  />
                         <content-placeholders-text :lines="4" />
                     </content-placeholders>
                 </div>
-                <div class="col-md-8 col-12">
+                <div class="col-lg-8 col-12">
                     <content-placeholders class="mb-4">
                         <content-placeholders-heading  />
                         <content-placeholders-text :lines="8" />
@@ -21,11 +21,11 @@
                 </div>
             </template>
             <template v-else-if="client">
-                <div class="col-12 mb-4 d-flex justify-content-between">
-                    <h1><span :class="'badge badge-' + badgeType(client.type) + ' text-uppercase mr-2'">{{ client.type }}</span>{{ client.name }}</h1>
+                <div class="col-12 mb-4 d-flex flex-lg-row flex-column justify-content-lg-between align-items-lg-center">
+                    <h1 class="mb-lg-0 mb-3"><span :class="'badge badge-' + badgeType(client.type) + ' text-uppercase mr-2'">{{ client.type }}</span>{{ client.name }}</h1>
                     <button v-if="isSenior" class="btn btn-outline-primary" @click="editClientModal">{{ $t('client.edit.btn') }}</button>
                 </div>
-                <div class="col-md-4 col-12 mb-4">
+                <div class="col-lg-4 col-12 mb-4">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">{{ $t('client.show.contact') }}</h5>
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8 col-12 mb-4">
+                <div class="col-lg-8 col-12 mb-4">
                     <div class="card">
                         <div class="card-header">
                             <div class="row">

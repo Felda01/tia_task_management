@@ -7,7 +7,7 @@
                         <content-placeholders-heading />
                     </content-placeholders>
                 </div>
-                <div class="col-lg-4 col-md-6 col-12" v-for="n in 12" >
+                <div class="col-lg-4 col-12" v-for="n in 12" >
                     <content-placeholders class="mb-4">
                         <content-placeholders-heading />
                         <content-placeholders-text :lines="3" />
@@ -20,7 +20,7 @@
                     <button v-if="isSenior" class="btn btn-outline-primary" @click="addClientModal">{{ $t('client_list.add.client.btn') }}</button>
                 </div>
                 <template v-if="clients.length > 0">
-                    <div class="col-lg-4 col-md-6 col-12 mb-4" v-for="client in clients" >
+                    <div class="col-lg-4 col-12 mb-4" v-for="client in clients" >
                         <router-link :to="{ name: 'clients.show', params: { id: client.id } }" class="text-decoration-none">
                             <div class="card h-100">
                                 <div class="card-header">

@@ -7,7 +7,7 @@
                         <content-placeholders-heading />
                     </content-placeholders>
                 </div>
-                <div class="col-md-4 col-12">
+                <div class="col-lg-4 col-12">
                     <content-placeholders class="mb-4">
                         <content-placeholders-heading />
                         <content-placeholders-text :lines="3" />
@@ -29,7 +29,7 @@
                         <content-placeholders-text :lines="3" />
                     </content-placeholders>
                 </div>
-                <div class="col-md-8 col-12">
+                <div class="col-lg-8 col-12">
                     <content-placeholders class="mb-4" v-for="n in 3" :key="'des-' + n">
                         <content-placeholders-heading  />
                         <content-placeholders-text :lines="4" />
@@ -51,27 +51,27 @@
                     <h1>{{ task.title }}</h1>
                     <button v-if="isEmployee" class="btn btn-outline-primary" @click="editTaskModal">{{ $t('task.edit.btn') }}</button>
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-header">
                             <h5 class="mb-0">{{ $t('task.show.details') }}</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-4">{{ $t('task.show.details.project') }}:</div>
-                                <div class="col-md-8"><router-link :to="{ name: 'projects.show', params: { slug: task.project.slug } }" class="text-decoration-none">{{ task.project.slug }}</router-link></div>
+                                <div class="col-4">{{ $t('task.show.details.project') }}:</div>
+                                <div class="col-8"><router-link :to="{ name: 'projects.show', params: { slug: task.project.slug } }" class="text-decoration-none">{{ task.project.slug }}</router-link></div>
                             </div>
                             <div class="row" v-if="task.version">
-                                <div class="col-md-4">{{ $t('task.show.details.version') }}:</div>
-                                <div class="col-md-8">{{ task.version.title }}</div>
+                                <div class="col-4">{{ $t('task.show.details.version') }}:</div>
+                                <div class="col-8">{{ task.version.title }}</div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4">{{ $t('task.show.details.status') }}:</div>
-                                <div class="col-md-8">{{ task.status | capitalize }}</div>
+                                <div class="col-4">{{ $t('task.show.details.status') }}:</div>
+                                <div class="col-8">{{ task.status | capitalize }}</div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4">{{ $t('task.show.details.priority') }}:</div>
-                                <div class="col-md-8">{{ task.priority | capitalize }}</div>
+                                <div class="col-4">{{ $t('task.show.details.priority') }}:</div>
+                                <div class="col-8">{{ task.priority | capitalize }}</div>
                             </div>
                         </div>
 
@@ -82,8 +82,8 @@
                         </div>
                         <div class="card-body">
                             <div class="row mb-2">
-                                <div class="col-md-4">{{ $t('task.show.people.assignee') }}:</div>
-                                <div class="col-md-8">
+                                <div class="col-4">{{ $t('task.show.people.assignee') }}:</div>
+                                <div class="col-8">
                                     <div class="d-flex" v-if="task.assignee">
                                         <div class="pr-2 d-flex">
                                             <img :src="task.assignee.photo" class="avatar avatar-sm" :alt="task.assignee.fullName">
@@ -95,8 +95,8 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4">{{ $t('task.show.people.reporter') }}:</div>
-                                <div class="col-md-8">
+                                <div class="col-4">{{ $t('task.show.people.reporter') }}:</div>
+                                <div class="col-8">
                                     <div class="d-flex">
                                         <div class="pr-2 d-flex">
                                             <img :src="task.reporter.photo" class="avatar avatar-sm" :alt="task.reporter.fullName">
@@ -115,12 +115,12 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-4">{{ $t('task.show.dates.start_date') }}:</div>
-                                <div class="col-md-8">{{ new Date(task.start_date) | date('DD.MM.YYYY') }}</div>
+                                <div class="col-sm-4 col-5">{{ $t('task.show.dates.start_date') }}:</div>
+                                <div class="col-sm-8 col-7">{{ new Date(task.start_date) | date('DD.MM.YYYY') }}</div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4">{{ $t('task.show.dates.end_date') }}:</div>
-                                <div class="col-md-8">{{ new Date(task.end_date) | date('DD.MM.YYYY') }}</div>
+                                <div class="col-sm-4 col-5">{{ $t('task.show.dates.end_date') }}:</div>
+                                <div class="col-sm-8 col-7">{{ new Date(task.end_date) | date('DD.MM.YYYY') }}</div>
                             </div>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                                     <div v-for="(time, index) in item.timeTracking" :key="'time-' + time.id" class="mb-2 d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
                                             <img :src="time.user.photo" class="avatar avatar-sm mr-2" :alt="time.user.fullName">
-                                            <p class="mb-0">{{ time.user.fullName }} - {{ time.time }}</p>
+                                            <p class="mb-0">{{ time.user.fullName }} - {{ $t('task.time_tracking.hours')}} {{ time.time }}</p>
                                         </div>
                                         <button v-if="userId === time.user.id" class="btn btn-sm btn-outline-danger" @click="removeTimeTracking(time)">X</button>
                                     </div>
@@ -171,7 +171,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-lg-8">
                     <div class="card mb-4">
                         <div class="card-header">
                             <h5 class="mb-0">{{ $t('task.show.description') }}</h5>
@@ -189,10 +189,9 @@
                             <template v-if="task.comments && task.comments.length > 0">
                                 <div v-for="(comment, index) in sortedComments" :key="comment.id" class="p-3" :class="{'border-bottom': index < sortedComments.length - 1}">
                                     <div class="d-flex mb-2">
-                                        <div class="d-flex align-items-center">
+                                        <div class="d-flex align-items-center flex-wrap">
                                             <img :src="comment.user.photo" class="avatar avatar-sm mr-2" :alt="comment.user.fullName">
-                                            <p class="mb-0">{{ comment.user.fullName }} {{ $t('comment.text.added') }} {{ new Date(comment.created_at) | date('DD.MM.YYYY HH:mm') }}</p>
-                                            <p v-if="comment.type === 'intern'" class="mb-0">{{ $t('comment.restricted_to') }} <span class="text-danger">{{ comment.type | upper }}</span></p>
+                                            <p class="mb-0">{{ comment.user.fullName }} {{ $t('comment.text.added') }} {{ new Date(comment.created_at) | date('DD.MM.YYYY HH:mm') }} <template v-if="comment.type === 'intern'">{{ $t('comment.restricted_to') }} <span class="text-danger">{{ comment.type | upper }}</span></template></p>
                                         </div>
                                     </div>
                                     <p class="mb-0">{{ comment.message }}</p>

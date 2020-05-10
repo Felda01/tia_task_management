@@ -22,6 +22,13 @@ class Version extends Model
     protected $guarded = [''];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['created_at', 'updated_at', 'end_date'];
+
+    /**
      * @return BelongsTo
      */
     public function project()

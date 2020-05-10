@@ -260,7 +260,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TaskDetail",
@@ -786,7 +785,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "col-md-4 col-12" },
+                { staticClass: "col-lg-4 col-12" },
                 [
                   _c(
                     "content-placeholders",
@@ -848,7 +847,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "col-md-8 col-12" },
+                { staticClass: "col-lg-8 col-12" },
                 [
                   _vm._l(3, function(n) {
                     return _c(
@@ -997,7 +996,7 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-4" }, [
+              _c("div", { staticClass: "col-lg-4" }, [
                 _c("div", { staticClass: "card mb-4" }, [
                   _c("div", { staticClass: "card-header" }, [
                     _c("h5", { staticClass: "mb-0" }, [
@@ -1007,7 +1006,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "col-4" }, [
                         _vm._v(
                           _vm._s(_vm.$t("task.show.details.project")) + ":"
                         )
@@ -1015,7 +1014,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "col-md-8" },
+                        { staticClass: "col-8" },
                         [
                           _c(
                             "router-link",
@@ -1037,36 +1036,36 @@ var render = function() {
                     _vm._v(" "),
                     _vm.task.version
                       ? _c("div", { staticClass: "row" }, [
-                          _c("div", { staticClass: "col-md-4" }, [
+                          _c("div", { staticClass: "col-4" }, [
                             _vm._v(
                               _vm._s(_vm.$t("task.show.details.version")) + ":"
                             )
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "col-md-8" }, [
+                          _c("div", { staticClass: "col-8" }, [
                             _vm._v(_vm._s(_vm.task.version.title))
                           ])
                         ])
                       : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "col-4" }, [
                         _vm._v(_vm._s(_vm.$t("task.show.details.status")) + ":")
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-8" }, [
+                      _c("div", { staticClass: "col-8" }, [
                         _vm._v(_vm._s(_vm._f("capitalize")(_vm.task.status)))
                       ])
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "col-4" }, [
                         _vm._v(
                           _vm._s(_vm.$t("task.show.details.priority")) + ":"
                         )
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-8" }, [
+                      _c("div", { staticClass: "col-8" }, [
                         _vm._v(_vm._s(_vm._f("capitalize")(_vm.task.priority)))
                       ])
                     ])
@@ -1082,13 +1081,13 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row mb-2" }, [
-                      _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "col-4" }, [
                         _vm._v(
                           _vm._s(_vm.$t("task.show.people.assignee")) + ":"
                         )
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-8" }, [
+                      _c("div", { staticClass: "col-8" }, [
                         _vm.task.assignee
                           ? _c("div", { staticClass: "d-flex" }, [
                               _c("div", { staticClass: "pr-2 d-flex" }, [
@@ -1116,13 +1115,13 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "col-4" }, [
                         _vm._v(
                           _vm._s(_vm.$t("task.show.people.reporter")) + ":"
                         )
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-8" }, [
+                      _c("div", { staticClass: "col-8" }, [
                         _c("div", { staticClass: "d-flex" }, [
                           _c("div", { staticClass: "pr-2 d-flex" }, [
                             _c("img", {
@@ -1158,13 +1157,13 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "col-sm-4 col-5" }, [
                         _vm._v(
                           _vm._s(_vm.$t("task.show.dates.start_date")) + ":"
                         )
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-8" }, [
+                      _c("div", { staticClass: "col-sm-8 col-7" }, [
                         _vm._v(
                           _vm._s(
                             _vm._f("date")(
@@ -1177,11 +1176,11 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "col-sm-4 col-5" }, [
                         _vm._v(_vm._s(_vm.$t("task.show.dates.end_date")) + ":")
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-8" }, [
+                      _c("div", { staticClass: "col-sm-8 col-7" }, [
                         _vm._v(
                           _vm._s(
                             _vm._f("date")(
@@ -1281,6 +1280,12 @@ var render = function() {
                                               _vm._v(
                                                 _vm._s(time.user.fullName) +
                                                   " - " +
+                                                  _vm._s(
+                                                    _vm.$t(
+                                                      "task.time_tracking.hours"
+                                                    )
+                                                  ) +
+                                                  " " +
                                                   _vm._s(time.time)
                                               )
                                             ])
@@ -1454,7 +1459,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-8" }, [
+              _c("div", { staticClass: "col-lg-8" }, [
                 _c("div", { staticClass: "card mb-4" }, [
                   _c("div", { staticClass: "card-header" }, [
                     _c("h5", { staticClass: "mb-0" }, [
@@ -1513,7 +1518,8 @@ var render = function() {
                                   _c(
                                     "div",
                                     {
-                                      staticClass: "d-flex align-items-center"
+                                      staticClass:
+                                        "d-flex align-items-center flex-wrap"
                                     },
                                     [
                                       _c("img", {
@@ -1524,45 +1530,54 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(" "),
-                                      _c("p", { staticClass: "mb-0" }, [
-                                        _vm._v(
-                                          _vm._s(comment.user.fullName) +
-                                            " " +
-                                            _vm._s(
-                                              _vm.$t("comment.text.added")
-                                            ) +
-                                            " " +
-                                            _vm._s(
-                                              _vm._f("date")(
-                                                new Date(comment.created_at),
-                                                "DD.MM.YYYY HH:mm"
-                                              )
-                                            )
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      comment.type === "intern"
-                                        ? _c("p", { staticClass: "mb-0" }, [
-                                            _vm._v(
+                                      _c(
+                                        "p",
+                                        { staticClass: "mb-0" },
+                                        [
+                                          _vm._v(
+                                            _vm._s(comment.user.fullName) +
+                                              " " +
                                               _vm._s(
-                                                _vm.$t("comment.restricted_to")
-                                              ) + " "
-                                            ),
-                                            _c(
-                                              "span",
-                                              { staticClass: "text-danger" },
-                                              [
+                                                _vm.$t("comment.text.added")
+                                              ) +
+                                              " " +
+                                              _vm._s(
+                                                _vm._f("date")(
+                                                  new Date(comment.created_at),
+                                                  "DD.MM.YYYY HH:mm"
+                                                )
+                                              ) +
+                                              " "
+                                          ),
+                                          comment.type === "intern"
+                                            ? [
                                                 _vm._v(
                                                   _vm._s(
-                                                    _vm._f("upper")(
-                                                      comment.type
+                                                    _vm.$t(
+                                                      "comment.restricted_to"
                                                     )
-                                                  )
+                                                  ) + " "
+                                                ),
+                                                _c(
+                                                  "span",
+                                                  {
+                                                    staticClass: "text-danger"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm._f("upper")(
+                                                          comment.type
+                                                        )
+                                                      )
+                                                    )
+                                                  ]
                                                 )
                                               ]
-                                            )
-                                          ])
-                                        : _vm._e()
+                                            : _vm._e()
+                                        ],
+                                        2
+                                      )
                                     ]
                                   )
                                 ]),

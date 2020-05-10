@@ -17,6 +17,12 @@ class VersionResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'end_date' => $this->end_date->format('Y-m-d'),
+            'project' => new ProjectResource($this->project),
+            'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
+        ];
     }
 }

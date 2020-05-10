@@ -233,7 +233,7 @@ var render = function() {
               _vm._l(12, function(n) {
                 return _c(
                   "div",
-                  { staticClass: "col-lg-4 col-md-6 col-12" },
+                  { staticClass: "col-lg-4 col-12" },
                   [
                     _c(
                       "content-placeholders",
@@ -275,7 +275,7 @@ var render = function() {
                 ? _vm._l(_vm.clients, function(client) {
                     return _c(
                       "div",
-                      { staticClass: "col-lg-4 col-md-6 col-12 mb-4" },
+                      { staticClass: "col-lg-4 col-12 mb-4" },
                       [
                         _c(
                           "router-link",

@@ -562,7 +562,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "col-lg-4 col-md-6 col-12" },
+                { staticClass: "col-lg-4 col-12" },
                 [
                   _c(
                     "content-placeholders",
@@ -611,9 +611,12 @@ var render = function() {
           ? [
               _c(
                 "div",
-                { staticClass: "col-12 mb-4 d-flex justify-content-between" },
+                {
+                  staticClass:
+                    "col-12 mb-4 d-flex flex-lg-row flex-column justify-content-lg-between align-items-lg-center"
+                },
                 [
-                  _c("h1", [
+                  _c("h1", { staticClass: "mb-lg-0 mb-3" }, [
                     _vm._v(
                       _vm._s(_vm.project.slug) +
                         ": " +
@@ -644,13 +647,13 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-4 col-md-5" }, [
+                      _c("div", { staticClass: "col-lg-4 col-md-5 col-3" }, [
                         _vm._v(_vm._s(_vm.$t("project.client.name")) + ":")
                       ]),
                       _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "col-lg-8 col-md-7" },
+                        { staticClass: "col-lg-8 col-md-7 col-9" },
                         [
                           _c(
                             "router-link",
@@ -671,11 +674,11 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-4" }, [
+                      _c("div", { staticClass: "col-lg-4 col-md-5 col-3" }, [
                         _vm._v(_vm._s(_vm.$t("project.status")) + ":")
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-8 col-md-7" }, [
+                      _c("div", { staticClass: "col-lg-8 col-md-7 col-9" }, [
                         _vm._v(_vm._s(_vm._f("capitalize")(_vm.project.status)))
                       ])
                     ])
@@ -691,11 +694,11 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-4 col-md-5" }, [
+                      _c("div", { staticClass: "col-lg-4 col-md-5 col-3" }, [
                         _vm._v(_vm._s(_vm.$t("project.start_date")) + ":")
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-8 col-md-7" }, [
+                      _c("div", { staticClass: "col-lg-8 col-md-7 col-9" }, [
                         _vm._v(
                           _vm._s(
                             _vm._f("date")(
@@ -708,11 +711,11 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-4 col-md-5" }, [
+                      _c("div", { staticClass: "col-lg-4 col-md-5 col-3" }, [
                         _vm._v(_vm._s(_vm.$t("project.end_date")) + ":")
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-8 col-md-7" }, [
+                      _c("div", { staticClass: "col-lg-8 col-md-7 col-9" }, [
                         _vm._v(
                           _vm._s(
                             _vm._f("date")(

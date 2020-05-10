@@ -1,6 +1,6 @@
 <template>
-    <div>
-        Dashboard
+    <div class="dashboard">
+        <h1>{{ $t('dashboard.welcome') }}</h1>
     </div>
 </template>
 
@@ -9,7 +9,3 @@
         name: "Dashboard"
     }
 </script>
-
-<style scoped>
-
-</style>

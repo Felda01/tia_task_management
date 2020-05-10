@@ -339,7 +339,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "col-md-4 col-12" },
+                { staticClass: "col-lg-4 col-12" },
                 [
                   _c(
                     "content-placeholders",
@@ -357,7 +357,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "col-md-8 col-12" },
+                { staticClass: "col-lg-8 col-12" },
                 [
                   _c(
                     "content-placeholders",
@@ -377,9 +377,12 @@ var render = function() {
           ? [
               _c(
                 "div",
-                { staticClass: "col-12 mb-4 d-flex justify-content-between" },
+                {
+                  staticClass:
+                    "col-12 mb-4 d-flex flex-lg-row flex-column justify-content-lg-between align-items-lg-center"
+                },
                 [
-                  _c("h1", [
+                  _c("h1", { staticClass: "mb-lg-0 mb-3" }, [
                     _c(
                       "span",
                       {
@@ -406,7 +409,7 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-4 col-12 mb-4" }, [
+              _c("div", { staticClass: "col-lg-4 col-12 mb-4" }, [
                 _c("div", { staticClass: "card" }, [
                   _c(
                     "div",
@@ -475,7 +478,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-8 col-12 mb-4" }, [
+              _c("div", { staticClass: "col-lg-8 col-12 mb-4" }, [
                 _c("div", { staticClass: "card" }, [
                   _c("div", { staticClass: "card-header" }, [
                     _c("div", { staticClass: "row" }, [

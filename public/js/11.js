@@ -149,8 +149,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoadMap",
@@ -398,81 +396,89 @@ var render = function() {
                           { key: version.id, staticClass: "card mb-4" },
                           [
                             _c("div", { staticClass: "card-header" }, [
-                              _c("div", { staticClass: "row" }, [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "col d-flex align-items-center"
-                                  },
-                                  [
-                                    _c("h5", { staticClass: "mb-0" }, [
-                                      _vm._v(
-                                        _vm._s(version.title) +
-                                          " (" +
-                                          _vm._s(
-                                            _vm._f("date")(
-                                              new Date(version.end_date),
-                                              "DD.MM.YYYY"
-                                            )
-                                          ) +
-                                          ")"
-                                      )
-                                    ])
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col text-right" }, [
-                                  _vm.isSenior
-                                    ? _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "btn btn-outline-primary btn-sm",
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.editVersionModal(
-                                                version
-                                              )
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _vm._v(
-                                            _vm._s(
-                                              _vm.$t("project.version.edit.btn")
-                                            )
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "d-flex flex-md-row flex-column justify-content-md-between align-items-md-center"
+                                },
+                                [
+                                  _c("h5", { staticClass: "mb-3 mb-md-0" }, [
+                                    _vm._v(
+                                      _vm._s(version.title) +
+                                        " (" +
+                                        _vm._s(
+                                          _vm._f("date")(
+                                            new Date(version.end_date),
+                                            "DD.MM.YYYY"
                                           )
-                                        ]
-                                      )
-                                    : _vm._e(),
+                                        ) +
+                                        ")"
+                                    )
+                                  ]),
                                   _vm._v(" "),
-                                  _vm.isSenior
-                                    ? _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "btn btn-outline-danger btn-sm",
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.deleteVersionModal(
-                                                version
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "d-flex justify-content-between justify-content-md-end"
+                                    },
+                                    [
+                                      _vm.isSenior
+                                        ? _c(
+                                            "button",
+                                            {
+                                              staticClass:
+                                                "btn btn-outline-primary btn-sm",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.editVersionModal(
+                                                    version
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.$t(
+                                                    "project.version.edit.btn"
+                                                  )
+                                                )
                                               )
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _vm._v(
-                                            _vm._s(
-                                              _vm.$t(
-                                                "project.version.delete.btn"
-                                              )
-                                            )
+                                            ]
                                           )
-                                        ]
-                                      )
-                                    : _vm._e()
-                                ])
-                              ])
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _vm.isSenior
+                                        ? _c(
+                                            "button",
+                                            {
+                                              staticClass:
+                                                "btn btn-outline-danger btn-sm",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.deleteVersionModal(
+                                                    version
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.$t(
+                                                    "project.version.delete.btn"
+                                                  )
+                                                )
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e()
+                                    ]
+                                  )
+                                ]
+                              )
                             ]),
                             _vm._v(" "),
                             _c(

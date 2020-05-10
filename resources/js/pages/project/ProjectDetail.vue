@@ -7,7 +7,7 @@
                         <content-placeholders-heading />
                     </content-placeholders>
                 </div>
-                <div class="col-lg-4 col-md-6 col-12">
+                <div class="col-lg-4 col-12">
                     <content-placeholders class="mb-4">
                         <content-placeholders-heading />
                         <content-placeholders-text :lines="3" />
@@ -25,8 +25,8 @@
                 </div>
             </template>
             <template v-else-if="project">
-                <div class="col-12 mb-4 d-flex justify-content-between">
-                    <h1>{{ project.slug }}: {{ project.title }}</h1>
+                <div class="col-12 mb-4 d-flex flex-lg-row flex-column justify-content-lg-between align-items-lg-center">
+                    <h1 class="mb-lg-0 mb-3">{{ project.slug }}: {{ project.title }}</h1>
                     <button v-if="isSenior" class="btn btn-outline-primary" @click="editProjectModal">{{ $t('project.edit.btn') }}</button>
                 </div>
                 <div class="col-lg-4 col-12">
@@ -36,12 +36,12 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-4 col-md-5">{{ $t('project.client.name') }}:</div>
-                                <div class="col-lg-8 col-md-7"><router-link :to="{ name: 'clients.show', params: { id: project.client.id } }" class="text-decoration-none">{{ project.client.name }}</router-link></div>
+                                <div class="col-lg-4 col-md-5 col-3">{{ $t('project.client.name') }}:</div>
+                                <div class="col-lg-8 col-md-7 col-9"><router-link :to="{ name: 'clients.show', params: { id: project.client.id } }" class="text-decoration-none">{{ project.client.name }}</router-link></div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-4">{{ $t('project.status') }}:</div>
-                                <div class="col-lg-8 col-md-7">{{ project.status | capitalize }}</div>
+                                <div class="col-lg-4 col-md-5 col-3">{{ $t('project.status') }}:</div>
+                                <div class="col-lg-8 col-md-7 col-9">{{ project.status | capitalize }}</div>
                             </div>
                         </div>
                     </div>
@@ -51,12 +51,12 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-4 col-md-5">{{ $t('project.start_date') }}:</div>
-                                <div class="col-lg-8 col-md-7">{{ new Date(project.start_date) | date('DD.MM.YYYY') }}</div>
+                                <div class="col-lg-4 col-md-5 col-3">{{ $t('project.start_date') }}:</div>
+                                <div class="col-lg-8 col-md-7 col-9">{{ new Date(project.start_date) | date('DD.MM.YYYY') }}</div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-4 col-md-5">{{ $t('project.end_date') }}:</div>
-                                <div class="col-lg-8 col-md-7">{{ new Date(project.end_date) | date('DD.MM.YYYY') }}</div>
+                                <div class="col-lg-4 col-md-5 col-3">{{ $t('project.end_date') }}:</div>
+                                <div class="col-lg-8 col-md-7 col-9">{{ new Date(project.end_date) | date('DD.MM.YYYY') }}</div>
                             </div>
                         </div>
                     </div>

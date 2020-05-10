@@ -21,11 +21,9 @@
                     <template v-if="project.versions && project.versions.length > 0">
                         <div class="card mb-4" v-for="(version, index) in sortedVersions" :key="version.id">
                             <div class="card-header">
-                                <div class="row">
-                                    <div class="col d-flex align-items-center">
-                                        <h5 class="mb-0">{{ version.title }} ({{ new Date(version.end_date) | date('DD.MM.YYYY') }})</h5>
-                                    </div>
-                                    <div class="col text-right">
+                                <div class="d-flex flex-md-row flex-column justify-content-md-between align-items-md-center">
+                                    <h5 class="mb-3 mb-md-0">{{ version.title }} ({{ new Date(version.end_date) | date('DD.MM.YYYY') }})</h5>
+                                    <div class="d-flex justify-content-between justify-content-md-end">
                                         <button v-if="isSenior" class="btn btn-outline-primary btn-sm" @click="editVersionModal(version)">{{ $t('project.version.edit.btn') }}</button>
                                         <button v-if="isSenior" class="btn btn-outline-danger btn-sm" @click="deleteVersionModal(version)">{{ $t('project.version.delete.btn') }}</button>
                                     </div>

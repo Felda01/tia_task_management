@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\API;
 
+use App\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectAssignUserRequest;
 use App\Http\Requests\ProjectManageTeamRequest;
@@ -38,9 +39,15 @@ class ProjectController extends Controller
      */
     public function store(ProjectStoreRequest $request)
     {
+        /** @var Project $project */
         $project = Project::create($request->only(['title', 'slug', 'start_date', 'end_date', 'client_id']));
 
         $project->users()->save($request->user());
+
+        /** @var Client $client */
+        $client = $project->client()->first();
+
+        $project->users()->save($client->user()->first());
 
         $project->save();
 

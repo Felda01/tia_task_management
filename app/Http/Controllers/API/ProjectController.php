@@ -112,7 +112,7 @@ class ProjectController extends Controller
     /**
      * @param ProjectAssignUserRequest $request
      * @param Project $project
-     * @return \Illuminate\Http\JsonResponse
+     * @return UserCollection
      */
     public function assignUser(ProjectAssignUserRequest $request, Project $project)
     {
@@ -120,8 +120,6 @@ class ProjectController extends Controller
 
         $project->save();
 
-        return response()->json([
-            'users' => new UserCollection($project->users()->get())
-        ]);
+        return new UserCollection($project->users()->get());
     }
 }

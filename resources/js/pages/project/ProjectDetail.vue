@@ -449,7 +449,7 @@
                 this.$refs['addUserToProjectModal'].openModal();
             },
             addUserToProject(response) {
-                this.task.users = response.data.data;
+                this.project.users = response.data.data;
             },
             prioritySort(priority, desc) {
                 switch (priority) {

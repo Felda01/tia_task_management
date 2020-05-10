@@ -488,7 +488,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$refs['addUserToProjectModal'].openModal();
     },
     addUserToProject: function addUserToProject(response) {
-      this.task.users = response.data.data;
+      this.project.users = response.data.data;
     },
     prioritySort: function prioritySort(priority, desc) {
       switch (priority) {

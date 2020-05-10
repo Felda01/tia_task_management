@@ -646,6 +646,10 @@
                                 return dependencyElement.id !== dependency.id;
                             });
                             this.checkDependenciesConflicts();
+                        }).catch(error => {
+                            this.$bvModal.msgBoxOk(error.response.data.status, {
+                                okVariant: 'danger'
+                            });
                         });
                     }
                 });

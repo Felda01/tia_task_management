@@ -19,7 +19,7 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         /** @var User $user */
-        $user = request()->user('api');
+        $user = auth()->guard('api')->user();
 
         return [
             'id' => $this->id,
@@ -30,7 +30,8 @@ class UserResource extends JsonResource
             'photo' => $this->photo ? asset('images/'. $this->photo) : asset('images/no_photo.png'),
             'type' => $this->type,
             'projects' => ProjectResource::collection($this->whenLoaded('projects')),
-            'client' => $this->when($user->isClient(), new ClientResource($this->client)),''
+            'client' => $this->when($user && $user->isClient(), new ClientResource($this->client)),
+            'notifications' => $this->when($user && $user->id === $this->id, NotificationResource::collection($this->whenLoaded('notifications')))
         ];
     }
 }

@@ -91,7 +91,7 @@ class ClientController extends Controller
 
                 return $client;
             });
-        } catch (Exception $exception){
+        } catch (Exception $exception) {
             return response()->json([
                 'message' => $exception->getMessage()
             ], 422);

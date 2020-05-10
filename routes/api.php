@@ -25,8 +25,6 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', 'AuthController@logout')->name('logout');
 
-    Route::get('user', 'API\UserController@current')->name('user');
-
     Route::apiResource('clients', 'API\ClientController', ['except' => ['destroy']]);
 
     Route::apiResource('projects', 'API\ProjectController', ['except' => ['destroy', 'index']]);
@@ -46,6 +44,10 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('users', 'API\UserController');
     Route::put('users/{user}/position', 'API\UserController@updatePosition')->name('users.position');
+    Route::delete('users/{user}/notifications', 'API\UserController@destroyNotifications')->name('users.destroyNotifications');
+    Route::get('user', 'API\UserController@current')->name('user');
+
+    Route::apiResource('notifications', 'API\NotificationController', ['only' => ['destroy']]);
 });
 
 

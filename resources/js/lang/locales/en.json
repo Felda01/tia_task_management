@@ -164,6 +164,9 @@
     "user.type.edit.title": "Update position",
     "user.edit.title": "Update user",
     "user.removeMessage": "Are you sure you want to release this user ?",
+    "user.show.notifications": "Notifications",
+    "user.notifications.no_notifications": "There are no notifications available",
+    "user.notifications.removeAll": "Remove all",
     "modal.register.btn": "Register",
     "dependencies.add.title.modal": "Add dependency",
     "task.add.dependency.btn": "Add dependency",
@@ -184,5 +187,7 @@
     "task.filter.priority.asc": "Priority ASC",
     "task.filter.priority.desc": "Priority DESC",
     "task.sort": "Sorting",
-    "dashboard.welcome": "Welcome to TMT."
+    "dashboard.welcome": "Welcome to Task Management Tool.",
+    "notification.removeMessage": "Are you sure you want to delete this notification ?",
+    "notification.removeAllMessage": "Are you sure you want to delete all notifications ?"
 }

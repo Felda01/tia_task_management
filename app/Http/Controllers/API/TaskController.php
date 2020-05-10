@@ -9,9 +9,12 @@ use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Http\Resources\TaskCollection;
 use App\Http\Resources\TaskResource;
+use App\Notification;
 use App\Task;
 use App\User;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class TaskController
@@ -107,24 +110,77 @@ class TaskController extends Controller
      *
      * @param TaskUpdateRequest $request
      * @param Task $task
-     * @return TaskResource
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function update(TaskUpdateRequest $request, Task $task)
     {
-        $task->update($request->all());
+        try {
+            $task = DB::transaction(function () use ($request, $task) {
+                $updated = $task->update($request->all());
 
+                if (!$updated) {
+                    throw new Exception('Something wrong, Try again later');
+                }
+
+                if ($task->assignee()->exists()) {
+                    $user = $task->assignee()->first();
+                    $notification = Notification::create([
+                        'message' => 'Task updated.',
+                        'user_id' => $user->id,
+                        'task_id' => $task->id,
+                    ]);
+                    if (!$notification) {
+                        throw new Exception('Something wrong, Try again later');
+                    }
+                }
+
+                return $task;
+            });
+        } catch (Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 422);
+        }
+        
         return new TaskResource($task->load(['version', 'assignee', 'reporter', 'dependencies', 'comments', 'timeTrackings', 'project.users', 'project.versions', 'project.activeTasks', 'comments.user']));
     }
 
     /**
      * @param TaskStoreDependencyRequest $request
      * @param Task $task
-     * @return TaskResource
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function storeDependency(TaskStoreDependencyRequest $request, Task $task)
     {
-        $task->dependencies()->attach($request->input('task_id'), ['type' => $request->input('type')]);
-        $task->save();
+        try {
+            $task = DB::transaction(function () use ($request, $task) {
+                $task->dependencies()->attach($request->input('task_id'), ['type' => $request->input('type')]);
+                $saved = $task->save();
+
+                if (!$saved) {
+                    throw new Exception('Something wrong, Try again later');
+                }
+
+                if ($task->assignee()->exists()) {
+                    $user = $task->assignee()->first();
+                    $notification = Notification::create([
+                        'message' => 'Added task dependency.',
+                        'user_id' => $user->id,
+                        'task_id' => $task->id,
+                    ]);
+
+                    if (!$notification) {
+                        throw new Exception('Something wrong, Try again later');
+                    }
+                }
+
+                return $task;
+            });
+        } catch (Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 422);
+        }
 
         return new TaskResource($task->load(['version', 'assignee', 'reporter', 'dependencies', 'comments', 'timeTrackings', 'project.users', 'project.versions', 'project.activeTasks', 'comments.user']));
     }
@@ -136,8 +192,33 @@ class TaskController extends Controller
      */
     public function destroyDependency(TaskDestroyDependencyRequest $request, Task $task)
     {
-        $task->dependencies()->detach($request->input('task_id'));
-        $task->save();
+        try {
+            DB::transaction(function () use ($request, $task) {
+                $task->dependencies()->detach($request->input('task_id'));
+                $saved = $task->save();
+
+                if (!$saved) {
+                    throw new Exception('Something wrong, Try again later');
+                }
+
+                if ($task->assignee()->exists()) {
+                    $user = $task->assignee()->first();
+                    $notification = Notification::create([
+                        'message' => 'Removed task dependency.',
+                        'user_id' => $user->id,
+                        'task_id' => $task->id,
+                    ]);
+
+                    if (!$notification) {
+                        throw new Exception('Something wrong, Try again later');
+                    }
+                }
+            });
+        } catch (Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 422);
+        }
 
         return response()->json(null, 204);
     }

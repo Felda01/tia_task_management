@@ -685,6 +685,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             });
 
             _this3.checkDependenciesConflicts();
+          })["catch"](function (error) {
+            _this3.$bvModal.msgBoxOk(error.response.data.status, {
+              okVariant: 'danger'
+            });
           });
         }
       });

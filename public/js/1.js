@@ -101,6 +101,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -148,6 +167,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         okBtnTitle: this.$t('modal.edit.btn')
       },
       removeUserMessageBoxOptions: {
+        title: this.$t('modalWarning'),
+        okVariant: 'success',
+        cancelVariant: 'danger'
+      },
+      removeNotificationMessageBoxOptions: {
+        title: this.$t('modalWarning'),
+        okVariant: 'success',
+        cancelVariant: 'danger'
+      },
+      removeAllNotificationMessageBoxOptions: {
         title: this.$t('modalWarning'),
         okVariant: 'success',
         cancelVariant: 'danger'
@@ -252,6 +281,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
         }
       });
+    },
+    removeNotification: function removeNotification(notification) {
+      var _this3 = this;
+
+      this.$bvModal.msgBoxConfirm(this.$t('notification.removeMessage'), this.removeNotificationMessageBoxOptions).then(function (value) {
+        if (value) {
+          _this3.axios["delete"]('/api/notifications/' + notification.id).then(function (response) {
+            _this3.user.notifications = _.filter(_this3.user.notifications, function (notificationElement) {
+              return notificationElement.id !== notification.id;
+            });
+          })["catch"](function (error) {
+            _this3.$bvModal.msgBoxOk(error.response.data.message, {
+              okVariant: 'danger'
+            });
+          });
+        }
+      });
+    },
+    removeAllNotifications: function removeAllNotifications() {
+      var _this4 = this;
+
+      if (this.userId) {
+        this.$bvModal.msgBoxConfirm(this.$t('notification.removeAllMessage'), this.removeAllNotificationMessageBoxOptions).then(function (value) {
+          if (value) {
+            _this4.axios["delete"]('/api/users/' + _this4.userId + '/notifications').then(function (response) {
+              _this4.user.notifications = [];
+            })["catch"](function (error) {
+              console.log(error.response);
+
+              _this4.$bvModal.msgBoxOk(error.response.data.status, {
+                okVariant: 'danger'
+              });
+            });
+          }
+        });
+      }
     }
   }
 });
@@ -365,15 +430,22 @@ var render = function() {
           ? [
               _c(
                 "div",
-                { staticClass: "col-12 mb-4 d-flex justify-content-between" },
+                {
+                  staticClass:
+                    "col-12 mb-4 d-flex flex-lg-row flex-column justify-content-lg-between align-items-lg-center"
+                },
                 [
-                  _c("h1", { staticClass: "d-flex align-items-center" }, [
-                    _c("img", {
-                      staticClass: "avatar avatar-md mr-2",
-                      attrs: { src: _vm.user.photo, alt: _vm.user.fullName }
-                    }),
-                    _vm._v(_vm._s(_vm.user.fullName))
-                  ]),
+                  _c(
+                    "h1",
+                    { staticClass: "d-flex align-items-center mb-lg-0 mb-3" },
+                    [
+                      _c("img", {
+                        staticClass: "avatar avatar-md mr-2",
+                        attrs: { src: _vm.user.photo, alt: _vm.user.fullName }
+                      }),
+                      _vm._v(_vm._s(_vm.user.fullName))
+                    ]
+                  ),
                   _vm._v(" "),
                   _vm.owner
                     ? _c(
@@ -476,7 +548,155 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-lg-8 col-12" }),
+              _c("div", { staticClass: "col-lg-8 col-12" }, [
+                _vm.owner
+                  ? _c("div", { staticClass: "card mb-4" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "card-header d-flex justify-content-between align-items-center"
+                        },
+                        [
+                          _c("h5", { staticClass: "mb-0" }, [
+                            _vm._v(_vm._s(_vm.$t("user.show.notifications")))
+                          ]),
+                          _vm._v(" "),
+                          _vm.user.notifications &&
+                          _vm.user.notifications.length > 0
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-outline-primary btn-sm",
+                                  on: { click: _vm.removeAllNotifications }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.$t("user.notifications.removeAll")
+                                    )
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "card-body" },
+                        [
+                          _vm.user.notifications &&
+                          _vm.user.notifications.length > 0
+                            ? _vm._l(_vm.user.notifications, function(
+                                notification,
+                                index
+                              ) {
+                                return _c(
+                                  "div",
+                                  {
+                                    staticClass: "p-3",
+                                    class: {
+                                      "border-bottom":
+                                        index <
+                                        _vm.user.notifications.length - 1
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "d-flex justify-content-between align-items-center mb-2"
+                                      },
+                                      [
+                                        _c(
+                                          "p",
+                                          { staticClass: "mb-0" },
+                                          [
+                                            _c(
+                                              "router-link",
+                                              {
+                                                staticClass:
+                                                  "text-decoration-none",
+                                                attrs: {
+                                                  to: {
+                                                    name: "tasks.show",
+                                                    params: {
+                                                      id: notification.task.id
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    notification.task.project
+                                                      .slug
+                                                  ) +
+                                                    ": " +
+                                                    _vm._s(
+                                                      notification.task.title
+                                                    )
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(
+                                              " - " +
+                                                _vm._s(
+                                                  _vm._f("date")(
+                                                    new Date(
+                                                      notification.created_at
+                                                    ),
+                                                    "DD.MM.YYYY HH:mm"
+                                                  )
+                                                )
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-outline-danger btn-sm",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.removeNotification(
+                                                  notification
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("X")]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("p", { staticClass: "mb-0" }, [
+                                      _vm._v(_vm._s(notification.message))
+                                    ])
+                                  ]
+                                )
+                              })
+                            : [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(
+                                      _vm.$t(
+                                        "user.notifications.no_notifications"
+                                      )
+                                    ) +
+                                    "\n                        "
+                                )
+                              ]
+                        ],
+                        2
+                      )
+                    ])
+                  : _vm._e()
+              ]),
               _vm._v(" "),
               _c("custom-modal", {
                 ref: "editUserTypeModal",

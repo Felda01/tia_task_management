@@ -49,7 +49,7 @@ Vue.component('custom-modal', require('./components/CustomModal.vue').default);
 Vue.component('error-forbidden', require('./components/Forbidden.vue').default);
 Vue.component('error-not-found', require('./components/NotFound.vue').default);
 
-import { BNavbar, BNavbarNav, BNavbarToggle, BNavbarBrand, BNavItem, BCollapse, BModal, BFormSelect, BFormSelectOption, BOverlay, BFormDatepicker, ModalPlugin, BAlert, BProgress } from 'bootstrap-vue';
+import { BNavbar, BNavbarNav, BNavbarToggle, BNavbarBrand, BNavItem, BCollapse, BModal, BFormSelect, BFormSelectOption, BOverlay, BFormDatepicker, ModalPlugin, BAlert, BProgress, ToastPlugin } from 'bootstrap-vue';
 
 Vue.component('b-navbar', BNavbar);
 Vue.component('b-nav-item', BNavItem);
@@ -66,6 +66,7 @@ Vue.component('b-alert', BAlert);
 Vue.component('b-progress', BProgress);
 
 Vue.use(ModalPlugin);
+Vue.use(ToastPlugin);
 
 import { HasError, AlertError, AlertSuccess } from 'vform';
 

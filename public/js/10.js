@@ -450,7 +450,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$refs['addTaskModal'].openModal();
     },
     addTask: function addTask(response) {
-      console.log(response.data);
       var task = response.data.data;
       this.$router.push({
         name: 'tasks.show',

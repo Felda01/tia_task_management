@@ -52,10 +52,23 @@
             ...mapGetters([
                 'loggedIn',
                 'loading',
-                'userId',
                 'user',
                 'isClient',
+                'userId'
             ]),
+        },
+        created() {
+            window.Echo.channel('laravel_database_notification').listen('.notification.created', (data) => {
+                if (this.userId && this.userId === data.user.id) {
+                    this.$bvToast.toast(data.task.project.slug + ': ' + data.task.title, {
+                        title: data.message,
+                        autoHideDelay: 10000,
+                        appendToast: true,
+                        variant: 'primary',
+                        to: { name: 'tasks.show', params: {id: data.task.id} }
+                    });
+                }
+            });
         },
         methods: {
             logout() {

@@ -50,6 +50,8 @@ class TimeTrackingController extends Controller
 
             return response()->json(null, 204);
         }
-        return response()->json(null, 403);
+        return response()->json([
+            'status' => 'This action is unauthorized.'
+        ], 403);
     }
 }

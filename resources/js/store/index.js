@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Cookies from 'js-cookie';
 
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -9,6 +10,7 @@ export default new Vuex.Store({
         token: null,
         loading: false,
         user: null,
+        notifications: [],
     },
     getters: {
         loggedIn: state => state.token !== null,
@@ -19,6 +21,8 @@ export default new Vuex.Store({
         isSenior: state => state.user ? state.user.type === 'senior' : false,
         isClient: state => state.user ? state.user.type === 'client' : false,
         isEmployee: state => state.user ? state.user.type === 'senior' || state.user.type === 'junior' : false,
+        token: state => state.token ? state.token : null,
+        notifications: state => state.notifications
     },
     mutations: {
         SET_TOKEN(state, token) {
@@ -35,6 +39,14 @@ export default new Vuex.Store({
 
         SET_USER(state, user) {
             state.user = user;
+        },
+
+        ADD_NOTIFICATION(state, notification) {
+            state.notifications.push(notification);
+        },
+
+        REMOVE_NOTIFICATION(state, notification) {
+            state.notifications = state.notifications.filter(e => e.id !== notification.id);
         }
     },
     actions: {
@@ -72,6 +84,14 @@ export default new Vuex.Store({
             Vue.axios.get('/api/user').then(response => {
                 commit('SET_USER', response.data.data);
             });
+        },
+
+        addNotification({commit}, {notification}) {
+            commit('ADD_NOTIFICATION', notification);
+        },
+
+        removeNotification({commit}, {notification}) {
+            commit('REMOVE_NOTIFICATION', notification);
         }
     }
 })

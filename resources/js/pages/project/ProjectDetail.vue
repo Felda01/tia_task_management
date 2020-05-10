@@ -416,7 +416,6 @@
                 this.$refs['addTaskModal'].openModal();
             },
             addTask(response) {
-                console.log(response.data);
                 let task = response.data.data;
                 this.$router.push({ name: 'tasks.show', params: {id: task.id} });
             },

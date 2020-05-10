@@ -13,3 +13,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 .phploy
+laravel-echo-server.json
+laravel-echo-server.lock

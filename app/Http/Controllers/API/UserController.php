@@ -85,7 +85,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return (new UserResource($user->load(['projects'])))->additional(['meta' => [
+        return (new UserResource($user->load(['projects', 'notifications'])))->additional(['meta' => [
             'usersTypeOptions' => [
                 ['text' => ucfirst(User::TYPE_JUNIOR), 'value' => User::TYPE_JUNIOR ],
                 ['text' => ucfirst(User::TYPE_SENIOR), 'value' => User::TYPE_SENIOR ],
@@ -151,6 +151,24 @@ class UserController extends Controller
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage(), 400]);
         }
+    }
+
+    /**
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyNotifications(User $user)
+    {
+        $authUser = request()->user('api');
+
+        if ($user->id == $authUser->id) {
+            $user->notifications()->delete();
+
+            return response()->json(null, 204);
+        }
+        return response()->json([
+            'status' => 'This action is unauthorized.'
+        ], 403);
     }
 
     /**

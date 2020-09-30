@@ -7,6 +7,21 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+## How to install
+
+1.  clone this repo
+2.  create database
+3.  duplicate/rename '.env.example' file to '.env'
+4.  enter DB_DATABASE, DB_USERNAME, DB_PASSWORD, APP_URL into '.env' file
+5.  run 'composer install' command
+6.  run 'php artisan migrate:refresh --seed' command
+7.  write access for folders storage/ and bootstrap/cache/
+8.  setup queue on server (https://laravel.com/docs/5.7/queues#supervisor-configuration)
+9.  setup Redis server (https://tecadmin.net/install-redis-ubuntu/)
+10. setup Laravel Echo Server (https://medium.freecodecamp.org/how-to-use-laravel-with-socket-io-e7c7565cc19d)
+
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

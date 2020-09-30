@@ -19,12 +19,12 @@ class UsersTableSeeder extends Seeder
 
         Client::create([
             "user_id" => null,
-            "secret" => "UT5E7yC2ScSyZoHLs6nwtCbgzX5tr5W3tX4oJaDK",
+            "secret" => env('PASSWORD_CLIENT_SECRET', 'UT5E7yC2ScSyZoHLs6nwtCbgzX5tr5W3tX4oJaDK'),
             "name" => "Password Grant",
             "revoked" => 0,
-            "password_client" => 1,
+            "password_client" => env('PASSWORD_CLIENT_ID', 1),
             "personal_access_client" => 0,
-            "redirect" => "https://task-management.ddev.site",
+            "redirect" => config('app.url'),
         ]);
     }
 }
